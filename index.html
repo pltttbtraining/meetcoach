@@ -6,49 +6,80 @@
     <title>PRU Academy - Meet the Coach System</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #007AFF;
-            --secondary-color: #8E8E93;
-            --success-color: #34C759;
-            --warning-color: #FF9500;
-            --danger-color: #FF3B30;
-            --bg-color: #F2F2F7;
-            --card-bg: #FFFFFF;
-            --border-color: #C6C6C8;
-            --text-color: #000000;
-            --text-secondary: #8E8E93;
+            --primary-color: #1877F2;
+            --primary-light: #E7F3FF;
+            --secondary-color: #F0F2F5;
+            --accent-green: #42B72A;
+            --accent-red: #E41E3F;
+            --text-primary: #1C1E21;
+            --text-secondary: #65676B;
+            --text-light: #8A8D91;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 15px rgba(24, 119, 242, 0.2);
         }
 
         [data-theme="dark"] {
-            --bg-color: #000000;
-            --card-bg: #1C1C1E;
-            --border-color: #38383A;
-            --text-color: #FFFFFF;
-            --text-secondary: #8E8E93;
+            --text-primary: #E4E6EB;
+            --text-secondary: #B0B3B8;
+            --text-light: #8A8D91;
+            --secondary-color: #242526;
+            --card-bg: rgba(36, 37, 38, 0.7);
+            --card-border: rgba(58, 59, 60, 0.8);
+            --glass-bg: rgba(36, 37, 38, 0.5);
+            --glass-border: rgba(58, 59, 60, 0.6);
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #F0F2F5 0%, #E7F3FF 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
             transition: all 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(24, 119, 242, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(66, 183, 42, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(228, 30, 63, 0.05) 0%, transparent 50%);
+            z-index: -1;
         }
 
         /* Header and Navigation */
         .app-header {
             background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: var(--shadow-light);
         }
 
         .nav-container {
@@ -62,9 +93,16 @@
         .logo {
             font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            background: linear-gradient(135deg, var(--primary-color), #42B72A);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            font-size: 28px;
         }
 
         .nav-buttons {
@@ -73,7 +111,7 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
@@ -82,30 +120,59 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active::after {
+            opacity: 1;
         }
 
         .btn-primary {
             background: var(--primary-color);
             color: white;
+            box-shadow: var(--shadow-glow);
         }
 
         .btn-secondary {
-            background: var(--secondary-color);
-            color: white;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
         }
 
         .btn-success {
-            background: var(--success-color);
+            background: var(--accent-green);
             color: white;
         }
 
         .btn-warning {
-            background: var(--warning-color);
+            background: #FF9500;
             color: white;
         }
 
         .btn-danger {
-            background: var(--danger-color);
+            background: var(--accent-red);
             color: white;
         }
 
@@ -126,58 +193,83 @@
 
         .menu-card {
             background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 16px;
             padding: 25px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(24, 119, 242, 0.05) 0%, rgba(66, 183, 42, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
         .menu-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
         }
 
         .menu-icon {
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-green));
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px;
             color: white;
             font-size: 28px;
+            box-shadow: var(--shadow-light);
         }
 
         .menu-title {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         .menu-desc {
             color: var(--text-secondary);
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         /* Content Areas */
         .content-section {
             display: none;
             background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 16px;
             padding: 30px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             margin-top: 20px;
+            box-shadow: var(--shadow-light);
+            animation: fadeIn 0.5s ease;
         }
 
         .content-section.active {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -185,10 +277,31 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
         /* Forms */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -201,23 +314,25 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--text-color);
+            color: var(--text-primary);
         }
 
         .form-control {
             width: 100%;
             padding: 15px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             border-radius: 12px;
             font-size: 16px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: border-color 0.3s;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            transition: all 0.3s;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
         }
 
         /* Coach Grid */
@@ -230,17 +345,25 @@
 
         .coach-card {
             background: var(--card-bg);
+            backdrop-filter: blur(15px);
             border-radius: 16px;
             padding: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             text-align: center;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-light);
+        }
+
+        .coach-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
         }
 
         .coach-avatar {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-green));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -248,6 +371,7 @@
             color: white;
             font-size: 32px;
             font-weight: bold;
+            box-shadow: var(--shadow-light);
         }
 
         /* Dashboard */
@@ -260,16 +384,27 @@
 
         .stat-card {
             background: var(--card-bg);
+            backdrop-filter: blur(15px);
             border-radius: 16px;
             padding: 20px;
             text-align: center;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+            box-shadow: var(--shadow-light);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
         }
 
         .stat-value {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .stat-label {
@@ -279,10 +414,12 @@
 
         .chart-container {
             background: var(--card-bg);
+            backdrop-filter: blur(15px);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-light);
         }
 
         /* Tables */
@@ -296,11 +433,11 @@
         .data-table td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .data-table th {
-            background: var(--bg-color);
+            background: var(--glass-bg);
             color: var(--text-secondary);
             font-weight: 600;
         }
@@ -313,21 +450,32 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
             background: var(--card-bg);
+            backdrop-filter: blur(20px);
             padding: 30px;
             border-radius: 16px;
             width: 90%;
             max-width: 500px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-medium);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Utility */
@@ -353,22 +501,25 @@
             top: 20px;
             right: 20px;
             padding: 15px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
             z-index: 3000;
             animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-medium);
+            max-width: 350px;
         }
 
         .notification.success {
-            background: var(--success-color);
+            background: rgba(66, 183, 42, 0.9);
         }
 
         .notification.error {
-            background: var(--danger-color);
+            background: rgba(228, 30, 63, 0.9);
         }
 
         .notification.warning {
-            background: var(--warning-color);
+            background: rgba(255, 149, 0, 0.9);
         }
 
         @keyframes slideIn {
@@ -379,10 +530,12 @@
         /* Filter Section */
         .filter-section {
             background: var(--card-bg);
+            backdrop-filter: blur(15px);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-light);
         }
 
         .filter-grid {
@@ -390,6 +543,24 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             align-items: end;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 149, 0, 0.1);
+            color: #FF9500;
+        }
+
+        .status-approved {
+            background: rgba(66, 183, 42, 0.1);
+            color: #42B72A;
         }
 
         /* Responsive */
@@ -413,6 +584,35 @@
             .main-container {
                 padding: 15px;
             }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -420,7 +620,10 @@
     <!-- Header -->
     <div class="app-header">
         <div class="nav-container">
-            <div class="logo">PRU Academy</div>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                PRU Academy
+            </div>
             <div class="nav-buttons">
                 <button class="btn btn-secondary" id="themeToggle">
                     <i class="fas fa-moon"></i>
@@ -509,17 +712,23 @@
 
         <!-- Meet the Coach Content -->
         <div class="content-section" id="meetCoachContent">
-            <button class="btn btn-secondary mb-20" id="backFromMeetCoach">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>Meet the Coach</h2>
-            <p class="menu-desc mb-20">พบกับโค้ชผู้เชี่ยวชาญทั้ง 5 ภูมิภาค และบันทึกข้อมูลลูกค้าสำหรับการวิเคราะห์</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Meet the Coach</h2>
+                    <p class="section-subtitle">พบกับโค้ชผู้เชี่ยวชาญทั้ง 5 ภูมิภาค และบันทึกข้อมูลลูกค้าสำหรับการวิเคราะห์</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromMeetCoach">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <!-- Coach Information -->
-            <h3 class="mb-20">โค้ชผู้เชี่ยวชาญประจำภูมิภาค</h3>
-            <div class="coach-grid" id="coachList">
-                <!-- Coaches will be loaded here -->
+            <div class="chart-container">
+                <h3 class="mb-20">โค้ชผู้เชี่ยวชาญประจำภูมิภาค</h3>
+                <div class="coach-grid" id="coachList">
+                    <!-- Coaches will be loaded here -->
+                </div>
             </div>
 
             <!-- Customer Form -->
@@ -664,12 +873,16 @@
 
         <!-- Search Content -->
         <div class="content-section" id="searchContent">
-            <button class="btn btn-secondary mb-20" id="backFromSearch">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>ค้นหาข้อมูลลูกค้า</h2>
-            <p class="menu-desc mb-20">ค้นหาข้อมูลลูกค้าและคอมเมนต์ของโค้ชด้วยชื่อหรือรหัสลูกค้า</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">ค้นหาข้อมูลลูกค้า</h2>
+                    <p class="section-subtitle">ค้นหาข้อมูลลูกค้าและคอมเมนต์ของโค้ชด้วยชื่อหรือรหัสลูกค้า</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromSearch">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <div class="chart-container">
                 <div class="form-group">
@@ -690,12 +903,16 @@
 
         <!-- Q&A Board Content -->
         <div class="content-section" id="qaBoardContent">
-            <button class="btn btn-secondary mb-20" id="backFromQABoard">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>Q&A Board</h2>
-            <p class="menu-desc mb-20">ตั้งคำถาม ฟีดแบ็ก และขอคำแนะนำจากโค้ชและผู้ใช้ท่านอื่น</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Q&A Board</h2>
+                    <p class="section-subtitle">ตั้งคำถาม ฟีดแบ็ก และขอคำแนะนำจากโค้ชและผู้ใช้ท่านอื่น</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromQABoard">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <!-- ฟอร์มตั้งคำถามสำหรับผู้ใช้ทั่วไป -->
             <div class="chart-container">
@@ -731,12 +948,16 @@
 
         <!-- Dashboard Content (สำหรับโค้ชและมาสเตอร์) -->
         <div class="content-section" id="dashboardContent">
-            <button class="btn btn-secondary mb-20" id="backFromDashboard">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>แดชบอร์ด</h2>
-            <p class="menu-desc mb-20">ภาพรวมการทำงานและสถิติ</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">แดชบอร์ด</h2>
+                    <p class="section-subtitle">ภาพรวมการทำงานและสถิติ</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromDashboard">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <!-- สถิติอย่างย่อ -->
             <div class="stats-grid">
@@ -774,16 +995,6 @@
                 <canvas id="statusChart"></canvas>
             </div>
 
-            <div class="chart-container">
-                <h3>การกระจายตัวของลูกค้าตามภูมิภาค</h3>
-                <canvas id="regionDistributionChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <h3>สัดส่วนตำแหน่งงานแบ่งตามภูมิภาค</h3>
-                <canvas id="occupationByRegionChart"></canvas>
-            </div>
-
             <!-- ฟิลเตอร์สำหรับมาสเตอร์ -->
             <div class="chart-container hidden" id="masterFilter">
                 <h3>เลือกภูมิภาค</h3>
@@ -810,21 +1021,22 @@
                     <button class="btn btn-warning" id="backupDataBtn">
                         <i class="fas fa-download"></i> Backup Data
                     </button>
-                    <button class="btn btn-primary" id="restoreDataBtn">
-                        <i class="fas fa-upload"></i> Restore Data
-                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Management Content (สำหรับมาสเตอร์) -->
         <div class="content-section" id="managementContent">
-            <button class="btn btn-secondary mb-20" id="backFromManagement">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>การจัดการระบบ</h2>
-            <p class="menu-desc mb-20">จัดการบัญชีผู้ใช้และข้อมูลระบบ (สำหรับมาสเตอร์เท่านั้น)</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">การจัดการระบบ</h2>
+                    <p class="section-subtitle">จัดการบัญชีผู้ใช้และข้อมูลระบบ (สำหรับมาสเตอร์เท่านั้น)</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromManagement">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <div class="chart-container">
                 <h3>จัดการบัญชีผู้ใช้</h3>
@@ -874,12 +1086,16 @@
 
         <!-- Profile Content -->
         <div class="content-section" id="profileContent">
-            <button class="btn btn-secondary mb-20" id="backFromProfile">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>จัดการโปรไฟล์</h2>
-            <p class="menu-desc mb-20">จัดการข้อมูลส่วนตัวและตั้งค่าระบบ</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">จัดการโปรไฟล์</h2>
+                    <p class="section-subtitle">จัดการข้อมูลส่วนตัวและตั้งค่าระบบ</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromProfile">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <div class="chart-container">
                 <h3 class="mb-20">ข้อมูลส่วนตัว</h3>
@@ -930,12 +1146,16 @@
 
         <!-- Customer Management Content -->
         <div class="content-section" id="customerManagementContent">
-            <button class="btn btn-secondary mb-20" id="backFromCustomerManagement">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>จัดการข้อมูลลูกค้า</h2>
-            <p class="menu-desc mb-20">ดูและจัดการข้อมูลลูกค้าทั้งหมด</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">จัดการข้อมูลลูกค้า</h2>
+                    <p class="section-subtitle">ดูและจัดการข้อมูลลูกค้าทั้งหมด</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromCustomerManagement">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <!-- ฟิลเตอร์ -->
             <div class="filter-section">
@@ -1004,12 +1224,16 @@
 
         <!-- Registration Content -->
         <div class="content-section" id="registrationContent">
-            <button class="btn btn-secondary mb-20" id="backFromRegistration">
-                <i class="fas fa-arrow-left"></i>
-                กลับสู่เมนูหลัก
-            </button>
-            <h2>ลงทะเบียน</h2>
-            <p class="menu-desc mb-20">ลงทะเบียนเข้าร่วมกิจกรรมและการอบรมต่างๆ</p>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">ลงทะเบียน</h2>
+                    <p class="section-subtitle">ลงทะเบียนเข้าร่วมกิจกรรมและการอบรมต่างๆ</p>
+                </div>
+                <button class="btn btn-secondary" id="backFromRegistration">
+                    <i class="fas fa-arrow-left"></i>
+                    กลับสู่เมนูหลัก
+                </button>
+            </div>
 
             <div class="chart-container">
                 <h3 class="mb-20">แบบฟอร์มลงทะเบียน</h3>
@@ -1411,6 +1635,7 @@
                 document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
                 
                 // เริ่มต้นระบบย่อย
+                meetCoachSystem.init();
                 searchSystem.init();
                 qaBoardSystem.init();
                 registrationSystem.init();
@@ -1495,27 +1720,34 @@
             },
             
             updateAuthUI: function() {
+                const loginBtn = document.getElementById('loginBtn');
+                const logoutBtn = document.getElementById('logoutBtn');
+                const dashboardMenu = document.getElementById('dashboardMenu');
+                const managementMenu = document.getElementById('managementMenu');
+                const profileMenu = document.getElementById('profileMenu');
+                const customerManagementMenu = document.getElementById('customerManagementMenu');
+                
                 if (currentUser) {
-                    document.getElementById('loginBtn').classList.add('hidden');
-                    document.getElementById('logoutBtn').classList.remove('hidden');
-                    document.getElementById('dashboardMenu').classList.remove('hidden');
-                    document.getElementById('profileMenu').classList.remove('hidden');
-                    document.getElementById('customerManagementMenu').classList.remove('hidden');
+                    loginBtn.classList.add('hidden');
+                    logoutBtn.classList.remove('hidden');
+                    dashboardMenu.classList.remove('hidden');
+                    profileMenu.classList.remove('hidden');
+                    customerManagementMenu.classList.remove('hidden');
                     
                     if (currentUser.role.includes('Master')) {
-                        document.getElementById('managementMenu').classList.remove('hidden');
+                        managementMenu.classList.remove('hidden');
                         document.getElementById('masterFilter').classList.remove('hidden');
                     } else {
-                        document.getElementById('managementMenu').classList.add('hidden');
+                        managementMenu.classList.add('hidden');
                         document.getElementById('masterFilter').classList.add('hidden');
                     }
                 } else {
-                    document.getElementById('loginBtn').classList.remove('hidden');
-                    document.getElementById('logoutBtn').classList.add('hidden');
-                    document.getElementById('dashboardMenu').classList.add('hidden');
-                    document.getElementById('managementMenu').classList.add('hidden');
-                    document.getElementById('profileMenu').classList.add('hidden');
-                    document.getElementById('customerManagementMenu').classList.add('hidden');
+                    loginBtn.classList.remove('hidden');
+                    logoutBtn.classList.add('hidden');
+                    dashboardMenu.classList.add('hidden');
+                    managementMenu.classList.add('hidden');
+                    profileMenu.classList.add('hidden');
+                    customerManagementMenu.classList.add('hidden');
                 }
             }
         };
@@ -1541,7 +1773,7 @@
                         <p style="margin-bottom: 5px;"><strong>ภูมิภาค:</strong> ${coach.region}</p>
                         <p style="margin-bottom: 5px;"><strong>อีเมล:</strong> ${coach.email}</p>
                         <p style="margin-bottom: 15px;"><strong>บริษัท:</strong> ${coach.companyEmail}</p>
-                        <div style="padding: 10px; background: var(--bg-color); border-radius: 8px; font-size: 14px;">
+                        <div style="padding: 10px; background: var(--glass-bg); border-radius: 8px; font-size: 14px;">
                             <strong>ความเชี่ยวชาญ:</strong> การวิเคราะห์ความต้องการทางการเงิน, การวางแผนประกันชีวิต
                         </div>
                     `;
@@ -1663,7 +1895,7 @@
                 
                 customers.forEach(customer => {
                     html += `
-                        <div class="customer-result" style="border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div class="customer-result" style="border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                             <h4>${customer.firstName} ${customer.lastName} (${customer.id})</h4>
                             <p><strong>รหัสพนักงาน:</strong> ${customer.employeeId}</p>
                             <p><strong>สาขา:</strong> ${customer.branch} | <strong>โซน:</strong> ${customer.zone} | <strong>ภาค:</strong> ${customer.region}</p>
@@ -1731,7 +1963,7 @@
                 let html = '';
                 approvedQuestions.forEach(question => {
                     html += `
-                        <div class="question-item" style="border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div class="question-item" style="border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <h4>${question.title}</h4>
                                 <span style="background: var(--secondary-color); color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px;">
@@ -1744,7 +1976,7 @@
                             </div>
                             
                             ${question.answers.length > 0 ? `
-                                <div style="margin-top: 15px; padding: 10px; background: var(--bg-color); border-radius: 8px;">
+                                <div style="margin-top: 15px; padding: 10px; background: var(--glass-bg); border-radius: 8px;">
                                     <strong>คำตอบจากโค้ช:</strong>
                                     ${question.answers.map(answer => `
                                         <p style="margin: 5px 0;">${answer.text}</p>
@@ -1828,22 +2060,19 @@
             regionChart: null,
             occupationChart: null, 
             statusChart: null,
-            regionDistributionChart: null,
-            occupationByRegionChart: null,
             
             init: function() {
                 document.getElementById('regionFilter').addEventListener('change', () => this.loadCharts());
                 document.getElementById('exportExcelBtn').addEventListener('click', () => exportSystem.exportToExcel());
                 document.getElementById('exportPDFBtn').addEventListener('click', () => exportSystem.exportDashboardPDF());
                 document.getElementById('backupDataBtn').addEventListener('click', () => backupSystem.createBackup());
-                document.getElementById('restoreDataBtn').addEventListener('click', () => backupSystem.showRestoreModal());
                 
                 this.loadStats();
                 this.loadCharts();
             },
             
             destroyCharts: function() {
-                const charts = [this.regionChart, this.occupationChart, this.statusChart, this.regionDistributionChart, this.occupationByRegionChart];
+                const charts = [this.regionChart, this.occupationChart, this.statusChart];
                 charts.forEach(chart => {
                     if (chart) {
                         chart.destroy();
@@ -1873,8 +2102,6 @@
                 this.createRegionChart(filteredCustomers);
                 this.createOccupationChart(filteredCustomers);
                 this.createStatusChart(filteredCustomers);
-                this.createRegionDistributionChart(filteredCustomers);
-                this.createOccupationByRegionChart(filteredCustomers);
             },
             
             createRegionChart: function(customers) {
@@ -1893,7 +2120,7 @@
                             label: 'จำนวนลูกค้า',
                             data: data,
                             backgroundColor: [
-                                '#007AFF', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'
+                                '#1877F2', '#42B72A', '#FF9500', '#E41E3F', '#AF52DE'
                             ]
                         }]
                     },
@@ -1936,7 +2163,7 @@
                         datasets: [{
                             data: data,
                             backgroundColor: [
-                                '#007AFF', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'
+                                '#1877F2', '#42B72A', '#FF9500', '#E41E3F', '#AF52DE'
                             ]
                         }]
                     }
@@ -1958,84 +2185,8 @@
                         labels: statuses,
                         datasets: [{
                             data: data,
-                            backgroundColor: ['#FF9500', '#34C759']
+                            backgroundColor: ['#FF9500', '#42B72A']
                         }]
-                    }
-                });
-            },
-            
-            createRegionDistributionChart: function(customers) {
-                const ctx = document.getElementById('regionDistributionChart').getContext('2d');
-                
-                const regions = ['RH1', 'RH2', 'RH3', 'RH4', 'RH5'];
-                const data = regions.map(region => 
-                    customers.filter(c => c.region === region).length
-                );
-                
-                this.regionDistributionChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: regions,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: [
-                                '#007AFF', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'
-                            ]
-                        }]
-                    }
-                });
-            },
-            
-            createOccupationByRegionChart: function(customers) {
-                const ctx = document.getElementById('occupationByRegionChart').getContext('2d');
-                
-                const regions = ['RH1', 'RH2', 'RH3', 'RH4', 'RH5'];
-                const occupations = ['ข้าราชการ', 'พนักงานบริษัท', 'ธุรกิจส่วนตัว', 'ฟรีแลนซ์', 'อื่นๆ'];
-                const occupationMapping = {
-                    'government': 'ข้าราชการ',
-                    'employee': 'พนักงานบริษัท', 
-                    'business': 'ธุรกิจส่วนตัว',
-                    'freelance': 'ฟรีแลนซ์',
-                    'other': 'อื่นๆ'
-                };
-                
-                const datasets = occupations.map((occupation, index) => {
-                    const occupationKey = Object.keys(occupationMapping).find(
-                        key => occupationMapping[key] === occupation
-                    );
-                    
-                    const data = regions.map(region => 
-                        customers.filter(c => c.region === region && c.customerInfo.occupation === occupationKey).length
-                    );
-                    
-                    const colors = ['#007AFF', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'];
-                    
-                    return {
-                        label: occupation,
-                        data: data,
-                        backgroundColor: colors[index % colors.length],
-                        borderColor: colors[index % colors.length],
-                        borderWidth: 1
-                    };
-                });
-                
-                this.occupationByRegionChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: regions,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                stacked: false,
-                            },
-                            y: {
-                                stacked: false,
-                                beginAtZero: true
-                            }
-                        }
                     }
                 });
             }
@@ -2049,6 +2200,8 @@
                 document.getElementById('addUserForm').addEventListener('submit', (e) => this.addUser(e));
                 document.getElementById('cancelEditUser').addEventListener('click', () => this.hideEditUserModal());
                 document.getElementById('editUserForm').addEventListener('submit', (e) => this.updateUser(e));
+                document.getElementById('backupAllDataBtn').addEventListener('click', () => backupSystem.createBackup());
+                document.getElementById('restoreAllDataBtn').addEventListener('click', () => backupSystem.restoreData());
                 
                 this.loadUsers();
                 this.loadApprovalList();
@@ -2068,7 +2221,7 @@
                             <button class="btn btn-secondary" onclick="managementSystem.showEditUserModal('${coach.id}')">
                                 <i class="fas fa-edit"></i> แก้ไข
                             </button>
-                            <button class="btn btn-danger" onclick="managementSystem.deleteUser('${coach.id}')" style="background: var(--danger-color);">
+                            <button class="btn btn-danger" onclick="managementSystem.deleteUser('${coach.id}')" style="background: var(--accent-red);">
                                 <i class="fas fa-trash"></i> ลบ
                             </button>
                         </td>
@@ -2189,7 +2342,7 @@
                 let html = '';
                 pendingQuestions.forEach(question => {
                     html += `
-                        <div class="pending-item" style="border: 1px solid var(--border-color); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div class="pending-item" style="border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                             <h4>${question.title}</h4>
                             <p>${question.detail}</p>
                             <div style="color: var(--text-secondary); font-size: 14px;">
@@ -2199,7 +2352,7 @@
                                 <button class="btn btn-success" onclick="managementSystem.approvePost('${question.id}')">
                                     <i class="fas fa-check"></i> อนุมัติ
                                 </button>
-                                <button class="btn btn-danger" onclick="managementSystem.rejectPost('${question.id}')" style="background: var(--danger-color);">
+                                <button class="btn btn-danger" onclick="managementSystem.rejectPost('${question.id}')" style="background: var(--accent-red);">
                                     <i class="fas fa-times"></i> ปฏิเสธ
                                 </button>
                             </div>
@@ -2353,7 +2506,7 @@
                         <td>${customer.employeeId}</td>
                         <td>${customer.region}</td>
                         <td>
-                            <span class="status-badge ${customer.status === 'completed' ? 'status-approved' : 'status-pending'}" style="padding: 4px 8px; border-radius: 12px; font-size: 12px;">
+                            <span class="status-badge ${customer.status === 'completed' ? 'status-approved' : 'status-pending'}">
                                 ${customer.status === 'completed' ? 'ดำเนินการเสร็จ' : 'รอดำเนินการ'}
                             </span>
                         </td>
@@ -2469,14 +2622,14 @@
                             <title>รายงานแดชบอร์ด - PRU Academy</title>
                             <style>
                                 body { font-family: Arial, sans-serif; margin: 20px; }
-                                h1 { color: #333; border-bottom: 2px solid #007AFF; padding-bottom: 10px; }
+                                h1 { color: #333; border-bottom: 2px solid #1877F2; padding-bottom: 10px; }
                                 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
                                 .stat-card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #dee2e6; }
-                                .stat-value { font-size: 24px; font-weight: bold; color: #007AFF; }
+                                .stat-value { font-size: 24px; font-weight: bold; color: #1877F2; }
                                 .stat-label { color: #6c757d; font-size: 14px; }
                                 table { width: 100%; border-collapse: collapse; margin: 20px 0; }
                                 th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-                                th { background-color: #007AFF; color: white; }
+                                th { background-color: #1877F2; color: white; }
                                 .section { margin: 30px 0; }
                             </style>
                         </head>
@@ -2549,10 +2702,10 @@
                             <title>รายงานลูกค้า - PRU Academy</title>
                             <style>
                                 body { font-family: Arial, sans-serif; margin: 20px; }
-                                h1 { color: #333; border-bottom: 2px solid #007AFF; padding-bottom: 10px; }
+                                h1 { color: #333; border-bottom: 2px solid #1877F2; padding-bottom: 10px; }
                                 table { width: 100%; border-collapse: collapse; margin: 20px 0; }
                                 th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-                                th { background-color: #007AFF; color: white; }
+                                th { background-color: #1877F2; color: white; }
                                 .customer-details { margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; }
                             </style>
                         </head>
@@ -2668,7 +2821,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             themeSystem.init();
             navigationSystem.init();
-            meetCoachSystem.init();
             
             // Encrypt passwords on first load
             coaches.forEach(coach => {
