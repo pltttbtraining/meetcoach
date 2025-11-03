@@ -1360,7 +1360,57 @@
 
 <script type="text/babel">
     // ... (โค้ดส่วนต้นเหมือนด้านบน) ...
+// เพิ่ม LoadingPage component
+const LoadingPage = ({ onNavigate }) => {
+    useEffect(() => {
+        // จำลองการโหลด
+        setTimeout(() => {
+            onNavigate('general-user');
+        }, 2000);
+    }, [onNavigate]);
 
+    return (
+        <div className="loading-page">
+            <div className="glass-container" style={{padding: '2rem', textAlign: 'center'}}>
+                <div className="loading-spinner" style={{width: '40px', height: '40px', margin: '0 auto 1rem'}}></div>
+                <h2>ระบบบริหารกิจกรรมฝึกอบรมและโค้ชชิ่ง</h2>
+                <p>กำลังโหลด...</p>
+            </div>
+        </div>
+    );
+};
+
+// เพิ่ม GeneralUserDashboard component
+const GeneralUserDashboard = ({ onLogout }) => {
+    const [activeMenu, setActiveMenu] = useState('register');
+
+    return (
+        <div className="dashboard">
+            <Navigation 
+                userType="general"
+                activeMenu={activeMenu}
+                onMenuSelect={setActiveMenu}
+                onLogout={onLogout}
+            />
+            
+            {activeMenu === 'register' && <RegisterForm />}
+            {activeMenu === 'coach' && <CoachForm />}
+            {activeMenu === 'library' && <div>Idea Library - กำลังพัฒนา</div>}
+        </div>
+    );
+};
+
+// เพิ่ม IdeaLibrary component เบื้องต้น
+const IdeaLibrary = () => {
+    return (
+        <div className="form-container">
+            <h2 className="form-title">Idea Library</h2>
+            <div className="form-section">
+                <p>ระบบ Idea Library กำลังอยู่ในขั้นตอนการพัฒนา</p>
+            </div>
+        </div>
+    );
+};
     // Password Change Component
     const PasswordChangeModal = ({ trainerId, onClose }) => {
         const [currentPassword, setCurrentPassword] = useState('');
@@ -1698,9 +1748,16 @@
 
         // ... (ฟังก์ชันจัดการฟอร์มเหมือนเดิม) ...
 
-        const handleSave = async () => {
+const handleSave = async () => {
             setIsSubmitting(true);
             
+            // Validate required fields
+            if (!formData.employeeName || !formData.employeeId || !formData.customerName) {
+                alert('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
+                setIsSubmitting(false);
+                return;
+            }
+
             try {
                 let success;
                 if (editingData && onUpdate) {
@@ -2045,8 +2102,8 @@
                 />
                 
                 {activeMenu === 'management' && renderManagement()}
-                {activeMenu === 'dashboard' && <TrainerDashboard region="all" onLogout={onLogout} />}
-                {activeMenu === 'library' && <IdeaLibrary />}
+                {activeMenu === 'dashboard' && <TrainerDashboard region="all" onLogout={
+                {activeMenu === 'library' && <div>Idea Library - กำลังพัฒนา</div>}
             </div>
         );
     };
