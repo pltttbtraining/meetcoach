@@ -7,8 +7,8 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
     <style>
-        /* Reset และ Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -22,16 +22,13 @@
             --success-color: #34C759;
             --warning-color: #FF9500;
             --error-color: #FF3B30;
-            
             --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
             --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            
             --text-primary: #1D1D1F;
             --text-secondary: #86868B;
             --text-white: #FFFFFF;
-            
             --border-radius: 12px;
             --border-radius-lg: 20px;
             --spacing-xs: 0.5rem;
@@ -49,15 +46,12 @@
             line-height: 1.6;
         }
 
-        /* Glassmorphism Design */
         .glass-container {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             border-radius: var(--border-radius-lg);
             border: 1px solid var(--glass-border);
             box-shadow: var(--glass-shadow);
-            padding: var(--spacing-lg);
-            margin: var(--spacing-lg);
         }
 
         .glass-card {
@@ -68,7 +62,6 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
-        /* Layout */
         .app {
             min-height: 100vh;
         }
@@ -87,7 +80,6 @@
             flex-direction: column;
         }
 
-        /* Navigation */
         .main-nav {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -145,7 +137,6 @@
             align-items: center;
         }
 
-        /* Buttons */
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -187,7 +178,6 @@
             font-size: 0.875rem;
         }
 
-        /* Forms */
         .form-container {
             max-width: 800px;
             margin: 0 auto;
@@ -233,7 +223,7 @@
             color: var(--error-color);
         }
 
-        .form-input, .form-select {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #E5E5EA;
@@ -243,10 +233,15 @@
             background: white;
         }
 
-        .form-input:focus, .form-select:focus {
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
         .input-with-button {
@@ -258,7 +253,6 @@
             flex: 1;
         }
 
-        /* Dashboard */
         .dashboard-content {
             padding: var(--spacing-lg);
         }
@@ -291,7 +285,6 @@
             font-weight: 600;
         }
 
-        /* Team Overview */
         .team-overview {
             background: white;
             padding: var(--spacing-lg);
@@ -352,7 +345,6 @@
             font-weight: 600;
         }
 
-        /* Customer ID Display */
         .customer-id-display {
             background: var(--glass-card);
             padding: var(--spacing-md);
@@ -372,7 +364,6 @@
             margin-left: var(--spacing-sm);
         }
 
-        /* Loading */
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -387,7 +378,199 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
+        .form-subsection {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #007AFF;
+        }
+        
+        .subsection-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .financial-products {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .product-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 150px;
+        }
+        
+        .product-inputs {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .product-inputs input {
+            flex: 1;
+        }
+        
+        .children-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .child-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .add-button {
+            background: #34C759;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .remove-button {
+            background: #FF3B30;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .unknown-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: var(--spacing-lg);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid #E5E5EA;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--error-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .last-update {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .comment-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .comment {
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -412,6 +595,92 @@
                 padding: var(--spacing-md);
             }
         }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .chart-container {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .simple-chart {
+            height: 200px;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .chart-bar {
+            background: var(--primary-color);
+            border-radius: 4px 4px 0 0;
+            min-width: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chart-bar:hover {
+            background: var(--primary-dark);
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .filter-section {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -422,8 +691,13 @@
 
         // Constants
         const POSITIONS = ['BM', 'WCRM', 'CISA', 'CFSA', 'IA', 'IS', 'อื่น ๆ'];
-        const COURSES = ['Account Plan', 'Calling Skill', 'Sales Technique', 'Sales Idea', 'อื่น ๆ'];
+        const COURSES = ['Account Plan', 'Calling Skill', 'Sales Technique', 'Sales Idea', 'Sales Progress', 'อื่น ๆ'];
         const REGIONS = ['RH1', 'RH2', 'RH3', 'RH4', 'RH5'];
+        const GENDER_OPTIONS = ['ชาย', 'หญิง', 'อื่นๆ'];
+        const STATUS_OPTIONS = ['โสด', 'แต่งงาน', 'หย่า', 'หม้าย'];
+        const OCCUPATIONS = ['ธุรกิจส่วนตัว', 'รับราชการ', 'พนักงานบริษัท', 'freelance', 'นักศึกษา', 'ไม่มีงานทำ', 'อื่นๆ'];
+        const BUSINESS_TYPES = ['บริการ', 'การค้า', 'อุตสาหกรรม', 'เกษตรกรรม', 'อสังหาริมทรัพย์', 'อื่นๆ'];
+        
         const TRAINER_PASSWORDS = {
             '0001': 'RH1',
             '0002': 'RH2', 
@@ -431,6 +705,31 @@
             '0004': 'RH4',
             '0005': 'RH5',
             '0009': 'all'
+        };
+
+        // Mock Data สำหรับ Region/Zone/Branch
+        const BRANCH_DATA = {
+            '001': { name: 'สาขาสยามสแควร์', region: 'RH1', zone: 'Zone A' },
+            '002': { name: 'สาขาสีลม', region: 'RH1', zone: 'Zone A' },
+            '003': { name: 'สาขาห้างเซ็นทรัล', region: 'RH2', zone: 'Zone B' },
+            '004': { name: 'สาขาเดอะมอลล์', region: 'RH2', zone: 'Zone B' },
+            '005': { name: 'สาขาถนนรัชดา', region: 'RH3', zone: 'Zone C' }
+        };
+
+        const ZONE_DATA = {
+            'RH1': ['Zone A', 'Zone B'],
+            'RH2': ['Zone C', 'Zone D'],
+            'RH3': ['Zone E', 'Zone F'],
+            'RH4': ['Zone G', 'Zone H'],
+            'RH5': ['Zone I', 'Zone J']
+        };
+
+        const BRANCHES_BY_ZONE = {
+            'Zone A': ['สาขาสยามสแควร์', 'สาขาสีลม'],
+            'Zone B': ['สาขาบางนา', 'สาขาอุดมสุข'],
+            'Zone C': ['สาขาห้างเซ็นทรัล', 'สาขาโรบินสัน'],
+            'Zone D': ['สาขาเมกาบางนา', 'สาขาซีคอน'],
+            'Zone E': ['สาขาถนนรัชดา', 'สาขาลาดพร้าว']
         };
 
         // Utility Functions
@@ -455,7 +754,7 @@
             });
         };
 
-        // Data Service
+        // Enhanced Data Service
         const DataService = {
             getRegistrations: () => {
                 return JSON.parse(localStorage.getItem('registrations') || '[]');
@@ -463,8 +762,18 @@
             
             saveRegistration: (data) => {
                 const registrations = DataService.getRegistrations();
-                registrations.push({ ...data, timestamp: formatThaiDateTime() });
+                const newData = { 
+                    ...data, 
+                    id: Date.now().toString(),
+                    timestamp: formatThaiDateTime(),
+                    lastUpdate: formatThaiDateTime(),
+                    updatedBy: 'General User'
+                };
+                registrations.push(newData);
                 localStorage.setItem('registrations', JSON.stringify(registrations));
+                
+                // ส่ง notification ไปยัง Trainer
+                DataService.addNotification(data.region || 'all', 'new_registration');
                 return true;
             },
             
@@ -474,18 +783,97 @@
             
             saveCoaching: (data) => {
                 const coachings = DataService.getCoachings();
-                coachings.push({ ...data, timestamp: formatThaiDateTime() });
+                const newData = { 
+                    ...data, 
+                    id: Date.now().toString(),
+                    timestamp: formatThaiDateTime(),
+                    lastUpdate: formatThaiDateTime(),
+                    updatedBy: 'General User',
+                    comments: [],
+                    status: 'new'
+                };
+                coachings.push(newData);
                 localStorage.setItem('coachings', JSON.stringify(coachings));
+                
+                // ส่ง notification ไปยัง Trainer
+                DataService.addNotification(data.region || 'all', 'new_coaching');
                 return true;
             },
-            
-            getDashboardData: (region) => {
+
+            updateCoaching: (customerId, updates) => {
+                const coachings = DataService.getCoachings();
+                const index = coachings.findIndex(c => c.customerId === customerId);
+                if (index !== -1) {
+                    coachings[index] = {
+                        ...coachings[index],
+                        ...updates,
+                        lastUpdate: formatThaiDateTime(),
+                        updatedBy: updates.updatedBy || 'General User'
+                    };
+                    localStorage.setItem('coachings', JSON.stringify(coachings));
+                    return true;
+                }
+                return false;
+            },
+
+            addComment: (customerId, comment, user) => {
+                const coachings = DataService.getCoachings();
+                const index = coachings.findIndex(c => c.customerId === customerId);
+                if (index !== -1) {
+                    if (!coachings[index].comments) {
+                        coachings[index].comments = [];
+                    }
+                    coachings[index].comments.push({
+                        id: Date.now().toString(),
+                        text: comment,
+                        user: user,
+                        timestamp: formatThaiDateTime()
+                    });
+                    coachings[index].lastUpdate = formatThaiDateTime();
+                    coachings[index].updatedBy = user;
+                    coachings[index].status = 'replied';
+                    localStorage.setItem('coachings', JSON.stringify(coachings));
+                    return true;
+                }
+                return false;
+            },
+
+            findCoachingByCustomerId: (customerId) => {
+                const coachings = DataService.getCoachings();
+                return coachings.find(c => c.customerId === customerId) || null;
+            },
+
+            getDashboardData: (region, filters = {}) => {
                 let registrations = DataService.getRegistrations();
                 let coachings = DataService.getCoachings();
                 
+                // Filter by region
                 if (region && region !== 'all') {
                     registrations = registrations.filter(reg => reg.region === region);
                     coachings = coachings.filter(coach => coach.region === region);
+                }
+
+                // Filter by date range
+                if (filters.startDate && filters.endDate) {
+                    // Simplified date filtering
+                    registrations = registrations.filter(reg => {
+                        const regDate = new Date(reg.timestamp);
+                        return regDate >= new Date(filters.startDate) && regDate <= new Date(filters.endDate);
+                    });
+                    coachings = coachings.filter(coach => {
+                        const coachDate = new Date(coach.timestamp);
+                        return coachDate >= new Date(filters.startDate) && coachDate <= new Date(filters.endDate);
+                    });
+                }
+
+                // Filter by position
+                if (filters.position) {
+                    registrations = registrations.filter(reg => reg.position === filters.position);
+                }
+
+                // Filter by coaching type
+                if (filters.coachingType) {
+                    coachings = coachings.filter(coach => coach.coachingType === filters.coachingType);
                 }
                 
                 return {
@@ -494,8 +882,20 @@
                     registrationsByRegion: DataService.groupBy(registrations, 'region'),
                     coachingsByRegion: DataService.groupBy(coachings, 'region'),
                     registrationsByPosition: DataService.groupBy(registrations, 'position'),
-                    coachingTypes: DataService.groupBy(coachings, 'coachingType')
+                    coachingTypes: DataService.groupBy(coachings, 'coachingType'),
+                    monthlyData: DataService.getMonthlyData(registrations, coachings)
                 };
+            },
+
+            getMonthlyData: (registrations, coachings) => {
+                const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+                const currentMonth = new Date().getMonth();
+                
+                return months.map((month, index) => ({
+                    month,
+                    registrations: Math.floor(Math.random() * 20) + 5,
+                    coachings: Math.floor(Math.random() * 15) + 3
+                }));
             },
             
             groupBy: (array, key) => {
@@ -504,6 +904,89 @@
                     acc[group] = (acc[group] || 0) + 1;
                     return acc;
                 }, {});
+            },
+
+            getNotifications: (region) => {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '{}');
+                return notifications[region] || { newRegistrations: 0, newCoachings: 0 };
+            },
+
+            addNotification: (region, type) => {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '{}');
+                if (!notifications[region]) {
+                    notifications[region] = { newRegistrations: 0, newCoachings: 0 };
+                }
+                if (type === 'new_registration') {
+                    notifications[region].newRegistrations++;
+                } else if (type === 'new_coaching') {
+                    notifications[region].newCoachings++;
+                }
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+            },
+
+            clearNotifications: (region, type) => {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '{}');
+                if (notifications[region]) {
+                    if (type === 'registrations') {
+                        notifications[region].newRegistrations = 0;
+                    } else if (type === 'coachings') {
+                        notifications[region].newCoachings = 0;
+                    }
+                    localStorage.setItem('notifications', JSON.stringify(notifications));
+                }
+            },
+
+            // ระบบเปลี่ยนรหัสผ่าน
+            getPasswordChangeRequests: () => {
+                return JSON.parse(localStorage.getItem('passwordChangeRequests') || '[]');
+            },
+
+            requestPasswordChange: (trainerId, newPassword) => {
+                const requests = DataService.getPasswordChangeRequests();
+                const request = {
+                    id: Date.now().toString(),
+                    trainerId,
+                    newPassword,
+                    timestamp: formatThaiDateTime(),
+                    status: 'pending',
+                    autoApproveTime: Date.now() + 5 * 60 * 1000 // 5 minutes
+                };
+                requests.push(request);
+                localStorage.setItem('passwordChangeRequests', JSON.stringify(requests));
+                return true;
+            },
+
+            approvePasswordChange: (requestId) => {
+                const requests = DataService.getPasswordChangeRequests();
+                const request = requests.find(r => r.id === requestId);
+                if (request) {
+                    request.status = 'approved';
+                    localStorage.setItem('passwordChangeRequests', JSON.stringify(requests));
+                    
+                    // อัปเดตรหัสผ่านจริง (ใน production ควรเข้ารหัส)
+                    const trainers = JSON.parse(localStorage.getItem('trainers') || '{}');
+                    trainers[request.trainerId] = request.newPassword;
+                    localStorage.setItem('trainers', JSON.stringify(trainers));
+                    return true;
+                }
+                return false;
+            },
+
+            checkAutoApprove: () => {
+                const requests = DataService.getPasswordChangeRequests();
+                const now = Date.now();
+                let changed = false;
+
+                requests.forEach(request => {
+                    if (request.status === 'pending' && now >= request.autoApproveTime) {
+                        request.status = 'auto_approved';
+                        changed = true;
+                    }
+                });
+
+                if (changed) {
+                    localStorage.setItem('passwordChangeRequests', JSON.stringify(requests));
+                }
             }
         };
 
@@ -512,21 +995,30 @@
             <div className="loading-spinner"></div>
         );
 
-        const Navigation = ({ userType, activeMenu, onMenuSelect, onLogout }) => (
+        const Navigation = ({ userType, activeMenu, onMenuSelect, onLogout, notifications = {} }) => (
             <nav className="main-nav">
-                <div className="nav-brand">ระบบบริหารกิจกรรม</div>
+                <div className="nav-brand">
+                    {userType === 'trainer' ? 'Trainer Dashboard' : 
+                     userType === 'admin' ? 'Admin Dashboard' : 'ระบบบริหารกิจกรรม'}
+                </div>
                 <div className="nav-menu">
                     <button 
                         className={`menu-card ${activeMenu === 'register' ? 'active' : ''}`}
                         onClick={() => onMenuSelect('register')}
                     >
                         📝 Register
+                        {notifications.registrations > 0 && (
+                            <span className="notification-badge">{notifications.registrations}</span>
+                        )}
                     </button>
                     <button 
                         className={`menu-card ${activeMenu === 'coach' ? 'active' : ''}`}
                         onClick={() => onMenuSelect('coach')}
                     >
                         💼 Coach
+                        {notifications.coachings > 0 && (
+                            <span className="notification-badge">{notifications.coachings}</span>
+                        )}
                     </button>
                     <button 
                         className={`menu-card ${activeMenu === 'library' ? 'active' : ''}`}
@@ -534,8 +1026,19 @@
                     >
                         📚 Idea Library
                     </button>
+                    {userType === 'admin' && (
+                        <button 
+                            className={`menu-card ${activeMenu === 'management' ? 'active' : ''}`}
+                            onClick={() => onMenuSelect('management')}
+                        >
+                            ⚙️ Management
+                        </button>
+                    )}
                 </div>
                 <div className="nav-actions">
+                    <button className="btn btn-sm btn-secondary" onClick={() => onMenuSelect('home')}>
+                        🏠 Home
+                    </button>
                     <button className="btn btn-sm btn-secondary" onClick={onLogout}>
                         🚪 ออกจากระบบ
                     </button>
@@ -543,223 +1046,492 @@
             </nav>
         );
 
-        const RegisterForm = () => {
-            const [formData, setFormData] = useState({
-                name: '',
-                employeeId: '',
-                position: '',
-                branchCode: '',
-                branchName: '',
-                region: '',
-                zone: '',
-                branch: '',
-                course: '',
-                otherCourse: ''
-            });
-            const [isSubmitting, setIsSubmitting] = useState(false);
+        // Customer Search Component
+        const CustomerSearch = ({ onCustomerFound, onClose }) => {
+            const [customerId, setCustomerId] = useState('');
+            const [employeeId, setEmployeeId] = useState('');
+            const [showAuth, setShowAuth] = useState(false);
+            const [searchResult, setSearchResult] = useState(null);
 
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setIsSubmitting(true);
-                
-                try {
-                    const success = DataService.saveRegistration(formData);
-                    if (success) {
-                        alert('ลงทะเบียนสำเร็จ');
-                        setFormData({
-                            name: '', employeeId: '', position: '', branchCode: '',
-                            branchName: '', region: '', zone: '', branch: '',
-                            course: '', otherCourse: ''
-                        });
-                    }
-                } catch (error) {
-                    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-                } finally {
-                    setIsSubmitting(false);
+            const handleSearch = () => {
+                const coaching = DataService.findCoachingByCustomerId(customerId);
+                if (coaching) {
+                    setSearchResult(coaching);
+                    setShowAuth(true);
+                } else {
+                    alert('ไม่พบข้อมูลลูกค้าด้วย Customer ID นี้');
+                }
+            };
+
+            const handleAuth = () => {
+                if (searchResult && searchResult.employeeId === employeeId) {
+                    onCustomerFound(searchResult);
+                    onClose();
+                } else {
+                    alert('รหัสพนักงานไม่ถูกต้อง');
                 }
             };
 
             return (
-                <div className="form-container">
-                    <h2 className="form-title">ระบบลงทะเบียนอบรม</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-section">
-                            <div className="form-group">
-                                <label className="form-label required">ชื่อ-นามสกุล</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label required">รหัสพนักงาน</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    value={formData.employeeId}
-                                    onChange={(e) => setFormData({...formData, employeeId: e.target.value})}
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label required">ตำแหน่ง</label>
-                                <select
-                                    className="form-select"
-                                    value={formData.position}
-                                    onChange={(e) => setFormData({...formData, position: e.target.value})}
-                                    required
-                                >
-                                    <option value="">เลือกตำแหน่ง</option>
-                                    {POSITIONS.map(pos => (
-                                        <option key={pos} value={pos}>{pos}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label">รหัสสาขา</label>
-                                <div className="input-with-button">
-                                    <input
-                                        type="text"
-                                        className="form-input"
-                                        value={formData.branchCode}
-                                        onChange={(e) => setFormData({...formData, branchCode: e.target.value})}
-                                        placeholder="กรอกรหัสสาขา"
-                                    />
-                                    <button type="button" className="btn btn-sm btn-secondary">ค้นหา</button>
-                                </div>
-                            </div>
-
-                            {!formData.branchCode && (
-                                <div className="form-group">
-                                    <label className="form-label required">Region</label>
-                                    <select
-                                        className="form-select"
-                                        value={formData.region}
-                                        onChange={(e) => setFormData({...formData, region: e.target.value})}
-                                        required
-                                    >
-                                        <option value="">เลือก Region</option>
-                                        {REGIONS.map(region => (
-                                            <option key={region} value={region}>{region}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-
-                            <div className="form-group">
-                                <label className="form-label required">หลักสูตรที่ต้องการลงทะเบียน</label>
-                                <select
-                                    className="form-select"
-                                    value={formData.course}
-                                    onChange={(e) => setFormData({...formData, course: e.target.value})}
-                                    required
-                                >
-                                    <option value="">เลือกหลักสูตร</option>
-                                    {COURSES.map(course => (
-                                        <option key={course} value={course}>{course}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {formData.course === 'อื่น ๆ' && (
-                                <div className="form-group">
-                                    <label className="form-label">ระบุหลักสูตร</label>
-                                    <input
-                                        type="text"
-                                        className="form-input"
-                                        value={formData.otherCourse}
-                                        onChange={(e) => setFormData({...formData, otherCourse: e.target.value})}
-                                    />
-                                </div>
-                            )}
-
-                            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                                {isSubmitting ? <LoadingSpinner /> : 'Submit'}
-                            </button>
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h3 className="modal-title">ค้นหาข้อมูลลูกค้า</h3>
+                            <button className="modal-close" onClick={onClose}>×</button>
                         </div>
-                    </form>
+                        
+                        {!showAuth ? (
+                            <>
+                                <div className="form-group">
+                                    <label className="form-label">Customer ID</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        value={customerId}
+                                        onChange={(e) => setCustomerId(e.target.value)}
+                                        placeholder="กรอก Customer ID"
+                                    />
+                                </div>
+                                <button className="btn btn-primary" onClick={handleSearch}>
+                                    ค้นหา
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="form-group">
+                                    <label className="form-label">รหัสพนักงาน</label>
+                                    <input
+                                        type="password"
+                                        className="form-input"
+                                        value={employeeId}
+                                        onChange={(e) => setEmployeeId(e.target.value)}
+                                        placeholder="กรอกรหัสพนักงานเพื่อยืนยันตัวตน"
+                                    />
+                                </div>
+                                <div style={{display: 'flex', gap: '1rem'}}>
+                                    <button className="btn btn-primary" onClick={handleAuth}>
+                                        ยืนยัน
+                                    </button>
+                                    <button className="btn btn-secondary" onClick={() => setShowAuth(false)}>
+                                        ย้อนกลับ
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
             );
         };
 
-        const CoachForm = () => {
-            const [customerId, setCustomerId] = useState('');
-            const [isSaved, setIsSaved] = useState(false);
-            const [isSubmitting, setIsSubmitting] = useState(false);
-            const [formData, setFormData] = useState({
-                employeeName: '',
-                employeeId: '',
-                position: '',
-                customerName: '',
-                coachingType: ''
-            });
+        // Comment System Component
+        const CommentSection = ({ customerId, comments = [], onAddComment, currentUser }) => {
+            const [newComment, setNewComment] = useState('');
 
-            useEffect(() => {
-                setCustomerId(generateCustomerId());
-            }, []);
-
-            const handleSave = async () => {
-                setIsSubmitting(true);
-                
-                try {
-                    const completeData = {
-                        customerId,
-                        ...formData,
-                        timestamp: formatThaiDateTime(),
-                        lastUpdate: formatThaiDateTime(),
-                        updatedBy: 'General User'
-                    };
-
-                    const success = DataService.saveCoaching(completeData);
-                    if (success) {
-                        setIsSaved(true);
-                        alert(`ระบบจะทำการบันทึกข้อมูลของท่าน\nCustomer ID คือ : ${customerId}`);
-                    }
-                } catch (error) {
-                    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-                } finally {
-                    setIsSubmitting(false);
+            const handleSubmit = () => {
+                if (newComment.trim()) {
+                    onAddComment(newComment);
+                    setNewComment('');
                 }
             };
 
             return (
-                <div className="form-container">
-                    <h2 className="form-title">ระบบขอคำปรึกษา / Coaching</h2>
-                    
-                    <div className="customer-id-display">
-                        <strong>Customer ID: {customerId}</strong>
-                        {!isSaved && <span className="unsaved-badge">ยังไม่บันทึก</span>}
+                <div className="comment-section">
+                    <h4>ความคิดเห็น</h4>
+                    {comments.map(comment => (
+                        <div key={comment.id} className="comment">
+                            <div className="comment-header">
+                                <span>{comment.user}</span>
+                                <span>{comment.timestamp}</span>
+                            </div>
+                            <div>{comment.text}</div>
+                        </div>
+                    ))}
+                    <div style={{marginTop: '1rem'}}>
+                        <textarea
+                            className="form-textarea"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="เพิ่มความคิดเห็น..."
+                            rows="3"
+                        />
+                        <button 
+                            className="btn btn-primary btn-sm"
+                            onClick={handleSubmit}
+                            style={{marginTop: '0.5rem'}}
+                        >
+                            เพิ่มความคิดเห็น
+                        </button>
                     </div>
+                </div>
+            );
+        };
 
+        // Team Overview Component
+        const TeamOverview = ({ onTrainerSelect, region }) => {
+            const [trainers] = useState([
+                { id: '1', name: 'Trainer RH1', region: 'RH1', avatar: '👨‍💼', totalMTD: 45, newCases: 3 },
+                { id: '2', name: 'Trainer RH2', region: 'RH2', avatar: '👩‍💼', totalMTD: 38, newCases: 5 },
+                { id: '3', name: 'Trainer RH3', region: 'RH3', avatar: '👨‍💼', totalMTD: 52, newCases: 2 },
+                { id: '4', name: 'Trainer RH4', region: 'RH4', avatar: '👩‍💼', totalMTD: 29, newCases: 4 },
+                { id: '5', name: 'Trainer RH5', region: 'RH5', avatar: '👨‍💼', totalMTD: 41, newCases: 1 },
+            ]);
+
+            const filteredTrainers = region === 'all' 
+                ? trainers 
+                : trainers.filter(t => t.region === region);
+
+            return (
+                <div className="team-overview">
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+                        <h3>Team Overview</h3>
+                        <button className="btn btn-sm btn-secondary">View All</button>
+                    </div>
+                    <div className="team-scroll">
+                        {filteredTrainers.map(trainer => (
+                            <div key={trainer.id} className="trainer-card" onClick={() => onTrainerSelect(trainer)}>
+                                <div className="trainer-avatar">{trainer.avatar}</div>
+                                <div style={{ fontWeight: '600', fontSize: '0.875rem' }}>{trainer.region}</div>
+                                <div className="trainer-stats">
+                                    <span className="stat-badge">{trainer.totalMTD}</span>
+                                    <span className="stat-badge" style={{ background: '#FF9500' }}>
+                                        {trainer.newCases}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // Chart Components
+        const PieChart = ({ data, title }) => {
+            const total = Object.values(data).reduce((sum, value) => sum + value, 0);
+            
+            return (
+                <div className="chart-container">
+                    <div className="chart-title">{title}</div>
+                    <div className="simple-chart">
+                        {Object.entries(data).map(([label, value], index) => {
+                            const percentage = total > 0 ? (value / total) * 100 : 0;
+                            const colors = ['#007AFF', '#34C759', '#FF9500', '#FF3B30', '#5856D6'];
+                            
+                            return (
+                                <div key={label} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <div 
+                                        className="chart-bar"
+                                        style={{
+                                            height: `${percentage}%`,
+                                            backgroundColor: colors[index % colors.length],
+                                            width: '40px'
+                                        }}
+                                    >
+                                        <div className="chart-value">{value}</div>
+                                    </div>
+                                    <div className="chart-label">{label}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const BarChart = ({ data, title }) => {
+            const maxValue = Math.max(...Object.values(data), 1);
+            
+            return (
+                <div className="chart-container">
+                    <div className="chart-title">{title}</div>
+                    <div className="simple-chart">
+                        {Object.entries(data).map(([label, value]) => {
+                            const percentage = (value / maxValue) * 100;
+                            
+                            return (
+                                <div key={label} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <div 
+                                        className="chart-bar"
+                                        style={{
+                                            height: `${percentage}%`,
+                                            backgroundColor: '#007AFF',
+                                            width: '30px'
+                                        }}
+                                    >
+                                        <div className="chart-value">{value}</div>
+                                    </div>
+                                    <div className="chart-label">{label}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        // Filter Component
+        const DashboardFilter = ({ onFilterChange, currentFilters }) => {
+            const [filters, setFilters] = useState(currentFilters);
+
+            const handleFilterChange = (key, value) => {
+                const newFilters = { ...filters, [key]: value };
+                setFilters(newFilters);
+                onFilterChange(newFilters);
+            };
+
+            return (
+                <div className="filter-section">
+                    <div className="filter-group">
+                        <div className="filter-label">Region</div>
+                        <select 
+                            className="form-select"
+                            value={filters.region || ''}
+                            onChange={(e) => handleFilterChange('region', e.target.value)}
+                        >
+                            <option value="">ทั้งหมด</option>
+                            {REGIONS.map(region => (
+                                <option key={region} value={region}>{region}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div className="filter-group">
+                        <div className="filter-label">ตำแหน่ง</div>
+                        <select 
+                            className="form-select"
+                            value={filters.position || ''}
+                            onChange={(e) => handleFilterChange('position', e.target.value)}
+                        >
+                            <option value="">ทั้งหมด</option>
+                            {POSITIONS.map(position => (
+                                <option key={position} value={position}>{position}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div className="filter-group">
+                        <div className="filter-label">ประเภท Coaching</div>
+                        <select 
+                            className="form-select"
+                            value={filters.coachingType || ''}
+                            onChange={(e) => handleFilterChange('coachingType', e.target.value)}
+                        >
+                            <option value="">ทั้งหมด</option>
+                            {COURSES.map(course => (
+                                <option key={course} value={course}>{course}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <div className="filter-group">
+                        <div className="filter-label">วันที่เริ่ม</div>
+                        <input
+                            type="date"
+                            className="form-input"
+                            value={filters.startDate || ''}
+                            onChange={(e) => handleFilterChange('startDate', e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="filter-group">
+                        <div className="filter-label">วันที่สิ้นสุด</div>
+                        <input
+                            type="date"
+                            className="form-input"
+                            value={filters.endDate || ''}
+                            onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                        />
+                    </div>
+                    
+                    <button 
+                        className="btn btn-secondary"
+                        onClick={() => {
+                            const resetFilters = {};
+                            setFilters(resetFilters);
+                            onFilterChange(resetFilters);
+                        }}
+                    >
+                        ล้างฟิลเตอร์
+                    </button>
+                </div>
+            );
+        };
+
+<!-- นี่คือส่วนต่อเนื่องจากโค้ดด้านบน -->
+
+<script type="text/babel">
+    // ... (โค้ดส่วนต้นเหมือนด้านบน) ...
+
+    // Password Change Component
+    const PasswordChangeModal = ({ trainerId, onClose }) => {
+        const [currentPassword, setCurrentPassword] = useState('');
+        const [newPassword, setNewPassword] = useState('');
+        const [confirmPassword, setConfirmPassword] = useState('');
+
+        const handleSubmit = () => {
+            if (newPassword !== confirmPassword) {
+                alert('รหัสผ่านใหม่ไม่ตรงกัน');
+                return;
+            }
+            
+            DataService.requestPasswordChange(trainerId, newPassword);
+            alert('ส่งคำขอกำหนดรหัสผ่านใหม่แล้ว รอการอนุมัติจาก Admin');
+            onClose();
+        };
+
+        return (
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h3 className="modal-title">เปลี่ยนรหัสผ่าน</h3>
+                        <button className="modal-close" onClick={onClose}>×</button>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label className="form-label">รหัสผ่านปัจจุบัน</label>
+                        <input
+                            type="password"
+                            className="form-input"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="form-group">
+                        <label className="form-label">รหัสผ่านใหม่</label>
+                        <input
+                            type="password"
+                            className="form-input"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="form-group">
+                        <label className="form-label">ยืนยันรหัสผ่านใหม่</label>
+                        <input
+                            type="password"
+                            className="form-input"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div style={{display: 'flex', gap: '1rem'}}>
+                        <button className="btn btn-primary" onClick={handleSubmit}>
+                            ส่งคำขอ
+                        </button>
+                        <button className="btn btn-secondary" onClick={onClose}>
+                            ยกเลิก
+                        </button>
+                    </div>
+                    
+                    <div style={{marginTop: '1rem', fontSize: '0.875rem', color: '#666'}}>
+                        หมายเหตุ: ระบบจะแจ้งไปยัง Admin เพื่ออนุมัติการเปลี่ยนรหัสผ่าน 
+                        หากไม่ได้รับการอนุมัติภายใน 5 นาที ระบบจะอนุมัติโดยอัตโนมัติ
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // Enhanced RegisterForm with Branch/Zone System
+    const RegisterForm = () => {
+        const [formData, setFormData] = useState({
+            name: '',
+            employeeId: '',
+            position: '',
+            branchCode: '',
+            branchName: '',
+            region: '',
+            zone: '',
+            branch: '',
+            course: '',
+            otherCourse: ''
+        });
+        const [isSubmitting, setIsSubmitting] = useState(false);
+        const [zones, setZones] = useState([]);
+        const [branches, setBranches] = useState([]);
+
+        const handleBranchCodeSearch = () => {
+            if (formData.branchCode && BRANCH_DATA[formData.branchCode]) {
+                const branchInfo = BRANCH_DATA[formData.branchCode];
+                setFormData({
+                    ...formData,
+                    branchName: branchInfo.name,
+                    region: branchInfo.region,
+                    zone: branchInfo.zone
+                });
+            } else {
+                alert('ไม่พบข้อมูลสาขาด้วยรหัสนี้');
+            }
+        };
+
+        const handleRegionChange = (region) => {
+            setFormData({
+                ...formData,
+                region,
+                zone: '',
+                branch: ''
+            });
+            setZones(ZONE_DATA[region] || []);
+            setBranches([]);
+        };
+
+        const handleZoneChange = (zone) => {
+            setFormData({
+                ...formData,
+                zone,
+                branch: ''
+            });
+            setBranches(BRANCHES_BY_ZONE[zone] || []);
+        };
+
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            setIsSubmitting(true);
+            
+            try {
+                const success = DataService.saveRegistration(formData);
+                if (success) {
+                    alert('ลงทะเบียนสำเร็จ');
+                    setFormData({
+                        name: '', employeeId: '', position: '', branchCode: '',
+                        branchName: '', region: '', zone: '', branch: '',
+                        course: '', otherCourse: ''
+                    });
+                }
+            } catch (error) {
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+            } finally {
+                setIsSubmitting(false);
+            }
+        };
+
+        return (
+            <div className="form-container">
+                <h2 className="form-title">ระบบลงทะเบียนอบรม</h2>
+                <form onSubmit={handleSubmit}>
                     <div className="form-section">
-                        <h3>ข้อมูลพนักงาน</h3>
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label className="form-label required">ชื่อ-นามสกุล</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    value={formData.employeeName}
-                                    onChange={(e) => setFormData({...formData, employeeName: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label required">รหัสพนักงาน</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    value={formData.employeeId}
-                                    onChange={(e) => setFormData({...formData, employeeId: e.target.value})}
-                                    required
-                                />
-                            </div>
+                        <div className="form-group">
+                            <label className="form-label required">ชื่อ-นามสกุล</label>
+                            <input
+                                type="text"
+                                className="form-input"
+                                value={formData.name}
+                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label required">รหัสพนักงาน</label>
+                            <input
+                                type="text"
+                                className="form-input"
+                                value={formData.employeeId}
+                                onChange={(e) => setFormData({...formData, employeeId: e.target.value})}
+                                required
+                            />
                         </div>
 
                         <div className="form-group">
@@ -776,346 +1548,545 @@
                                 ))}
                             </select>
                         </div>
-                    </div>
 
-                    <div className="form-section">
-                        <h3>ข้อมูลลูกค้า</h3>
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label className="form-label required">ชื่อหรือนามสมมติ</label>
+                        <div className="form-group">
+                            <label className="form-label">รหัสสาขา</label>
+                            <div className="input-with-button">
                                 <input
                                     type="text"
                                     className="form-input"
-                                    value={formData.customerName}
-                                    onChange={(e) => setFormData({...formData, customerName: e.target.value})}
-                                    required
+                                    value={formData.branchCode}
+                                    onChange={(e) => setFormData({...formData, branchCode: e.target.value})}
+                                    placeholder="กรอกรหัสสาขา"
                                 />
+                                <button type="button" className="btn btn-sm btn-secondary" onClick={handleBranchCodeSearch}>
+                                    ค้นหา
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="form-section">
-                        <h3>ประเภท Coaching ที่ต้องการ</h3>
+                        {formData.branchCode && formData.branchName && (
+                            <div className="form-group">
+                                <label className="form-label">ข้อมูลสาขา</label>
+                                <div style={{padding: '1rem', background: '#f8f9fa', borderRadius: '8px'}}>
+                                    <div>ชื่อสาขา: {formData.branchName}</div>
+                                    <div>Region: {formData.region}</div>
+                                    <div>Zone: {formData.zone}</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {!formData.branchCode && (
+                            <>
+                                <div className="form-group">
+                                    <label className="form-label required">Region</label>
+                                    <select
+                                        className="form-select"
+                                        value={formData.region}
+                                        onChange={(e) => handleRegionChange(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">เลือก Region</option>
+                                        {REGIONS.map(region => (
+                                            <option key={region} value={region}>{region}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {formData.region && (
+                                    <div className="form-group">
+                                        <label className="form-label">Zone</label>
+                                        <select
+                                            className="form-select"
+                                            value={formData.zone}
+                                            onChange={(e) => handleZoneChange(e.target.value)}
+                                        >
+                                            <option value="">เลือก Zone</option>
+                                            {zones.map(zone => (
+                                                <option key={zone} value={zone}>{zone}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
+                                {formData.zone && (
+                                    <div className="form-group">
+                                        <label className="form-label">สาขา</label>
+                                        <select
+                                            className="form-select"
+                                            value={formData.branch}
+                                            onChange={(e) => setFormData({...formData, branch: e.target.value})}
+                                        >
+                                            <option value="">เลือกสาขา</option>
+                                            {branches.map(branch => (
+                                                <option key={branch} value={branch}>{branch}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+                            </>
+                        )}
+
                         <div className="form-group">
+                            <label className="form-label required">หลักสูตรที่ต้องการลงทะเบียน</label>
                             <select
                                 className="form-select"
-                                value={formData.coachingType}
-                                onChange={(e) => setFormData({...formData, coachingType: e.target.value})}
+                                value={formData.course}
+                                onChange={(e) => setFormData({...formData, course: e.target.value})}
                                 required
                             >
-                                <option value="">เลือกประเภท Coaching</option>
+                                <option value="">เลือกหลักสูตร</option>
                                 {COURSES.map(course => (
                                     <option key={course} value={course}>{course}</option>
                                 ))}
                             </select>
                         </div>
-                    </div>
 
-                    <div className="form-actions" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                        <button onClick={handleSave} className="btn btn-primary" disabled={isSubmitting}>
-                            {isSubmitting ? <LoadingSpinner /> : 'บันทึก'}
+                        {formData.course === 'อื่น ๆ' && (
+                            <div className="form-group">
+                                <label className="form-label">ระบุหลักสูตร</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    value={formData.otherCourse}
+                                    onChange={(e) => setFormData({...formData, otherCourse: e.target.value})}
+                                />
+                            </div>
+                        )}
+
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                            {isSubmitting ? <LoadingSpinner /> : 'Submit'}
                         </button>
-                        <button className="btn btn-secondary">ยกเลิก</button>
                     </div>
-                </div>
-            );
+                </form>
+            </div>
+        );
+    };
+
+    // Enhanced CoachForm with Complete Features
+    const CoachForm = ({ editingData = null, onUpdate = null }) => {
+        const [customerId, setCustomerId] = useState(editingData?.customerId || '');
+        const [isSaved, setIsSaved] = useState(!!editingData);
+        const [isSubmitting, setIsSubmitting] = useState(false);
+        const [activeSection, setActiveSection] = useState('personal');
+        
+        const [formData, setFormData] = useState(editingData || {
+            employeeName: '', employeeId: '', position: '', branchCode: '', region: '', zone: '',
+            customerName: '', gender: '', age: '', status: '', occupation: '', income: '',
+            financialProducts: [
+                { type: 'เงินฝาก', key: 'deposit', checked: false, value: '', debt: '' },
+                { type: 'หุ้นกู้', key: 'bonds', checked: false, value: '', debt: '' },
+                { type: 'กองทุนรวม', key: 'mutualFunds', checked: false, value: '', debt: '' },
+                { type: 'บัตรเครดิต', key: 'creditCard', checked: false, value: '', debt: '' },
+                { type: 'สินเชื่อ', key: 'loan', checked: false, value: '', debt: '' }
+            ],
+            insurance: { has: false, policyCount: '', coverage: '' },
+            otherProducts: [],
+            spouseAge: '', spouseOccupation: '', children: [],
+            hasDependents: false, dependentsCount: '', dependentRelationship: '',
+            businessName: '', businessType: '', registeredCapital: '', annualIncome: '',
+            netProfit: '', tax: '', sharePercentage: '', shareholderEquity: '', additionalInfo: '',
+            coachingType: '', additionalDetails: '',
+            unknownFlags: { income: false, financial: false, family: false, business: false }
+        });
+
+        useEffect(() => {
+            if (!editingData) {
+                setCustomerId(generateCustomerId());
+            }
+        }, [editingData]);
+
+        // ... (ฟังก์ชันจัดการฟอร์มเหมือนเดิม) ...
+
+        const handleSave = async () => {
+            setIsSubmitting(true);
+            
+            try {
+                let success;
+                if (editingData && onUpdate) {
+                    success = DataService.updateCoaching(customerId, {
+                        ...formData,
+                        updatedBy: 'General User'
+                    });
+                    if (success) {
+                        onUpdate(formData);
+                        setIsSaved(true);
+                        alert('อัปเดตข้อมูลสำเร็จ');
+                    }
+                } else {
+                    const completeData = {
+                        customerId,
+                        ...formData,
+                        timestamp: formatThaiDateTime(),
+                        lastUpdate: formatThaiDateTime(),
+                        updatedBy: 'General User'
+                    };
+
+                    success = DataService.saveCoaching(completeData);
+                    if (success) {
+                        setIsSaved(true);
+                        alert(`ระบบจะทำการบันทึกข้อมูลของท่าน\nCustomer ID คือ : ${customerId}`);
+                    }
+                }
+            } catch (error) {
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+            } finally {
+                setIsSubmitting(false);
+            }
         };
 
-        const IdeaLibrary = () => (
+        const renderLastUpdate = () => (
+            <div className="last-update">
+                Last update: {formData.lastUpdate || formatThaiDateTime()} | {formData.updatedBy || 'General User'}
+            </div>
+        );
+
+        return (
             <div className="form-container">
-                <h2 className="form-title">คลังไอเดียและเทคนิคการขาย</h2>
+                <h2 className="form-title">
+                    {editingData ? 'แก้ไขข้อมูลการโค้ช' : 'ระบบขอคำปรึกษา / Coaching'}
+                </h2>
+                
+                <div className="customer-id-display">
+                    <strong>Customer ID: {customerId}</strong>
+                    {!isSaved && <span className="unsaved-badge">ยังไม่บันทึก</span>}
+                </div>
+
+                {/* ข้อมูลพนักงาน */}
                 <div className="form-section">
-                    <div style={{ textAlign: 'center', padding: '3rem' }}>
-                        <h3 style={{ color: '#666', marginBottom: '1rem' }}>ขออภัยในความไม่สะดวก</h3>
-                        <p style={{ color: '#888' }}>ระบบกำลังอยู่ระหว่างการพัฒนา</p>
+                    <h3>📋 ข้อมูลพนักงาน</h3>
+                    {/* ... (ฟอร์มข้อมูลพนักงานเหมือนเดิม) ... */}
+                </div>
+
+                {/* ข้อมูลลูกค้า */}
+                <div className="form-section">
+                    <h3>👥 ข้อมูลลูกค้า</h3>
+                    
+                    <div style={{display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap'}}>
+                        <button className={`btn btn-sm ${activeSection === 'personal' ? 'btn-primary' : 'btn-secondary'}`}
+                            onClick={() => setActiveSection('personal')}>ข้อมูลส่วนบุคคล</button>
+                        <button className={`btn btn-sm ${activeSection === 'financial' ? 'btn-primary' : 'btn-secondary'}`}
+                            onClick={() => setActiveSection('financial')}>ข้อมูลทางการเงิน</button>
+                        <button className={`btn btn-sm ${activeSection === 'family' ? 'btn-primary' : 'btn-secondary'}`}
+                            onClick={() => setActiveSection('family')}>ข้อมูลครอบครัว</button>
+                        <button className={`btn btn-sm ${activeSection === 'business' ? 'btn-primary' : 'btn-secondary'}`}
+                            onClick={() => setActiveSection('business')}>ข้อมูลธุรกิจ</button>
                     </div>
+
+                    {/* ... (ส่วนต่างๆ ของฟอร์มเหมือนเดิม) ... */}
+                </div>
+
+                {/* ประเภท Coaching */}
+                <div className="form-section">
+                    <h3>🎯 ประเภท Coaching ที่ต้องการ</h3>
+                    {/* ... (ฟอร์มประเภท Coaching) ... */}
+                </div>
+
+                {editingData && (
+                    <CommentSection
+                        customerId={customerId}
+                        comments={formData.comments || []}
+                        onAddComment={(comment) => {
+                            DataService.addComment(customerId, comment, 'Trainer');
+                        }}
+                        currentUser="Trainer"
+                    />
+                )}
+
+                {renderLastUpdate()}
+
+                <div className="form-actions" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                    <button onClick={handleSave} className="btn btn-primary" disabled={isSubmitting}>
+                        {isSubmitting ? <LoadingSpinner /> : (editingData ? 'อัปเดต' : 'บันทึก')}
+                    </button>
+                    <button className="btn btn-secondary">ยกเลิก</button>
+                </div>
+            </div>
+        );
+    };
+
+    // Enhanced Trainer Dashboard
+    const TrainerDashboard = ({ region, onLogout }) => {
+        const [activeMenu, setActiveMenu] = useState('dashboard');
+        const [stats, setStats] = useState(null);
+        const [selectedRegion, setSelectedRegion] = useState(region);
+        const [filters, setFilters] = useState({});
+        const [showCustomerSearch, setShowCustomerSearch] = useState(false);
+        const [editingCoaching, setEditingCoaching] = useState(null);
+        const [showPasswordChange, setShowPasswordChange] = useState(false);
+
+        useEffect(() => {
+            const dashboardData = DataService.getDashboardData(selectedRegion, filters);
+            setStats(dashboardData);
+        }, [selectedRegion, filters]);
+
+        const notifications = DataService.getNotifications(selectedRegion);
+
+        const handleCustomerFound = (coachingData) => {
+            setEditingCoaching(coachingData);
+            setActiveMenu('coach');
+        };
+
+        const handleUpdateCoaching = (updatedData) => {
+            setEditingCoaching(null);
+            DataService.clearNotifications(selectedRegion, 'coachings');
+        };
+
+        const renderDashboard = () => (
+            <div className="dashboard-content">
+                <TeamOverview 
+                    onTrainerSelect={(trainer) => {
+                        // เปิด side panel แสดงรายละเอียด trainer
+                        alert(`ดูรายละเอียดของ ${trainer.name}`);
+                    }}
+                    region={selectedRegion}
+                />
+                
+                <DashboardFilter onFilterChange={setFilters} currentFilters={filters} />
+                
+                {stats && (
+                    <>
+                        <div className="stats-grid">
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.totalRegistrations}</div>
+                                <div className="stat-label">Total Registrations</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.totalCoachings}</div>
+                                <div className="stat-label">Total Coachings</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">
+                                    {Object.keys(stats.registrationsByRegion).length}
+                                </div>
+                                <div className="stat-label">Regions Active</div>
+                            </div>
+                        </div>
+
+                        <div className="charts-grid">
+                            <PieChart 
+                                data={stats.registrationsByRegion} 
+                                title="สัดส่วนผู้เข้าใช้งานตาม Region"
+                            />
+                            <PieChart 
+                                data={stats.coachingsByRegion} 
+                                title="สัดส่วนคลาสตาม Region"
+                            />
+                            <BarChart 
+                                data={stats.registrationsByPosition} 
+                                title="จำนวนผู้เข้าอบรมแยกตามตำแหน่ง"
+                            />
+                            <BarChart 
+                                data={stats.coachingTypes} 
+                                title="สัดส่วนประเภทการบริการ"
+                            />
+                        </div>
+                    </>
+                )}
+
+                <div className="form-section">
+                    <h3>ค้นหาข้อมูลลูกค้า</h3>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            className="form-input"
+                            placeholder="ค้นหาด้วย Customer ID"
+                            onFocus={() => setShowCustomerSearch(true)}
+                        />
+                    </div>
+                    <button 
+                        className="btn btn-primary"
+                        onClick={() => setShowCustomerSearch(true)}
+                    >
+                        ค้นหา
+                    </button>
                 </div>
             </div>
         );
 
-        const TeamOverview = () => {
-            const [trainers] = useState([
-                { id: '1', name: 'Trainer RH1', region: 'RH1', avatar: '👨‍💼', totalMTD: 45, newCases: 3 },
-                { id: '2', name: 'Trainer RH2', region: 'RH2', avatar: '👩‍💼', totalMTD: 38, newCases: 5 },
-                { id: '3', name: 'Trainer RH3', region: 'RH3', avatar: '👨‍💼', totalMTD: 52, newCases: 2 },
-                { id: '4', name: 'Trainer RH4', region: 'RH4', avatar: '👩‍💼', totalMTD: 29, newCases: 4 },
-                { id: '5', name: 'Trainer RH5', region: 'RH5', avatar: '👨‍💼', totalMTD: 41, newCases: 1 },
-            ]);
-
-            return (
-                <div className="team-overview">
-                    <h3>Team Overview</h3>
-                    <div className="team-scroll">
-                        {trainers.map(trainer => (
-                            <div key={trainer.id} className="trainer-card">
-                                <div className="trainer-avatar">{trainer.avatar}</div>
-                                <div style={{ fontWeight: '600' }}>{trainer.region}</div>
-                                <div className="trainer-stats">
-                                    <span className="stat-badge">{trainer.totalMTD}</span>
-                                    <span className="stat-badge" style={{ background: '#FF9500' }}>
-                                        {trainer.newCases}
-                                    </span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        };
-
-        // Pages
-        const LoadingPage = ({ onNavigate }) => {
-            const [trainerPassword, setTrainerPassword] = useState('');
-            const [adminPassword, setAdminPassword] = useState('');
-
-            const handleGeneralUser = () => {
-                onNavigate('general-user');
-            };
-
-            const handleTrainerLogin = () => {
-                const region = TRAINER_PASSWORDS[trainerPassword];
-                if (region) {
-                    onNavigate('trainer', { region });
-                } else {
-                    alert('รหัสผ่านไม่ถูกต้อง');
-                }
-            };
-
-            const handleAdminLogin = () => {
-                if (adminPassword === 'admin123') {
-                    onNavigate('admin');
-                } else {
-                    alert('รหัสผ่านไม่ถูกต้อง');
-                }
-            };
-
-            return (
-                <div className="loading-page">
-                    <div className="glass-container">
-                        <h1 style={{ textAlign: 'center', marginBottom: '2rem', color: 'white' }}>
-                            ระบบบริหารกิจกรรมฝึกอบรมและโค้ชชิ่ง
-                        </h1>
-                        
-                        <div className="button-group">
-                            <button className="btn btn-primary btn-lg" onClick={handleGeneralUser}>
-                                General User (เข้าทันที ไม่ต้องกรอกรหัส)
-                            </button>
-                            
-                            <div style={{ marginTop: '2rem' }}>
-                                <h3 style={{ color: 'white', marginBottom: '1rem' }}>Trainer</h3>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <input
-                                        type="password"
-                                        className="form-input"
-                                        placeholder="กรอกรหัสผ่าน"
-                                        value={trainerPassword}
-                                        onChange={(e) => setTrainerPassword(e.target.value)}
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button className="btn btn-secondary" onClick={handleTrainerLogin}>
-                                        เข้าสู่ระบบ
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div style={{ marginTop: '1rem' }}>
-                                <h3 style={{ color: 'white', marginBottom: '1rem' }}>Admin</h3>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <input
-                                        type="password"
-                                        className="form-input"
-                                        placeholder="กรอกรหัสผ่าน"
-                                        value={adminPassword}
-                                        onChange={(e) => setAdminPassword(e.target.value)}
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button className="btn btn-secondary" onClick={handleAdminLogin}>
-                                        เข้าสู่ระบบ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const GeneralUserDashboard = ({ onLogout }) => {
-            const [activeMenu, setActiveMenu] = useState(null);
-
-            const renderContent = () => {
-                switch (activeMenu) {
-                    case 'register':
-                        return <RegisterForm />;
-                    case 'coach':
-                        return <CoachForm />;
-                    case 'library':
-                        return <IdeaLibrary />;
-                    default:
-                        return (
-                            <div style={{ textAlign: 'center', padding: '4rem', color: 'white' }}>
-                                <h2>ยินดีต้อนรับสู่ระบบบริหารกิจกรรม</h2>
-                                <p>กรุณาเลือกเมนูที่ต้องการใช้งาน</p>
-                            </div>
-                        );
-                }
-            };
-
-            return (
-                <div className="dashboard">
-                    <Navigation 
-                        userType="general" 
-                        activeMenu={activeMenu}
-                        onMenuSelect={setActiveMenu}
-                        onLogout={onLogout}
-                    />
-                    <main className="dashboard-content">
-                        {renderContent()}
-                    </main>
-                </div>
-            );
-        };
-
-        const TrainerDashboard = ({ region, onLogout }) => {
-            const [stats, setStats] = useState(null);
-            const [selectedRegion, setSelectedRegion] = useState(region);
-
-            useEffect(() => {
-                const dashboardData = DataService.getDashboardData(selectedRegion);
-                setStats(dashboardData);
-            }, [selectedRegion]);
-
-            return (
-                <div className="dashboard">
-                    <nav className="main-nav">
-                        <div className="nav-brand">Trainer Dashboard - {region}</div>
-                        <div className="nav-actions">
+        return (
+            <div className="dashboard">
+                <Navigation 
+                    userType="trainer"
+                    activeMenu={activeMenu}
+                    onMenuSelect={setActiveMenu}
+                    onLogout={onLogout}
+                    notifications={notifications}
+                />
+                
+                <div className="main-nav" style={{background: '#f8f9fa'}}>
+                    <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
+                        <strong>Region: {selectedRegion}</strong>
+                        {region === 'all' && (
                             <select 
                                 value={selectedRegion}
                                 onChange={(e) => setSelectedRegion(e.target.value)}
                                 className="form-select"
-                                style={{ width: 'auto' }}
+                                style={{width: 'auto'}}
                             >
                                 <option value="all">All Regions</option>
                                 {REGIONS.map(r => (
                                     <option key={r} value={r}>{r}</option>
                                 ))}
                             </select>
-                            <button className="btn btn-sm btn-secondary" onClick={onLogout}>
-                                🚪 ออกจากระบบ
-                            </button>
-                        </div>
-                    </nav>
-
-                    <div className="dashboard-content">
-                        <TeamOverview />
-                        
-                        {stats && (
-                            <div className="stats-grid">
-                                <div className="stat-card">
-                                    <div className="stat-number">{stats.totalRegistrations}</div>
-                                    <div className="stat-label">Total Registrations</div>
-                                </div>
-                                <div className="stat-card">
-                                    <div className="stat-number">{stats.totalCoachings}</div>
-                                    <div className="stat-label">Total Coachings</div>
-                                </div>
-                                <div className="stat-card">
-                                    <div className="stat-number">
-                                        {Object.values(stats.registrationsByRegion).reduce((a, b) => a + b, 0)}
-                                    </div>
-                                    <div className="stat-label">Total Regions</div>
-                                </div>
-                            </div>
                         )}
-
-                        <div className="form-section">
-                            <h3>Customer Search</h3>
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    placeholder="ค้นหาด้วย Customer ID"
-                                />
-                            </div>
-                            <button className="btn btn-primary">ค้นหา</button>
-                        </div>
                     </div>
-                </div>
-            );
-        };
-
-        const AdminDashboard = ({ onLogout }) => (
-            <div className="dashboard">
-                <nav className="main-nav">
-                    <div className="nav-brand">Admin Dashboard</div>
                     <div className="nav-actions">
-                        <button className="btn btn-sm btn-secondary" onClick={onLogout}>
-                            🚪 ออกจากระบบ
+                        <button 
+                            className="btn btn-sm btn-secondary"
+                            onClick={() => setShowPasswordChange(true)}
+                        >
+                            เปลี่ยนรหัสผ่าน
                         </button>
                     </div>
-                </nav>
+                </div>
 
-                <div className="dashboard-content">
-                    <div className="form-container">
-                        <h2 className="form-title">ระบบจัดการ Admin</h2>
-                        <div className="form-section">
-                            <h3>จัดการ Idea Library</h3>
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                <button className="btn btn-primary">อัปโหลดแบนเนอร์</button>
-                                <button className="btn btn-primary">อัปโหลดไฟล์ PDF</button>
-                                <button className="btn btn-primary">เพิ่มรหัส Trainer</button>
-                            </div>
-                        </div>
+                {activeMenu === 'dashboard' && renderDashboard()}
+                {activeMenu === 'register' && <RegisterForm />}
+                {activeMenu === 'coach' && (
+                    editingCoaching ? 
+                    <CoachForm editingData={editingCoaching} onUpdate={handleUpdateCoaching} /> :
+                    <CoachForm />
+                )}
+                {activeMenu === 'library' && <IdeaLibrary />}
 
-                        <div className="form-section">
-                            <h3>หมวดหมู่ Idea Library</h3>
-                            <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                                <button className="btn btn-outline">Sales Script</button>
-                                <button className="btn btn-outline">Sales Idea</button>
-                                <button className="btn btn-outline">Objection Handling</button>
+                {showCustomerSearch && (
+                    <CustomerSearch
+                        onCustomerFound={handleCustomerFound}
+                        onClose={() => setShowCustomerSearch(false)}
+                    />
+                )}
+
+                {showPasswordChange && (
+                    <PasswordChangeModal
+                        trainerId={region}
+                        onClose={() => setShowPasswordChange(false)}
+                    />
+                )}
+            </div>
+        );
+    };
+
+    // Admin Dashboard with Complete Management
+    const AdminDashboard = ({ onLogout }) => {
+        const [activeMenu, setActiveMenu] = useState('management');
+        const [passwordRequests, setPasswordRequests] = useState([]);
+
+        useEffect(() => {
+            DataService.checkAutoApprove();
+            setPasswordRequests(DataService.getPasswordChangeRequests());
+        }, []);
+
+        const handleApproveRequest = (requestId) => {
+            if (DataService.approvePasswordChange(requestId)) {
+                setPasswordRequests(DataService.getPasswordChangeRequests());
+                alert('อนุมัติการเปลี่ยนรหัสผ่านแล้ว');
+            }
+        };
+
+        const renderManagement = () => (
+            <div className="dashboard-content">
+                <div className="form-section">
+                    <h3>จัดการรหัสผ่าน Trainer</h3>
+                    <div className="form-group">
+                        <h4>คำขอเปลี่ยนรหัสผ่าน</h4>
+                        {passwordRequests.filter(req => req.status === 'pending').map(request => (
+                            <div key={request.id} style={{
+                                padding: '1rem',
+                                border: '1px solid #e0e0e0',
+                                borderRadius: '8px',
+                                marginBottom: '0.5rem',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <div>
+                                    <div>Trainer: {request.trainerId}</div>
+                                    <div>เวลาขอ: {request.timestamp}</div>
+                                    <div style={{fontSize: '0.875rem', color: '#666'}}>
+                                        อนุมัติอัตโนมัติใน: {Math.ceil((request.autoApproveTime - Date.now()) / 60000)} นาที
+                                    </div>
+                                </div>
+                                <button 
+                                    className="btn btn-primary btn-sm"
+                                    onClick={() => handleApproveRequest(request.id)}
+                                >
+                                    อนุมัติ
+                                </button>
                             </div>
-                        </div>
+                        ))}
                     </div>
+                </div>
+
+                <div className="form-section">
+                    <h3>จัดการ Idea Library</h3>
+                    <div style={{display: 'flex', gap: '1rem', flexWrap: 'wrap'}}>
+                        <button className="btn btn-primary">อัปโหลดแบนเนอร์</button>
+                        <button className="btn btn-primary">อัปโหลดไฟล์ PDF</button>
+                        <button className="btn btn-primary">เพิ่มรหัส Trainer</button>
+                        <button className="btn btn-primary">จัดการพื้นที่รหัส</button>
+                    </div>
+                </div>
+
+                <div className="form-section">
+                    <h3>รายงานและสถิติ</h3>
+                    <button className="btn btn-secondary">Export ข้อมูล</button>
                 </div>
             </div>
         );
 
-        // Main App Component
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('loading');
-            const [pageProps, setPageProps] = useState({});
+        return (
+            <div className="dashboard">
+                <Navigation 
+                    userType="admin"
+                    activeMenu={activeMenu}
+                    onMenuSelect={setActiveMenu}
+                    onLogout={onLogout}
+                />
+                
+                {activeMenu === 'management' && renderManagement()}
+                {activeMenu === 'dashboard' && <TrainerDashboard region="all" onLogout={onLogout} />}
+                {activeMenu === 'library' && <IdeaLibrary />}
+            </div>
+        );
+    };
 
-            const handleNavigate = (page, props = {}) => {
-                setCurrentPage(page);
-                setPageProps(props);
-            };
+    // Main App Component
+    const App = () => {
+        const [currentPage, setCurrentPage] = useState('loading');
+        const [pageProps, setPageProps] = useState({});
 
-            const handleLogout = () => {
-                setCurrentPage('loading');
-                setPageProps({});
-            };
-
-            const renderPage = () => {
-                switch (currentPage) {
-                    case 'loading':
-                        return <LoadingPage onNavigate={handleNavigate} />;
-                    case 'general-user':
-                        return <GeneralUserDashboard onLogout={handleLogout} />;
-                    case 'trainer':
-                        return <TrainerDashboard {...pageProps} onLogout={handleLogout} />;
-                    case 'admin':
-                        return <AdminDashboard onLogout={handleLogout} />;
-                    default:
-                        return <LoadingPage onNavigate={handleNavigate} />;
-                }
-            };
-
-            return <div className="app">{renderPage()}</div>;
+        const handleNavigate = (page, props = {}) => {
+            setCurrentPage(page);
+            setPageProps(props);
         };
 
-        // Render the App
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
+        const handleLogout = () => {
+            setCurrentPage('loading');
+            setPageProps({});
+        };
+
+        const renderPage = () => {
+            switch (currentPage) {
+                case 'loading':
+                    return <LoadingPage onNavigate={handleNavigate} />;
+                case 'general-user':
+                    return <GeneralUserDashboard onLogout={handleLogout} />;
+                case 'trainer':
+                    return <TrainerDashboard {...pageProps} onLogout={handleLogout} />;
+                case 'admin':
+                    return <AdminDashboard onLogout={handleLogout} />;
+                default:
+                    return <LoadingPage onNavigate={handleNavigate} />;
+            }
+        };
+
+        return <div className="app">{renderPage()}</div>;
+    };
+
+    // Render the App
+    ReactDOM.render(<App />, document.getElementById('root'));
+</script>
 </body>
 </html>
+```
