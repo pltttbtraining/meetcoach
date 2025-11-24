@@ -3,1443 +3,791 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PLT-ttb Training - Account Planning System</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>PLT-ttb Training</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- html2canvas + jsPDF -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     :root {
-      --primary-color: #007AFF;
+      --primary: #007AFF;
       --primary-dark: #0056CC;
-      --secondary-color: #87CEEB;
-      --success-color: #34C759;
-      --warning-color: #FF9500;
-      --error-color: #FF3B30;
-      --bg-gradient: linear-gradient(135deg, #b3e0ff 0%, #e6f7ff 100%);
-      --glass-bg: rgba(255, 255, 255, 0.25);
-      --glass-border: rgba(255, 255, 255, 0.18);
-      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      --text-primary: #1D1D1F;
-      --text-secondary: #86868B;
-      --text-white: #FFFFFF;
-      --border-radius: 12px;
-      --border-radius-lg: 20px;
-      --spacing-xs: 0.5rem;
-      --spacing-sm: 1rem;
-      --spacing-md: 1.5rem;
-      --spacing-lg: 2rem;
-      --spacing-xl: 3rem;
+      --secondary: #5856D6;
+      --green: #34C759;
+      --orange: #FF9500;
+      --red: #FF3B30;
+      --gray-1: #8E8E93;
+      --gray-2: #AEAEB2;
+      --gray-3: #C7C7CC;
+      --gray-4: #D1D1D6;
+      --gray-5: #E5E5EA;
+      --gray-6: #F2F2F7;
+      --background: #FFFFFF;
+      --card-background: #FFFFFF;
+      --text-primary: #000000;
+      --text-secondary: #8E8E93;
+      --system-blur: rgba(255, 255, 255, 0.8);
+      --system-border: rgba(0, 0, 0, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #000000;
+        --card-background: #1C1C1E;
+        --text-primary: #FFFFFF;
+        --text-secondary: #8E8E93;
+        --system-blur: rgba(30, 30, 32, 0.8);
+        --system-border: rgba(255, 255, 255, 0.1);
+      }
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-      background: var(--bg-gradient);
-      min-height: 100vh;
+      background: var(--background);
       color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
+      line-height: 1.47;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
-    /* Loading Screen */
+    /* iOS Style Loading Screen */
     .loading-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--bg-gradient);
+      background: var(--background);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .loading-progress {
-      width: 300px;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 3px;
+    .loading-logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      animation: logoPulse 2s ease-in-out infinite;
+    }
+
+    .loading-logo i {
+      font-size: 32px;
+      color: white;
+    }
+
+    .loading-text {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .loading-subtext {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .ios-progress {
+      width: 200px;
+      height: 4px;
+      background: var(--gray-5);
+      border-radius: 2px;
       overflow: hidden;
-      margin-bottom: var(--spacing-md);
     }
 
-    .loading-progress-bar {
+    .ios-progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, #87CEEB, #007AFF);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
       width: 0%;
-      transition: width 0.3s ease;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 2px;
     }
 
-    /* Main App */
+    /* Main App Container */
     .app-container {
       min-height: 100vh;
       display: none;
       flex-direction: column;
-      padding: 1.25rem;
+      background: var(--background);
     }
 
-    .glass-container {
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      border-radius: var(--border-radius-lg);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
-      flex: 1;
+    /* iOS Style Navigation Bar */
+    .ios-navbar {
+      background: var(--system-blur);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--system-border);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    /* Navigation */
-    .compact-nav {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 0.75rem 1rem;
+    .nav-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: var(--border-radius);
-      margin-bottom: var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .nav-brand {
-      font-size: 1.1rem;
+      font-size: 21px;
       font-weight: 700;
-      color: var(--primary-color);
       display: flex;
       align-items: center;
-      gap: var(--spacing-xs);
+      gap: 8px;
     }
 
-    .nav-menu {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .nav-btn {
-      background: white;
-      padding: 0.5rem 0.75rem;
+    .nav-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
-      font-weight: 500;
-      text-decoration: none;
-      color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 0.25rem;
-      font-size: 0.85rem;
+      justify-content: center;
     }
 
-    .nav-btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--secondary-color);
-      box-shadow: 0 2px 6px rgba(135, 206, 235, 0.15);
-    }
-
-    .nav-btn.active {
-      background: var(--secondary-color);
+    .nav-brand-icon i {
+      font-size: 16px;
       color: white;
     }
 
-    /* Page Header */
-    .page-header {
+    .nav-actions {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--spacing-md);
-      padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      gap: 8px;
     }
 
-    .page-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-    }
-
-    /* Content Panels */
-    .content-panel {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .content-panel.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card {
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-body {
-      padding: var(--spacing-md);
-    }
-
-    /* Form Styles */
-    .form-subsection {
-      background: #f8fbff;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid var(--secondary-color);
-    }
-    
-    .subsection-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .form-group {
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-sm);
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 0.9rem;
-    }
-
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 0.6rem;
-      border: 2px solid #E5E5EA;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      background: white;
-    }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-    }
-
-    /* AI Analysis Styles */
-    .analysis-results {
-      margin-top: 1rem;
-    }
-
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--secondary-color);
-    }
-
-    .recommendation-card {
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      background: white;
-    }
-
-    .recommendation-card .card-header {
-      background: #f8f9fa;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .recommendation-card .card-body {
-      padding: 1rem;
-    }
-
-    .scores {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .score-badge {
-      background: var(--primary-color);
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-weight: bold;
-      font-size: 0.8rem;
-    }
-
-    .ai-badge {
-      background: var(--success-color);
-      color: white;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.7rem;
-    }
-
-    .financials {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      padding: 0.75rem;
-      background: #f8fbff;
-      border-radius: 6px;
-    }
-
-    .reasoning p {
-      margin-bottom: 0.5rem;
-      padding-left: 1rem;
-      border-left: 3px solid var(--secondary-color);
-    }
-
-    .metadata {
-      margin-top: 0.75rem;
-      padding-top: 0.5rem;
-      border-top: 1px dashed #e0e0e0;
-    }
-
-    .loading-analysis {
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .analysis-error {
-      background: #ffe6e6;
-      border: 1px solid #ffcccc;
-      border-radius: 8px;
-      padding: 1rem;
-      margin: 1rem 0;
-    }
-
-    .btn {
-      padding: 0.5rem 1rem;
+    /* iOS Style Buttons */
+    .ios-btn {
+      padding: 8px 16px;
       border: none;
       border-radius: 8px;
-      font-size: 0.85rem;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 6px;
       text-decoration: none;
     }
 
-    .btn-primary {
-      background: var(--primary-color);
+    .ios-btn-primary {
+      background: var(--primary);
       color: white;
     }
 
-    .btn-primary:hover {
+    .ios-btn-primary:hover {
       background: var(--primary-dark);
       transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
     }
 
-    .btn-sm {
-      padding: 0.375rem 0.75rem;
-      font-size: 0.8rem;
+    .ios-btn-secondary {
+      background: var(--gray-6);
+      color: var(--text-primary);
     }
 
-    .small-muted {
-      font-size: 0.85rem;
+    .ios-btn-secondary:hover {
+      background: var(--gray-5);
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      padding: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* iOS Style Cards */
+    .ios-card {
+      background: var(--card-background);
+      border-radius: 12px;
+      padding: 0;
+      margin-bottom: 16px;
+      border: 1px solid var(--system-border);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .ios-card-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--system-border);
+      background: var(--card-background);
+    }
+
+    .ios-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ios-card-subtitle {
+      font-size: 15px;
       color: var(--text-secondary);
     }
 
-    .required::after {
-      content: " *";
-      color: var(--error-color);
+    .ios-card-body {
+      padding: 16px;
     }
 
-    .watermark {
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      opacity: 0.12;
-      font-weight: 700;
-      font-size: 12px;
+    /* iOS Style Form Elements */
+    .form-section {
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding-left: 16px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ios-input-group {
+      margin-bottom: 16px;
+    }
+
+    .ios-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+      padding: 0 16px;
+    }
+
+    .ios-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--card-background);
+      border: 1px solid var(--system-border);
+      border-radius: 10px;
+      font-size: 16px;
+      color: var(--text-primary);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ios-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    }
+
+    .ios-select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--card-background);
+      border: 1px solid var(--system-border);
+      border-radius: 10px;
+      font-size: 16px;
+      color: var(--text-primary);
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%238E8E93' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 10px;
+    }
+
+    /* iOS Style Analysis Results */
+    .analysis-section {
+      margin-top: 24px;
+    }
+
+    .recommendation-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .recommendation-card {
+      background: var(--card-background);
+      border: 1px solid var(--system-border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .recommendation-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .recommendation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .recommendation-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .recommendation-badge {
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .recommendation-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .detail-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 600;
       color: var(--text-primary);
     }
 
+    .recommendation-reason {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* iOS Style Tabs */
+    .ios-tabs {
+      display: flex;
+      background: var(--card-background);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 20px;
+      border: 1px solid var(--system-border);
+    }
+
+    .ios-tab {
+      flex: 1;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ios-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Animations */
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .form-row {
+      .content-area {
+        padding: 12px;
+      }
+      
+      .nav-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .recommendation-details {
         grid-template-columns: 1fr;
       }
-      
-      .compact-nav {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.5rem;
-      }
-      
-      .nav-menu {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .page-header {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
-      }
-      
-      .financials {
-        grid-template-columns: 1fr;
-      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--gray-6);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gray-3);
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gray-2);
     }
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
+  <!-- iOS Style Loading Screen -->
   <div class="loading-screen" id="loadingScreen">
-    <div class="gear-spinner">
-      <i class="fas fa-cog"></i>
+    <div class="loading-logo">
+      <i class="fas fa-chart-line"></i>
     </div>
-    <div class="loading-text">PLT-ttb Training</div>
-    <div class="loading-text">Account Planning System</div>
-    <div class="loading-progress">
-      <div class="loading-progress-bar" id="loadingProgress"></div>
+    <h1 class="loading-text">PLT-ttb Training</h1>
+    <p class="loading-subtext">Account Planning System</p>
+    <div class="ios-progress">
+      <div class="ios-progress-bar" id="loadingProgress"></div>
     </div>
-    <button class="enter-btn" id="enterBtn" style="display: none;">เข้าใช้งานระบบ</button>
   </div>
 
   <!-- Main Application -->
   <div class="app-container" id="appContainer">
-    <div class="glass-container">
-      <!-- Compact Navigation -->
-      <nav class="compact-nav">
+    <!-- iOS Style Navigation Bar -->
+    <nav class="ios-navbar">
+      <div class="nav-content">
         <div class="nav-brand">
-          <i class="fas fa-chart-line"></i>
-          PLT-ttb Training
-        </div>
-        <div class="nav-menu">
-          <button class="nav-btn" id="tab-start" data-panel="start">
-            <i class="fas fa-home"></i> หน้าแรก
-          </button>
-          <button class="nav-btn" id="tab-form" data-panel="form">
-            <i class="fas fa-user-plus"></i> สร้างลูกค้า
-          </button>
-          <button class="nav-btn" id="tab-list" data-panel="list">
-            <i class="fas fa-list"></i> รายการลูกค้า
-          </button>
-          <button class="nav-btn" id="tab-report" data-panel="report">
-            <i class="fas fa-chart-bar"></i> รายงาน
-          </button>
+          <div class="nav-brand-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <span>PLT-ttb</span>
         </div>
         <div class="nav-actions">
-          <button class="btn btn-sm btn-secondary" id="btn-logout">
-            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+          <button class="ios-btn ios-btn-secondary" id="btnLogout">
+            <i class="fas fa-door-open"></i>
+            Sign Out
           </button>
         </div>
-      </nav>
+      </div>
+    </nav>
 
-      <!-- Content Area -->
-      <div id="content-area">
-        
-        <!-- START PANEL -->
-        <div id="panel-start" class="content-panel active">
-          <div class="start-container">
-            <div class="start-logo">
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <h1 class="start-title">PLT-ttb Training</h1>
-            <p class="start-subtitle">ระบบวางแผนการขายและบริหารลูกค้า</p>
-            <button class="start-btn" id="btn-start">
-              <i class="fas fa-play-circle"></i> เริ่มต้นใช้งาน
-            </button>
-          </div>
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- iOS Style Tabs -->
+      <div class="ios-tabs">
+        <div class="ios-tab active" data-panel="start">
+          <i class="fas fa-house"></i>
+          หน้าแรก
         </div>
-
-        <!-- FORM PANEL -->
-        <div id="panel-form" class="content-panel">
-          <div class="page-header">
-            <div class="page-title">
-              <i class="fas fa-user-plus"></i> ฟอร์มกรอกข้อมูลลูกค้า
-            </div>
-            <div class="page-actions">
-              <button class="btn btn-sm btn-secondary" id="btn-back-form">
-                <i class="fas fa-arrow-left"></i> ย้อนกลับ
-              </button>
-              <button class="btn btn-sm btn-primary" id="btn-home-form">
-                <i class="fas fa-home"></i> หน้าแรก
-              </button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <div class="customer-id-display" id="customerIdDisplay" style="display: none;">Customer ID: กำลังสร้าง...</div>
-              <p class="small-muted mb-3">กรอกข้อมูลให้ครบ — ระบบจะสร้าง Customer ID อัตโนมัติ</p>
-
-              <form id="customerForm" class="row g-3">
-                <!-- Employee Information -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-user-tie"></i> ข้อมูลพนักงาน
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label required">ชื่อพนักงาน</label>
-                      <input type="text" id="employee_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label required">รหัสพนักงาน</label>
-                      <input type="text" id="employee_id" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label required">RH (RH1-RH5)</label>
-                      <select id="rh" class="form-select">
-                        <option value="">เลือก RH</option>
-                        <option value="RH1">RH1</option>
-                        <option value="RH2">RH2</option>
-                        <option value="RH3">RH3</option>
-                        <option value="RH4">RH4</option>
-                        <option value="RH5">RH5</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label required">Zone</label>
-                      <select id="zone" class="form-select" disabled>
-                        <option value="">เลือก RH ก่อน</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Customer Personal Information -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-user"></i> ข้อมูลส่วนตัวลูกค้า
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label required">ชื่อนามสมมุติ</label>
-                      <input type="text" id="cust_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label required">อายุ</label>
-                      <input type="number" id="cust_age" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label required">เพศ</label>
-                      <select id="cust_gender" class="form-select">
-                        <option value="">เลือกเพศ</option>
-                        <option>ชาย</option>
-                        <option>หญิง</option>
-                        <option>อื่นๆ</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label required">อาชีพ</label>
-                      <select id="cust_occupation" class="form-select">
-                        <option value="">เลือกอาชีพ</option>
-                        <option>พนักงานบริษัท</option>
-                        <option>ข้าราชการ</option>
-                        <option>เจ้าของกิจการ/ธุรกิจส่วนตัว</option>
-                        <option>แพทย์</option>
-                        <option>วิศวกร</option>
-                        <option>ครู</option>
-                        <option>นักกฎหมาย</option>
-                        <option>อื่นๆ</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label required">รายได้ต่อเดือน (บาท)</label>
-                      <input type="number" id="cust_monthly_income" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">รายได้ต่อปี (บาท)</label>
-                      <input type="text" id="cust_yearly_income" class="form-control" readonly>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">มีสวัสดิการหรือไม่</label>
-                      <select id="cust_welfare" class="form-select">
-                        <option value="">เลือก</option>
-                        <option>ไม่มี</option>
-                        <option>มี - วงเงินสูง</option>
-                        <option>มี - วงเงินกลาง</option>
-                        <option>มี - วงเงินต่ำ</option>
-                        <option>มี - ทุนประกันต่อปี</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">ทุนประกันต่อปี (บาท)</label>
-                      <input type="number" id="cust_insurance_capital" class="form-control">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Family Information -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-users"></i> ข้อมูลครอบครัว
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">สถานภาพ</label>
-                      <select id="cust_marital_status" class="form-select">
-                        <option value="">เลือกสถานภาพ</option>
-                        <option>โสด</option>
-                        <option>สมรส</option>
-                        <option>หม้าย</option>
-                        <option>หย่า</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">อายุคู่สมรส</label>
-                      <input type="number" id="cust_spouse_age" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">อาชีพคู่สมรส</label>
-                      <select id="cust_spouse_occupation" class="form-select">
-                        <option value="">เลือกอาชีพ</option>
-                        <option>ไม่มี</option>
-                        <option>พนักงานบริษัท</option>
-                        <option>ข้าราชการ</option>
-                        <option>เจ้าของกิจการ/ธุรกิจส่วนตัว</option>
-                        <option>แพทย์</option>
-                        <option>วิศวกร</option>
-                        <option>ครู</option>
-                        <option>แม่บ้าน</option>
-                        <option>อื่นๆ</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">มีบุตรหรือไม่</label>
-                      <select id="cust_has_children" class="form-select">
-                        <option value="">เลือก</option>
-                        <option>ไม่มี</option>
-                        <option>มี</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div id="children-section" style="display: none;">
-                    <div class="form-row">
-                      <div class="form-group">
-                        <label class="form-label">จำนวนบุตร</label>
-                        <input type="number" id="cust_children_count" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label class="form-label">อายุบุตร</label>
-                        <input type="text" id="cust_children_ages" class="form-control" placeholder="เช่น 8,5,2">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- AI Analysis Section -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-robot"></i> AI Insurance Advisor
-                    <span class="badge bg-success ms-2">Integrated v2.0</span>
-                  </div>
-                  
-                  <div class="text-center mb-3">
-                    <button type="button" id="btnIntegratedAnalyze" class="btn btn-primary">
-                      <i class="fas fa-brain"></i> วิเคราะห์แนะนำประกันภัย (Integrated AI)
-                    </button>
-                    <small class="d-block text-muted mt-1">ระบบจะวิเคราะห์แบบหลายมิติจากข้อมูลทั้งหมด</small>
-                  </div>
-                  
-                  <div id="integratedAnalysisResults" style="display: none;">
-                    <!-- ผลลัพธ์จะแสดงที่นี่ -->
-                  </div>
-                </div>
-
-                <!-- Employee Comments -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-comments"></i> ความเห็นพนักงาน
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">ความเห็นเพิ่มเติม</label>
-                    <textarea id="emp_additional_comments" class="form-control" rows="3"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">ผลิตภัณฑ์ที่จะนำเสนอ</label>
-                    <input type="text" id="emp_proposed_product" class="form-control">
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">เบี้ยประกันที่คาดหวัง (บาท)</label>
-                      <input type="number" id="emp_proposed_premium" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">ทุนประกันที่คาดหวัง (บาท)</label>
-                      <input type="number" id="emp_proposed_capital" class="form-control">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Buttons -->
-                <div class="col-12 d-flex gap-2">
-                  <button type="button" id="btnSave" class="btn btn-primary">
-                    <i class="fas fa-save"></i> บันทึกข้อมูล
-                  </button>
-                  <button type="button" id="btnClear" class="btn btn-secondary">
-                    <i class="fas fa-broom"></i> ล้างฟอร์ม
-                  </button>
-                  <div class="ms-auto small-muted align-self-center" id="formStatus"></div>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div class="ios-tab" data-panel="form">
+          <i class="fas fa-user-plus"></i>
+          สร้างลูกค้า
         </div>
+        <div class="ios-tab" data-panel="list">
+          <i class="fas fa-list"></i>
+          รายการ
+        </div>
+        <div class="ios-tab" data-panel="report">
+          <i class="fas fa-chart-bar"></i>
+          รายงาน
+        </div>
+      </div>
 
-        <!-- LIST PANEL -->
-        <div id="panel-list" class="content-panel">
-          <div class="page-header">
-            <div class="page-title">
-              <i class="fas fa-list"></i> รายการลูกค้า
-            </div>
-            <div class="page-actions">
-              <button class="btn btn-sm btn-secondary" id="btn-back-list">
-                <i class="fas fa-arrow-left"></i> ย้อนกลับ
-              </button>
-              <button class="btn btn-sm btn-primary" id="btn-home-list">
-                <i class="fas fa-home"></i> หน้าแรก
-              </button>
-            </div>
+      <!-- Start Panel -->
+      <div id="panel-start" class="content-panel active fade-in">
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-rocket" style="color: var(--primary);"></i>
+              ยินดีต้อนรับ
+            </h2>
+            <p class="ios-card-subtitle">ระบบวางแผนการขายและบริหารลูกค้าแบบบูรณาการ</p>
           </div>
-
-          <div class="card">
-            <div class="card-body">
-              <div class="text-center text-muted py-5">
-                <i class="fas fa-list fa-3x mb-3 text-muted"></i>
-                <p>ระบบรายการลูกค้า</p>
-                <small class="text-muted">กำลังพัฒนา...</small>
+          <div class="ios-card-body">
+            <div style="text-align: center; padding: 40px 20px;">
+              <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                <i class="fas fa-brain" style="font-size: 32px; color: white;"></i>
               </div>
+              <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">เริ่มต้นใช้งาน</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 32px;">ระบบ AI จะช่วยวิเคราะห์และแนะนำผลิตภัณฑ์ประกันภัยที่เหมาะสมที่สุด</p>
+              <button class="ios-btn ios-btn-primary" id="btnStart" style="padding: 12px 32px; font-size: 17px;">
+                <i class="fas fa-play"></i>
+                เริ่มต้นใช้งาน
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- REPORTS PANEL -->
-        <div id="panel-report" class="content-panel">
-          <div class="page-header">
-            <div class="page-title">
-              <i class="fas fa-chart-bar"></i> รายงาน
-            </div>
-            <div class="page-actions">
-              <button class="btn btn-sm btn-secondary" id="btn-back-report">
-                <i class="fas fa-arrow-left"></i> ย้อนกลับ
-              </button>
-              <button class="btn btn-sm btn-primary" id="btn-home-report">
-                <i class="fas fa-home"></i> หน้าแรก
-              </button>
-            </div>
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-star" style="color: var(--orange);"></i>
+              คุณสมบัติพิเศษ
+            </h2>
           </div>
-
-          <div class="card">
-            <div class="card-body">
-              <div class="text-center text-muted py-5">
-                <i class="fas fa-chart-bar fa-3x mb-3 text-muted"></i>
-                <p>ระบบรายงานและแดชบอร์ด</p>
-                <small class="text-muted">กำลังพัฒนา...</small>
+          <div class="ios-card-body">
+            <div style="display: grid; gap: 16px;">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--gray-6); border-radius: 10px;">
+                <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-robot" style="color: white; font-size: 16px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 2px;">AI Analysis</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">วิเคราะห์ข้อมูลแบบหลายมิติ</div>
+                </div>
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--gray-6); border-radius: 10px;">
+                <div style="width: 40px; height: 40px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-chart-line" style="color: white; font-size: 16px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 2px;">Smart Recommendations</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">แนะนำผลิตภัณฑ์ที่เหมาะสม</div>
+                </div>
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--gray-6); border-radius: 10px;">
+                <div style="width: 40px; height: 40px; background: var(--secondary); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-shield-alt" style="color: white; font-size: 16px;"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 2px;">Secure & Private</div>
+                  <div style="font-size: 14px; color: var(--text-secondary);">ข้อมูลปลอดภัยระดับสูง</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="watermark">PLT-ttb Training</div>
+      <!-- Form Panel -->
+      <div id="panel-form" class="content-panel">
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-user-plus" style="color: var(--primary);"></i>
+              สร้างโปรไฟล์ลูกค้า
+            </h2>
+            <p class="ios-card-subtitle">กรอกข้อมูลลูกค้าเพื่อรับการวิเคราะห์จาก AI</p>
+          </div>
+          <div class="ios-card-body">
+            <!-- Employee Information -->
+            <div class="form-section">
+              <h3 class="section-header">
+                <i class="fas fa-user-tie"></i>
+                ข้อมูลพนักงาน
+              </h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="ios-input-group">
+                  <label class="ios-label">ชื่อพนักงาน</label>
+                  <input type="text" class="ios-input" id="employee_name" placeholder="กรอกชื่อพนักงาน">
+                </div>
+                <div class="ios-input-group">
+                  <label class="ios-label">รหัสพนักงาน</label>
+                  <input type="text" class="ios-input" id="employee_id" placeholder="กรอกรหัสพนักงาน">
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="form-section">
+              <h3 class="section-header">
+                <i class="fas fa-user"></i>
+                ข้อมูลลูกค้า
+              </h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="ios-input-group">
+                  <label class="ios-label">ชื่อนามสมมุติ</label>
+                  <input type="text" class="ios-input" id="cust_name" placeholder="กรอกชื่อลูกค้า">
+                </div>
+                <div class="ios-input-group">
+                  <label class="ios-label">อายุ</label>
+                  <input type="number" class="ios-input" id="cust_age" placeholder="กรอกอายุ">
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="ios-input-group">
+                  <label class="ios-label">เพศ</label>
+                  <select class="ios-select" id="cust_gender">
+                    <option value="">เลือกเพศ</option>
+                    <option>ชาย</option>
+                    <option>หญิง</option>
+                    <option>อื่นๆ</option>
+                  </select>
+                </div>
+                <div class="ios-input-group">
+                  <label class="ios-label">อาชีพ</label>
+                  <select class="ios-select" id="cust_occupation">
+                    <option value="">เลือกอาชีพ</option>
+                    <option>พนักงานบริษัท</option>
+                    <option>ข้าราชการ</option>
+                    <option>เจ้าของกิจการ</option>
+                    <option>แพทย์</option>
+                    <option>วิศวกร</option>
+                    <option>ครู</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ios-input-group">
+                <label class="ios-label">รายได้ต่อเดือน (บาท)</label>
+                <input type="number" class="ios-input" id="cust_monthly_income" placeholder="กรอกรายได้ต่อเดือน">
+              </div>
+            </div>
+
+            <!-- Family Information -->
+            <div class="form-section">
+              <h3 class="section-header">
+                <i class="fas fa-users"></i>
+                ข้อมูลครอบครัว
+              </h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="ios-input-group">
+                  <label class="ios-label">สถานภาพ</label>
+                  <select class="ios-select" id="cust_marital_status">
+                    <option value="">เลือกสถานภาพ</option>
+                    <option>โสด</option>
+                    <option>สมรส</option>
+                    <option>หม้าย</option>
+                    <option>หย่า</option>
+                  </select>
+                </div>
+                <div class="ios-input-group">
+                  <label class="ios-label">มีบุตรหรือไม่</label>
+                  <select class="ios-select" id="cust_has_children">
+                    <option value="">เลือก</option>
+                    <option>ไม่มี</option>
+                    <option>มี</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Analysis Section -->
+            <div class="form-section">
+              <h3 class="section-header">
+                <i class="fas fa-robot"></i>
+                AI Insurance Advisor
+              </h3>
+              <div style="text-align: center; padding: 20px;">
+                <button class="ios-btn ios-btn-primary" id="btnAnalyze" style="padding: 16px 32px; font-size: 17px;">
+                  <i class="fas fa-magic"></i>
+                  วิเคราะห์ด้วย AI
+                </button>
+                <p style="color: var(--text-secondary); margin-top: 12px; font-size: 15px;">
+                  ระบบจะวิเคราะห์ข้อมูลและแนะนำผลิตภัณฑ์ที่เหมาะสมที่สุด
+                </p>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+              <button class="ios-btn ios-btn-secondary" id="btnClear" style="flex: 1;">
+                <i class="fas fa-broom"></i>
+                ล้างข้อมูล
+              </button>
+              <button class="ios-btn ios-btn-primary" id="btnSave" style="flex: 1;">
+                <i class="fas fa-save"></i>
+                บันทึกข้อมูล
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="ios-card" id="analysisResults" style="display: none;">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-chart-line" style="color: var(--green);"></i>
+              ผลการวิเคราะห์
+            </h2>
+            <p class="ios-card-subtitle">คำแนะนำจากระบบ AI Advisor</p>
+          </div>
+          <div class="ios-card-body">
+            <div class="recommendation-grid" id="recommendationList">
+              <!-- Recommendations will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Panels -->
+      <div id="panel-list" class="content-panel">
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-list" style="color: var(--primary);"></i>
+              รายการลูกค้า
+            </h2>
+          </div>
+          <div class="ios-card-body">
+            <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+              <i class="fas fa-list-alt" style="font-size: 48px; margin-bottom: 16px;"></i>
+              <p>ระบบกำลังพัฒนา</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-report" class="content-panel">
+        <div class="ios-card">
+          <div class="ios-card-header">
+            <h2 class="ios-card-title">
+              <i class="fas fa-chart-bar" style="color: var(--primary);"></i>
+              รายงานและสถิติ
+            </h2>
+          </div>
+          <div class="ios-card-body">
+            <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+              <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 16px;"></i>
+              <p>ระบบกำลังพัฒนา</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // =============================================
-    // Integrated Insurance Advisor Classes
-    // =============================================
-
-    class AdvancedInsuranceAdvisor {
-      constructor() {
-        this.products = this.initializeProducts();
-        this.riskFactors = this.initializeRiskFactors();
-        this.lifeStageProfiles = this.initializeLifeStageProfiles();
-      }
-
-      initializeProducts() {
-        return {
-          'ประกันสุขภาพ IPD': { 
-            category: 'health', 
-            minAge: 0, 
-            maxAge: 70, 
-            priority: 1,
-            baseCapital: 500000,
-            premiumRate: 0.02
-          },
-          'ประกันสุขภาพ OPD': { 
-            category: 'health', 
-            minAge: 0, 
-            maxAge: 65, 
-            priority: 2,
-            baseCapital: 300000,
-            premiumRate: 0.015
-          },
-          'ประกันโรคร้ายแรง': { 
-            category: 'health', 
-            minAge: 25, 
-            maxAge: 60, 
-            priority: 3,
-            baseCapital: 1000000,
-            premiumRate: 0.025
-          },
-          'ประกันโรคมะเร็ง': { 
-            category: 'health', 
-            minAge: 20, 
-            maxAge: 65, 
-            priority: 4,
-            baseCapital: 800000,
-            premiumRate: 0.02
-          },
-          'ประกันชีวิตแบบสะสมทรัพย์': { 
-            category: 'life', 
-            minAge: 20, 
-            maxAge: 55, 
-            priority: 5,
-            baseCapital: 500000,
-            premiumRate: 0.015
-          },
-          'ประกันชีวิตแบบตลอดชีพ': { 
-            category: 'life', 
-            minAge: 25, 
-            maxAge: 50, 
-            priority: 6,
-            baseCapital: 1000000,
-            premiumRate: 0.02
-          },
-          'ประกันชีวิตแบบชั่วระยะเวลา': { 
-            category: 'life', 
-            minAge: 20, 
-            maxAge: 60, 
-            priority: 7,
-            baseCapital: 2000000,
-            premiumRate: 0.01
-          },
-          'ประกันอุบัติเหตุส่วนบุคคล': { 
-            category: 'accident', 
-            minAge: 18, 
-            maxAge: 65, 
-            priority: 8,
-            baseCapital: 1000000,
-            premiumRate: 0.005
-          },
-          'ประกันทุพพลภาพ': { 
-            category: 'accident', 
-            minAge: 20, 
-            maxAge: 55, 
-            priority: 9,
-            baseCapital: 600000,
-            premiumRate: 0.008
-          },
-          'ประกันบำนาญ': { 
-            category: 'retirement', 
-            minAge: 30, 
-            maxAge: 50, 
-            priority: 10,
-            baseCapital: 2000000,
-            premiumRate: 0.012
-          },
-          'ประกันการศึกษา': { 
-            category: 'savings', 
-            minAge: 25, 
-            maxAge: 45, 
-            priority: 11,
-            baseCapital: 500000,
-            premiumRate: 0.01
-          }
-        };
-      }
-
-      initializeRiskFactors() {
-        return {
-          occupation: {
-            'แพทย์': { health: 8, accident: 6, life: 5 },
-            'วิศวกร': { health: 5, accident: 7, life: 4 },
-            'ครู': { health: 4, accident: 3, life: 4 },
-            'นักกฎหมาย': { health: 6, accident: 4, life: 5 },
-            'เจ้าของกิจการ/ธุรกิจส่วนตัว': { health: 7, accident: 5, life: 8 },
-            'พนักงานบริษัท': { health: 4, accident: 3, life: 4 },
-            'ข้าราชการ': { health: 3, accident: 2, life: 3 },
-            'แม่บ้าน': { health: 3, accident: 2, life: 3 }
-          },
-          ageHealthRisk: {
-            '0-17': { critical_illness: 1, cancer: 1, disability: 2 },
-            '18-25': { critical_illness: 2, cancer: 1, disability: 3 },
-            '26-35': { critical_illness: 3, cancer: 2, disability: 4 },
-            '36-45': { critical_illness: 5, cancer: 4, disability: 5 },
-            '46-55': { critical_illness: 7, cancer: 6, disability: 6 },
-            '56-65': { critical_illness: 8, cancer: 8, disability: 7 }
-          }
-        };
-      }
-
-      initializeLifeStageProfiles() {
-        return {
-          'student': { ageRange: [15, 24], priorities: ['education', 'accident'] },
-          'early_career': { ageRange: [25, 34], priorities: ['health', 'savings', 'accident'] },
-          'family_builder': { ageRange: [35, 44], priorities: ['life', 'health', 'education'] },
-          'peak_earner': { ageRange: [45, 54], priorities: ['retirement', 'critical_illness', 'investment'] },
-          'pre_retirement': { ageRange: [55, 64], priorities: ['health', 'retirement', 'critical_illness'] }
-        };
-      }
-
-      createDetailedProfile(customer) {
-        return {
-          age: customer.age || 0,
-          gender: customer.gender || '',
-          occupation: customer.occupation || '',
-          income: {
-            monthly: customer.monthly_income || 0,
-            yearly: (customer.monthly_income || 0) * 12,
-            tier: this.getIncomeTier(customer.monthly_income || 0)
-          },
-          family: {
-            maritalStatus: customer.marital_status || '',
-            hasChildren: customer.has_children === 'มี',
-            childrenCount: customer.children_count || 0,
-            childrenAges: this.parseChildrenAges(customer.children_ages)
-          },
-          lifeStage: this.determineLifeStage(customer),
-          risk: {
-            occupationRisk: this.calculateOccupationRisk(customer.occupation),
-            level: this.calculateOverallRisk(customer)
-          }
-        };
-      }
-
-      performMultiDimensionalAnalysis(profile) {
-        return {
-          needs: {
-            health: this.analyzeHealthNeeds(profile),
-            life: this.analyzeLifeInsuranceNeeds(profile),
-            retirement: this.analyzeRetirementNeeds(profile),
-            education: profile.family.hasChildren ? this.analyzeEducationNeeds(profile) : []
-          },
-          gaps: {
-            health: this.identifyHealthGaps(profile),
-            life: this.identifyLifeInsuranceGaps(profile)
-          },
-          urgency: {
-            health: this.calculateHealthUrgency(profile),
-            life: this.calculateLifeInsuranceUrgency(profile)
-          }
-        };
-      }
-
-      analyzeHealthNeeds(profile) {
-        const needs = [];
-        const age = profile.age;
-
-        // Basic Health Coverage
-        needs.push({
-          type: 'basic_health',
-          priority: 'high',
-          reason: 'ความคุ้มครองพื้นฐานสำหรับค่ารักษาพยาบาล'
-        });
-
-        // Critical Illness based on age
-        if (age >= 30) {
-          needs.push({
-            type: 'critical_illness',
-            priority: age >= 40 ? 'high' : 'medium',
-            reason: `อายุ ${age} ปี เป็นกลุ่มเสี่ยงโรคเรื้อรัง`
-          });
-        }
-
-        // Cancer coverage
-        if (age >= 35) {
-          needs.push({
-            type: 'cancer',
-            priority: age >= 45 ? 'high' : 'medium',
-            reason: 'ความเสี่ยงโรคมะเร็งเพิ่มขึ้นตามอายุ'
-          });
-        }
-
-        return needs;
-      }
-
-      analyzeLifeInsuranceNeeds(profile) {
-        const needs = [];
-        const { family, income } = profile;
-
-        // Basic life coverage
-        if (income.monthly > 0) {
-          needs.push({
-            type: 'income_replacement',
-            priority: 'high',
-            reason: `แทนที่รายได้ ${income.monthly.toLocaleString()} บาท/เดือน`,
-            suggestedCoverage: income.yearly * 5
-          });
-        }
-
-        // Family protection
-        if (family.hasChildren || family.maritalStatus === 'สมรส') {
-          needs.push({
-            type: 'family_protection',
-            priority: 'high',
-            reason: `มี${family.hasChildren ? 'บุตร' : 'คู่สมรส'}ที่ต้องดูแล`,
-            suggestedCoverage: this.calculateFamilyProtectionNeeds(profile)
-          });
-        }
-
-        return needs;
-      }
-
-      analyzeRetirementNeeds(profile) {
-        const needs = [];
-        const { age, income } = profile;
-
-        if (age >= 30) {
-          const yearsToRetirement = 60 - age;
-          needs.push({
-            type: 'retirement_savings',
-            priority: yearsToRetirement <= 15 ? 'high' : 'medium',
-            reason: `เหลือเวลาอีก ${yearsToRetirement} ปีก่อนเกษียณ`,
-            suggestedSavings: this.calculateRetirementNeeds(profile)
-          });
-        }
-
-        return needs;
-      }
-
-      analyzeEducationNeeds(profile) {
-        const needs = [];
-        const childrenAges = profile.family.childrenAges;
-
-        childrenAges.forEach((age, index) => {
-          const yearsToUniversity = 18 - age;
-          if (yearsToUniversity > 0 && yearsToUniversity <= 15) {
-            needs.push({
-              type: 'education_fund',
-              priority: yearsToUniversity <= 5 ? 'high' : 'medium',
-              reason: `บุตรคนที่ ${index + 1} วัย ${age} ปี จะเข้าเรียนมหาวิทยาลัยในอีก ${yearsToUniversity} ปี`,
-              suggestedSavings: this.calculateEducationNeeds(age)
-            });
-          }
-        });
-
-        return needs;
-      }
-
-      generateRecommendations(analysis, profile) {
-        const recommendations = [];
-        
-        // Generate recommendations based on analysis
-        if (analysis.needs.health.length > 0) {
-          analysis.needs.health.forEach(need => {
-            const product = this.mapNeedToProduct(need.type);
-            if (product) {
-              recommendations.push(this.createProductRecommendation(product, need, profile));
-            }
-          });
-        }
-
-        if (analysis.needs.life.length > 0) {
-          analysis.needs.life.forEach(need => {
-            const product = this.mapNeedToProduct(need.type);
-            if (product) {
-              recommendations.push(this.createProductRecommendation(product, need, profile));
-            }
-          });
-        }
-
-        if (analysis.needs.retirement.length > 0) {
-          analysis.needs.retirement.forEach(need => {
-            const product = this.mapNeedToProduct(need.type);
-            if (product) {
-              recommendations.push(this.createProductRecommendation(product, need, profile));
-            }
-          });
-        }
-
-        if (analysis.needs.education && analysis.needs.education.length > 0) {
-          analysis.needs.education.forEach(need => {
-            const product = this.mapNeedToProduct(need.type);
-            if (product) {
-              recommendations.push(this.createProductRecommendation(product, need, profile));
-            }
-          });
-        }
-
-        // Sort by score and return top 5
-        return recommendations
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 5);
-      }
-
-      createProductRecommendation(productName, need, profile) {
-        const product = this.products[productName];
-        const score = this.calculateProductScore(productName, profile, need);
-        const capital = this.calculateCapital(productName, profile, need);
-        const premium = this.calculatePremium(productName, capital, product.premiumRate);
-        const reason = this.generateReason(productName, need, profile);
-
-        return {
-          product: productName,
-          score: score,
-          capital: capital,
-          premium: premium,
-          reason: reason,
-          source: 'rule_based',
-          category: product.category,
-          urgency: need.priority === 'high' ? 3 : need.priority === 'medium' ? 2 : 1
-        };
-      }
-
-      calculateProductScore(productName, profile, need) {
-        let score = 50; // Base score
-
-        // Age factor
-        const product = this.products[productName];
-        if (profile.age >= product.minAge && profile.age <= product.maxAge) {
-          score += 20;
-        }
-
-        // Income factor
-        if (profile.income.tier === 'high' || profile.income.tier === 'premium') {
-          score += 15;
-        }
-
-        // Need priority
-        if (need.priority === 'high') score += 15;
-        else if (need.priority === 'medium') score += 10;
-
-        // Life stage alignment
-        const lifeStageScore = this.getLifeStageAlignmentScore(productName, profile.lifeStage);
-        score += lifeStageScore;
-
-        return Math.min(score, 95);
-      }
-
-      calculateCapital(productName, profile, need) {
-        const product = this.products[productName];
-        let capital = product.baseCapital;
-
-        // Adjust based on income
-        if (profile.income.tier === 'medium') capital *= 1.5;
-        else if (profile.income.tier === 'high') capital *= 2;
-        else if (profile.income.tier === 'premium') capital *= 3;
-
-        // Use suggested coverage if available
-        if (need.suggestedCoverage) {
-          capital = Math.max(capital, need.suggestedCoverage);
-        }
-
-        // Cap at reasonable amount
-        return Math.min(capital, 5000000);
-      }
-
-      calculatePremium(productName, capital, premiumRate) {
-        return Math.round(capital * premiumRate);
-      }
-
-      generateReason(productName, need, profile) {
-        const reasons = {
-          'ประกันสุขภาพ IPD': `อายุ ${profile.age} ปี ควรมีความคุ้มครองค่ารักษาพยาบาล`,
-          'ประกันสุขภาพ OPD': `เหมาะสำหรับการรักษาพยาบาลทั่วไป`,
-          'ประกันโรคร้ายแรง': `กลุ่มอายุ ${profile.age} ปี มีความเสี่ยงโรคเรื้อรัง`,
-          'ประกันชีวิตแบบสะสมทรัพย์': `สร้างความมั่นคงทางการเงินพร้อมออมทรัพย์`,
-          'ประกันบำนาญ': `วางแผนการเงินหลังเกษียณ อีก ${60 - profile.age} ปี`
-        };
-
-        return reasons[productName] || need.reason;
-      }
-
-      // Helper methods
-      mapNeedToProduct(needType) {
-        const mapping = {
-          'basic_health': 'ประกันสุขภาพ IPD',
-          'critical_illness': 'ประกันโรคร้ายแรง',
-          'cancer': 'ประกันโรคมะเร็ง',
-          'income_replacement': 'ประกันชีวิตแบบสะสมทรัพย์',
-          'family_protection': 'ประกันชีวิตแบบตลอดชีพ',
-          'retirement_savings': 'ประกันบำนาญ',
-          'education_fund': 'ประกันการศึกษา'
-        };
-        return mapping[needType];
-      }
-
-      getIncomeTier(monthlyIncome) {
-        if (monthlyIncome <= 25000) return 'low';
-        if (monthlyIncome <= 50000) return 'medium';
-        if (monthlyIncome <= 100000) return 'high';
-        return 'premium';
-      }
-
-      determineLifeStage(customer) {
-        const age = customer.age || 0;
-        if (age <= 24) return 'student';
-        if (age <= 34) return 'early_career';
-        if (age <= 44) return 'family_builder';
-        if (age <= 54) return 'peak_earner';
-        return 'pre_retirement';
-      }
-
-      calculateOccupationRisk(occupation) {
-        return this.riskFactors.occupation[occupation] || { health: 4, accident: 3, life: 4 };
-      }
-
-      calculateOverallRisk(customer) {
-        let risk = 0;
-        if (customer.age >= 40) risk += 2;
-        if (customer.occupation === 'แพทย์' || customer.occupation === 'วิศวกร') risk += 2;
-        if (customer.has_children === 'มี') risk += 1;
-        return Math.min(risk, 5);
-      }
-
-      parseChildrenAges(agesString) {
-        if (!agesString) return [];
-        return agesString.split(',').map(age => parseInt(age.trim())).filter(age => !isNaN(age));
-      }
-
-      identifyHealthGaps(profile) {
-        return [{
-          type: 'basic_health_coverage',
-          severity: 'high',
-          description: 'แนะนำความคุ้มครองสุขภาพพื้นฐาน'
-        }];
-      }
-
-      identifyLifeInsuranceGaps(profile) {
-        return [{
-          type: 'income_replacement_gap',
-          severity: 'medium',
-          description: 'แนะนำความคุ้มครองชีวิตเพิ่มเติม'
-        }];
-      }
-
-      calculateHealthUrgency(profile) {
-        let urgency = 0;
-        if (profile.age >= 50) urgency += 3;
-        else if (profile.age >= 40) urgency += 2;
-        urgency += Math.floor(profile.risk.occupationRisk.health / 2);
-        return Math.min(urgency, 5);
-      }
-
-      calculateLifeInsuranceUrgency(profile) {
-        let urgency = 0;
-        if (profile.family.hasChildren) urgency += 3;
-        if (profile.family.maritalStatus === 'สมรส') urgency += 2;
-        return Math.min(urgency, 5);
-      }
-
-      calculateFamilyProtectionNeeds(profile) {
-        const base = profile.income.yearly * 3;
-        const childrenFactor = profile.family.childrenCount * 500000;
-        return base + childrenFactor;
-      }
-
-      calculateRetirementNeeds(profile) {
-        const currentAge = profile.age;
-        const retirementAge = 60;
-        const yearsInRetirement = 25;
-        const monthlyNeed = profile.income.monthly * 0.7;
-        return monthlyNeed * 12 * yearsInRetirement;
-      }
-
-      calculateEducationNeeds(childAge) {
-        const yearsToUni = 18 - childAge;
-        return 1000000; // 1 million THB
-      }
-
-      getLifeStageAlignmentScore(productName, lifeStage) {
-        const alignment = {
-          'student': { 'ประกันอุบัติเหตุส่วนบุคคล': 10 },
-          'early_career': { 'ประกันสุขภาพ IPD': 10, 'ประกันชีวิตแบบชั่วระยะเวลา': 8 },
-          'family_builder': { 'ประกันชีวิตแบบสะสมทรัพย์': 10, 'ประกันการศึกษา': 9 },
-          'peak_earner': { 'ประกันบำนาญ': 10, 'ประกันโรคร้ายแรง': 9 },
-          'pre_retirement': { 'ประกันสุขภาพ OPD': 10, 'ประกันโรคร้ายแรง': 8 }
-        };
-        return alignment[lifeStage]?.[productName] || 0;
-      }
-    }
-
-    class IntegratedInsuranceAdvisor {
-      constructor() {
-        this.ruleBasedAdvisor = new AdvancedInsuranceAdvisor();
-        this.analysisHistory = [];
-      }
-
-      async analyzeCustomer(customerData, options = {}) {
-        const analysisId = this.generateAnalysisId();
-        
-        // Step 1: Create Customer Profile
-        const customerProfile = this.ruleBasedAdvisor.createDetailedProfile(customerData);
-        
-        // Step 2: Perform Analysis
-        const ruleBasedResults = await this.performRuleBasedAnalysis(customerProfile);
-        
-        // Step 3: Create Integrated Results
-        const integratedResults = this.createIntegratedResult(ruleBasedResults, customerProfile);
-        
-        // Step 4: Apply Business Rules
-        const finalResults = this.applyBusinessRules(integratedResults, customerProfile);
-        
-        // Step 5: Log Analysis
-        this.logAnalysis({
-          id: analysisId,
-          customerProfile,
-          results: finalResults
-        });
-
-        return finalResults;
-      }
-
-      async performRuleBasedAnalysis(profile) {
-        const analysis = this.ruleBasedAdvisor.performMultiDimensionalAnalysis(profile);
-        const recommendations = this.ruleBasedAdvisor.generateRecommendations(analysis, profile);
-        
-        return {
-          source: 'rule_based',
-          timestamp: new Date().toISOString(),
-          confidence: 0.8,
-          recommendations: recommendations,
-          analysis: analysis
-        };
-      }
-
-      createIntegratedResult(ruleBased, profile) {
-        return {
-          analysisId: this.generateAnalysisId(),
-          timestamp: new Date().toISOString(),
-          sources: {
-            ruleBased: true,
-            ai: false,
-            primary: 'rule_based_primary'
-          },
-          recommendations: ruleBased.recommendations,
-          ruleBasedAnalysis: ruleBased.analysis,
-          confidence: {
-            overall: 0.8,
-            ruleBased: 0.8,
-            ai: 0
-          },
-          profileSummary: {
-            lifeStage: profile.lifeStage,
-            riskLevel: profile.risk.level,
-            incomeTier: profile.income.tier,
-            familyStatus: this.getFamilyStatus(profile.family)
-          }
-        };
-      }
-
-      applyBusinessRules(results, profile) {
-        // ปรับตามความสามารถในการจ่าย
-        results.recommendations = results.recommendations.map(rec => {
-          const maxAffordable = profile.income.monthly * 0.15;
-          if (rec.premium > maxAffordable) {
-            return {
-              ...rec,
-              premium: maxAffordable,
-              capital: Math.round(rec.capital * (maxAffordable / rec.premium)),
-              adjusted: true,
-              adjustmentNote: 'ปรับลดตามความสามารถในการจ่าย'
-            };
-          }
-          return rec;
-        });
-
-        // คำนวณโอกาสสำเร็จ
-        results.recommendations.forEach(rec => {
-          rec.successProbability = this.calculateSuccessProbability(rec, profile);
-        });
-
-        return results;
-      }
-
-      calculateSuccessProbability(recommendation, profile) {
-        let probability = recommendation.score / 100;
-        if (profile.income.tier === 'high' || profile.income.tier === 'premium') probability += 0.1;
-        if (profile.family.hasChildren) probability += 0.15;
-        if (profile.family.maritalStatus === 'สมรส') probability += 0.1;
-        return Math.min(probability, 0.95);
-      }
-
-      getFamilyStatus(family) {
-        if (family.hasChildren && family.maritalStatus === 'สมรส') return 'ครอบครัวสมบูรณ์';
-        if (family.hasChildren) return 'มีบุตร';
-        if (family.maritalStatus === 'สมรส') return 'สมรส';
-        return 'โสด';
-      }
-
-      generateAnalysisId() {
-        return `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      }
-
-      logAnalysis(analysisData) {
-        this.analysisHistory.unshift(analysisData);
-        if (this.analysisHistory.length > 100) {
-          this.analysisHistory.pop();
-        }
-      }
-    }
-
-    // =============================================
-    // Main Application Logic
-    // =============================================
-
-    let integratedAdvisor = new IntegratedInsuranceAdvisor();
-
     // DOM Helper
     const $ = (id) => document.getElementById(id);
-
-    // System State
-    let currentPanel = 'start';
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
@@ -1450,261 +798,191 @@
       // Simulate loading
       simulateLoading();
       
-      // Enter button click
-      $('enterBtn').addEventListener('click', showMainApp);
-      
-      // Start button click
-      $('btn-start').addEventListener('click', function() {
-        showPanel('form');
-      });
-      
-      // Navigation
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+      // Tab navigation
+      document.querySelectorAll('.ios-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
           const panel = this.getAttribute('data-panel');
           showPanel(panel);
         });
       });
-      
-      // Back and Home buttons
-      document.querySelectorAll('[id^="btn-back-"]').forEach(btn => {
-        btn.addEventListener('click', () => showPanel('start'));
-      });
-      
-      document.querySelectorAll('[id^="btn-home-"]').forEach(btn => {
-        btn.addEventListener('click', () => showPanel('start'));
-      });
 
-      // Form event listeners
-      $('cust_monthly_income').addEventListener('input', calculateYearlyIncome);
-      $('cust_has_children').addEventListener('change', toggleChildrenSection);
+      // Start button
+      $('btnStart').addEventListener('click', () => showPanel('form'));
+
+      // Analyze button
+      $('btnAnalyze').addEventListener('click', performAnalysis);
+
+      // Clear button
       $('btnClear').addEventListener('click', clearForm);
-      $('btnSave').addEventListener('click', saveCustomer);
 
-      // AI Analysis
-      $('btnIntegratedAnalyze').addEventListener('click', performIntegratedAnalysis);
-
-      // RH and Zone management
-      $('rh').addEventListener('change', updateZones);
+      // Save button
+      $('btnSave').addEventListener('click', saveData);
     }
 
     function simulateLoading() {
       let progress = 0;
       const progressBar = $('loadingProgress');
-      const enterBtn = $('enterBtn');
       
       const interval = setInterval(() => {
-        progress += Math.random() * 15;
+        progress += Math.random() * 20;
         if (progress >= 100) {
           progress = 100;
           clearInterval(interval);
-          enterBtn.style.display = 'block';
+          setTimeout(() => {
+            $('loadingScreen').style.opacity = '0';
+            setTimeout(() => {
+              $('loadingScreen').style.display = 'none';
+              $('appContainer').style.display = 'flex';
+            }, 600);
+          }, 500);
         }
         progressBar.style.width = `${progress}%`;
-      }, 300);
-    }
-
-    function showMainApp() {
-      $('loadingScreen').style.opacity = '0';
-      setTimeout(() => {
-        $('loadingScreen').style.display = 'none';
-        $('appContainer').style.display = 'flex';
-        showPanel('start');
-      }, 500);
+      }, 200);
     }
 
     function showPanel(panelName) {
-      // Hide all panels
+      // Update tabs
+      document.querySelectorAll('.ios-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelector(`.ios-tab[data-panel="${panelName}"]`).classList.add('active');
+
+      // Update panels
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
       });
-      
-      // Remove active class from all menu items
-      document.querySelectorAll('.nav-btn').forEach(item => {
-        item.classList.remove('active');
-      });
-      
-      // Show selected panel and activate menu
       $(`panel-${panelName}`).classList.add('active');
-      $(`tab-${panelName}`).classList.add('active');
-      
-      currentPanel = panelName;
     }
 
-    function calculateYearlyIncome() {
-      const monthlyIncome = parseFloat($('cust_monthly_income').value) || 0;
-      const yearlyIncome = monthlyIncome * 12;
-      $('cust_yearly_income').value = yearlyIncome.toLocaleString();
-    }
-
-    function toggleChildrenSection() {
-      const hasChildren = $('cust_has_children').value === 'มี';
-      $('children-section').style.display = hasChildren ? 'block' : 'none';
-    }
-
-    function updateZones() {
-      const rh = $('rh').value;
-      const zoneSelect = $('zone');
-      
-      zoneSelect.innerHTML = '<option value="">เลือก Zone</option>';
-      
-      if (rh) {
-        // Simple zone mapping
-        const zones = {
-          'RH1': ['จตุจักร', 'ธนบุรี', 'บางกะปิ', 'สาทร', 'สุขุมวิท'],
-          'RH2': ['ชลบุรี', 'บางนา', 'พัทยา', 'ระยอง'],
-          'RH3': ['เชียงใหม่', 'นครสวรรค์', 'นนทบุรี', 'พิษณุโลก', 'อยุธยา'],
-          'RH4': ['ดอนเมือง', 'นครราชสีมา', 'สระบุรี', 'อุดรธานี', 'อุบลราชธานี'],
-          'RH5': ['ภูเก็ต', 'ราชบุรี', 'สมุทรสาคร', 'สุราษฎร์ธานี', 'หาดใหญ่']
-        };
-        
-        zones[rh].forEach(zone => {
-          zoneSelect.innerHTML += `<option value="${zone}">Zone ${zone}</option>`;
-        });
-        zoneSelect.disabled = false;
-      } else {
-        zoneSelect.disabled = true;
-      }
-    }
-
-    function clearForm() {
-      document.getElementById('customerForm').reset();
-      $('customerIdDisplay').style.display = 'none';
-      $('formStatus').textContent = '';
-      $('children-section').style.display = 'none';
-      $('integratedAnalysisResults').style.display = 'none';
-      $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
-      $('zone').disabled = true;
-      calculateYearlyIncome();
-    }
-
-    function saveCustomer() {
-      alert('ระบบบันทึกข้อมูลกำลังพัฒนา...');
-      $('formStatus').textContent = 'บันทึกเรียบร้อย (Demo)';
-    }
-
-    // AI Analysis Functions
-    async function performIntegratedAnalysis() {
+    function performAnalysis() {
       const customerData = collectCustomerData();
       
       // Basic validation
-      if (!customerData.age || !customerData.monthly_income || !customerData.occupation) {
-        alert('กรุณากรอกข้อมูลพื้นฐานให้ครบถ้วน (อายุ, รายได้, อาชีพ)');
+      if (!customerData.name || !customerData.age || !customerData.income) {
+        alert('กรุณากรอกข้อมูลพื้นฐานให้ครบถ้วน');
         return;
       }
+
+      // Show loading state
+      $('analysisResults').style.display = 'none';
       
-      showAnalysisLoading();
-      
-      try {
-        const results = await integratedAdvisor.analyzeCustomer(customerData);
-        displayIntegratedResults(results);
-        autoFillRecommendations(results.recommendations);
-      } catch (error) {
-        showAnalysisError(error);
-      }
+      // Simulate AI processing
+      setTimeout(() => {
+        const recommendations = generateRecommendations(customerData);
+        displayRecommendations(recommendations);
+        $('analysisResults').style.display = 'block';
+        
+        // Scroll to results
+        $('analysisResults').scrollIntoView({ behavior: 'smooth' });
+      }, 1500);
     }
 
     function collectCustomerData() {
       return {
+        name: $('cust_name').value,
         age: parseInt($('cust_age').value) || 0,
         gender: $('cust_gender').value,
-        monthly_income: parseFloat($('cust_monthly_income').value) || 0,
         occupation: $('cust_occupation').value,
-        marital_status: $('cust_marital_status').value,
-        has_children: $('cust_has_children').value,
-        children_count: parseInt($('cust_children_count').value) || 0,
-        children_ages: $('cust_children_ages').value
+        income: parseFloat($('cust_monthly_income').value) || 0,
+        maritalStatus: $('cust_marital_status').value,
+        hasChildren: $('cust_has_children').value
       };
     }
 
-    function showAnalysisLoading() {
-      $('integratedAnalysisResults').innerHTML = `
-        <div class="loading-analysis">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">กำลังวิเคราะห์...</span>
-          </div>
-          <p class="mt-2">กำลังวิเคราะห์ข้อมูลแบบหลายมิติ...</p>
-          <small class="text-muted">ระบบกำลังวิเคราะห์: ข้อมูลส่วนตัว, ครอบครัว, การเงิน, ความเสี่ยง</small>
-        </div>
-      `;
-      $('integratedAnalysisResults').style.display = 'block';
-    }
+    function generateRecommendations(customer) {
+      const recommendations = [];
+      const age = customer.age;
+      const income = customer.income;
 
-    function displayIntegratedResults(results) {
-      const resultsHTML = `
-        <div class="analysis-results">
-          <div class="results-header">
-            <h5><i class="fas fa-chart-network"></i> ผลการวิเคราะห์แบบบูรณาการ</h5>
-            <div class="sources-badge">
-              <span class="badge bg-primary">Multi-Dimensional</span>
-              <span class="badge bg-secondary">${results.profileSummary.lifeStage}</span>
-            </div>
-          </div>
-          
-          <div class="alert alert-info">
-            <i class="fas fa-user-circle"></i> 
-            โปรไฟล์: ${results.profileSummary.incomeTier} | 
-            ระยะชีวิต: ${results.profileSummary.lifeStage} | 
-            สถานภาพ: ${results.profileSummary.familyStatus} |
-            ระดับความเสี่ยง: ${results.profileSummary.riskLevel}/5
-          </div>
-          
-          ${results.recommendations.map(rec => `
-            <div class="recommendation-card">
-              <div class="card-header">
-                <h6 class="mb-0">${rec.product}</h6>
-                <div class="scores">
-                  <span class="score-badge">${rec.score}%</span>
-                  ${rec.adjusted ? '<span class="badge bg-warning">ปรับแล้ว</span>' : ''}
-                  ${rec.urgency >= 3 ? '<span class="badge bg-danger">เร่งด่วน</span>' : ''}
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="financials">
-                  <div><strong>ทุน:</strong> ${rec.capital.toLocaleString()} บาท</div>
-                  <div><strong>เบี้ยปี:</strong> ${rec.premium.toLocaleString()} บาท</div>
-                </div>
-                <div class="reasoning">
-                  <p>${rec.reason}</p>
-                  ${rec.adjusted ? `<p><small class="text-warning">${rec.adjustmentNote}</small></p>` : ''}
-                </div>
-                <div class="metadata">
-                  <small class="text-muted">
-                    โอกาสสำเร็จ: ${Math.round(rec.successProbability * 100)}% | 
-                    ความมั่นใจ: ${Math.round(results.confidence.overall * 100)}% |
-                    หมวดหมู่: ${rec.category}
-                  </small>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-      
-      $('integratedAnalysisResults').innerHTML = resultsHTML;
-    }
-
-    function showAnalysisError(error) {
-      $('integratedAnalysisResults').innerHTML = `
-        <div class="analysis-error">
-          <i class="fas fa-exclamation-triangle"></i>
-          <strong>เกิดข้อผิดพลาด:</strong> ${error.message}
-          <br><small>กรุณากรอกข้อมูลให้ครบถ้วนและลองอีกครั้ง</small>
-        </div>
-      `;
-    }
-
-    function autoFillRecommendations(recommendations) {
-      if (recommendations.length > 0) {
-        const topProduct = recommendations[0];
-        $('emp_proposed_product').value = recommendations.map(r => r.product).join(', ');
-        $('emp_proposed_premium').value = topProduct.premium;
-        $('emp_proposed_capital').value = topProduct.capital;
-        
-        // Auto-fill comments
-        const comment = `ระบบแนะนำ: ${recommendations.map(r => r.product).join(', ')} - ${topProduct.reason}`;
-        $('emp_additional_comments').value = comment;
+      // Health insurance recommendations
+      if (age >= 25) {
+        recommendations.push({
+          product: 'ประกันสุขภาพ IPD',
+          score: 85,
+          capital: Math.min(income * 12, 1000000),
+          premium: Math.round(income * 0.08),
+          reason: `อายุ ${age} ปี ควรมีความคุ้มครองสุขภาพพื้นฐาน`,
+          urgency: age >= 40 ? 'high' : 'medium'
+        });
       }
+
+      if (age >= 30) {
+        recommendations.push({
+          product: 'ประกันโรคร้ายแรง',
+          score: 78,
+          capital: Math.min(income * 24, 2000000),
+          premium: Math.round(income * 0.12),
+          reason: 'กลุ่มอายุนี้มีความเสี่ยงโรคเรื้อรังเพิ่มขึ้น',
+          urgency: 'medium'
+        });
+      }
+
+      // Life insurance recommendations
+      if (income >= 30000) {
+        recommendations.push({
+          product: 'ประกันชีวิตแบบสะสมทรัพย์',
+          score: 82,
+          capital: Math.min(income * 60, 3000000),
+          premium: Math.round(income * 0.15),
+          reason: 'สร้างความมั่นคงทางการเงินพร้อมออมทรัพย์',
+          urgency: customer.hasChildren === 'มี' ? 'high' : 'medium'
+        });
+      }
+
+      // Retirement planning
+      if (age >= 35 && income >= 40000) {
+        recommendations.push({
+          product: 'ประกันบำนาญ',
+          score: 75,
+          capital: Math.min(income * 120, 5000000),
+          premium: Math.round(income * 0.1),
+          reason: `วางแผนการเงินหลังเกษียณ อีก ${60 - age} ปี`,
+          urgency: 'medium'
+        });
+      }
+
+      return recommendations.sort((a, b) => b.score - a.score);
+    }
+
+    function displayRecommendations(recommendations) {
+      const container = $('recommendationList');
+      container.innerHTML = '';
+
+      recommendations.forEach(rec => {
+        const card = document.createElement('div');
+        card.className = 'recommendation-card';
+        card.innerHTML = `
+          <div class="recommendation-header">
+            <div>
+              <div class="recommendation-title">${rec.product}</div>
+            </div>
+            <div class="recommendation-badge">${rec.score}%</div>
+          </div>
+          <div class="recommendation-details">
+            <div class="detail-item">
+              <div class="detail-label">ทุนแนะนำ</div>
+              <div class="detail-value">${rec.capital.toLocaleString()} บาท</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">เบี้ยประกัน</div>
+              <div class="detail-value">${rec.premium.toLocaleString()} บาท/ปี</div>
+            </div>
+          </div>
+          <div class="recommendation-reason">${rec.reason}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function clearForm() {
+      document.querySelectorAll('.ios-input, .ios-select').forEach(input => {
+        input.value = '';
+      });
+      $('analysisResults').style.display = 'none';
+    }
+
+    function saveData() {
+      alert('ระบบบันทึกข้อมูลกำลังพัฒนา...');
     }
   </script>
 </body>
