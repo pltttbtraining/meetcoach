@@ -475,6 +475,15 @@
       display: none;
     }
 
+    /* Content Panels */
+    .content-panel {
+      display: none;
+    }
+
+    .content-panel.active {
+      display: block;
+    }
+
     /* Animations */
     @keyframes logoPulse {
       0%, 100% { transform: scale(1); }
@@ -834,8 +843,8 @@
                 <label class="ios-label">มีบุคคลอื่นที่ต้องดูแลหรือไม่</label>
                 <select class="ios-select" id="cust_has_dependents">
                   <option value="">เลือก</option>
-                  <option>ไม่มี</option>
-                  <option>มี</option>
+                    <option>ไม่มี</option>
+                    <option>มี</option>
                 </select>
               </div>
               <div id="dependents-section" style="display: none;">
@@ -1538,10 +1547,12 @@
       });
       document.querySelector(`.ios-tab[data-panel="${panelName}"]`).classList.add('active');
 
-      // Update panels
+      // Update panels - hide all first
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
       });
+      
+      // Show the selected panel
       $(`panel-${panelName}`).classList.add('active');
       
       currentPanel = panelName;
