@@ -21,14 +21,15 @@
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-:root {
+  <style>
+    :root {
       --primary-color: #007AFF;
       --primary-dark: #0056CC;
-      --secondary-color: #87CEEB; /* เปลี่ยนจาก #5856D6 (ม่วง) เป็น Sky Blue */
+      --secondary-color: #87CEEB;
       --success-color: #34C759;
       --warning-color: #FF9500;
       --error-color: #FF3B30;
-      --bg-gradient: linear-gradient(135deg, #b3e0ff 0%, #e6f7ff 100%); /* เปลี่ยนจากม่วงเป็นฟ้าอ่อน */
+      --bg-gradient: linear-gradient(135deg, #b3e0ff 0%, #e6f7ff 100%);
       --glass-bg: rgba(255, 255, 255, 0.25);
       --glass-border: rgba(255, 255, 255, 0.18);
       --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -59,7 +60,7 @@
       overflow-x: hidden;
     }
 
-    /* ---------- Loading Screen ---------- */
+    /* Loading Screen */
     .loading-screen {
       position: fixed;
       top: 0;
@@ -75,30 +76,6 @@
       transition: opacity 0.5s ease;
     }
 
-    .loading-logo {
-      font-size: 3rem;
-      color: white;
-      margin-bottom: var(--spacing-md);
-      animation: pulse 2s infinite;
-    }
-
-    .loading-text {
-      color: white;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .loading-spinner-large {
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s linear infinite;
-      margin-bottom: var(--spacing-lg);
-    }
-
     .loading-progress {
       width: 300px;
       height: 6px;
@@ -110,42 +87,12 @@
 
     .loading-progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, #87CEEB, #007AFF); /* เปลี่ยนจาก #00ffcc เป็นฟ้าอ่อน */
+      background: linear-gradient(90deg, #87CEEB, #007AFF);
       width: 0%;
       transition: width 0.3s ease;
-      box-shadow: 0 0 10px #87CEEB; /* เปลี่ยนจาก #00ffcc เป็นฟ้าอ่อน */
     }
 
-    .enter-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      padding: 0.75rem 2rem;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .enter-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* ---------- Main App ---------- */
+    /* Main App */
     .app-container {
       min-height: 100vh;
       display: none;
@@ -162,15 +109,7 @@
       flex: 1;
     }
 
-    .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border-radius: var(--border-radius);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    /* ---------- Compact Navigation ---------- */
+    /* Navigation */
     .compact-nav {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
@@ -212,68 +151,20 @@
       align-items: center;
       gap: 0.25rem;
       font-size: 0.85rem;
-      position: relative;
     }
 
     .nav-btn:hover {
       transform: translateY(-1px);
-      border-color: var(--secondary-color); /* ใช้สีฟ้าอ่อนแทน */
-      box-shadow: 0 2px 6px rgba(135, 206, 235, 0.15); /* ใช้สีฟ้าอ่อน */
+      border-color: var(--secondary-color);
+      box-shadow: 0 2px 6px rgba(135, 206, 235, 0.15);
     }
 
     .nav-btn.active {
-      background: var(--secondary-color); /* ใช้สีฟ้าอ่อนแทน */
+      background: var(--secondary-color);
       color: white;
     }
 
-    .nav-actions {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: var(--primary-color);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.2);
-      color: var(--text-white);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-    }
-
-    .btn-sm {
-      padding: 0.375rem 0.75rem;
-      font-size: 0.8rem;
-    }
-
-    /* ---------- Page Header ---------- */
+    /* Page Header */
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -294,12 +185,7 @@
       gap: var(--spacing-xs);
     }
 
-    .page-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    /* ---------- Content Panels ---------- */
+    /* Content Panels */
     .content-panel {
       display: none;
       animation: fadeIn 0.3s ease;
@@ -325,51 +211,23 @@
       padding: var(--spacing-md);
     }
 
-    .small-muted {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
+    /* Form Styles */
+    .form-subsection {
+      background: #f8fbff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--secondary-color);
     }
-
-    .required::after {
-      content: " *";
-      color: var(--error-color);
-    }
-
-    .table-fixed {
-      max-height: 240px;
-      overflow: auto;
-      display: block;
-    }
-
-    .watermark {
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      opacity: 0.12;
-      font-weight: 700;
-      font-size: 12px;
-      color: var(--text-primary);
-    }
-
-    .form-container {
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    .form-section {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .form-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: var(--spacing-sm);
-      color: var(--text-primary);
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: var(--spacing-xs);
+    
+    .subsection-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .form-group {
@@ -406,267 +264,146 @@
       box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
     }
 
-    .form-textarea {
-      resize: vertical;
-      min-height: 80px;
+    /* AI Analysis Styles */
+    .analysis-results {
+      margin-top: 1rem;
     }
 
-    .input-with-button {
-      display: flex;
-      gap: var(--spacing-sm);
-    }
-
-    .input-with-button .form-input {
-      flex: 1;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .stat-card {
-      background: white;
-      padding: var(--spacing-md);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--secondary-color); /* เปลี่ยนจาก primary เป็น secondary (ฟ้าอ่อน) */
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .notification-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: var(--error-color);
-      color: white;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 0.7rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: var(--spacing-md);
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: var(--spacing-md);
-      max-width: 500px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-
-    .modal-header {
+    .results-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: var(--spacing-sm);
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #E5E5EA;
-    }
-
-    .modal-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      color: var(--text-secondary);
-    }
-
-    .form-subsection {
-      background: #f8fbff; /* ฟ้าอ่อนมาก */
-      border-radius: 8px;
-      padding: 1rem;
       margin-bottom: 1rem;
-      border-left: 4px solid var(--secondary-color); /* ใช้สีฟ้าอ่อน */
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--secondary-color);
     }
-    
-    .subsection-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .financial-products {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    
-    .product-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.6rem;
-      background: white;
-      border-radius: 6px;
+
+    .recommendation-card {
       border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: white;
     }
-    
-    .product-checkbox {
+
+    .recommendation-card .card-header {
+      background: #f8f9fa;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-      min-width: 130px;
     }
-    
-    .product-inputs {
+
+    .recommendation-card .card-body {
+      padding: 1rem;
+    }
+
+    .scores {
       display: flex;
-      gap: 0.75rem;
-      flex: 1;
+      gap: 0.5rem;
+      align-items: center;
     }
-    
-    .add-button {
+
+    .score-badge {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    .ai-badge {
       background: var(--success-color);
       color: white;
-      border: none;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.8rem;
-    }
-    
-    .remove-button {
-      background: var(--error-color);
-      color: white;
-      border: none;
       padding: 0.2rem 0.4rem;
       border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.75rem;
-    }
-    
-    .unknown-checkbox {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
-      font-size: 0.8rem;
-      color: #666;
+      font-size: 0.7rem;
     }
 
-    .charts-grid {
+    .financials {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: #f8fbff;
+      border-radius: 6px;
     }
 
-    .chart-container {
-      background: white;
-      padding: var(--spacing-md);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    .reasoning p {
+      margin-bottom: 0.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--secondary-color);
     }
 
-    .chart-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
+    .metadata {
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed #e0e0e0;
+    }
+
+    .loading-analysis {
       text-align: center;
+      padding: 2rem;
     }
 
-    .filter-section {
-      background: white;
-      padding: var(--spacing-sm);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: var(--spacing-md);
-      display: flex;
-      gap: var(--spacing-sm);
-      flex-wrap: wrap;
-      align-items: end;
+    .analysis-error {
+      background: #ffe6e6;
+      border: 1px solid #ffcccc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
     }
 
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .filter-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .settings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .setting-card {
-      background: white;
-      padding: var(--spacing-md);
-      border-radius: var(--border-radius);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .setting-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: var(--spacing-sm);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .setting-description {
-      color: var(--text-secondary);
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
       font-size: 0.85rem;
-      margin-bottom: var(--spacing-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
     }
 
-    .danger-zone {
-      border-left: 4px solid var(--error-color);
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .small-muted {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--error-color);
+    }
+
+    .watermark {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      opacity: 0.12;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-primary);
     }
 
     @media (max-width: 768px) {
@@ -685,164 +422,15 @@
         justify-content: center;
       }
       
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .filter-section {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
       .page-header {
         flex-direction: column;
         gap: 0.5rem;
         align-items: flex-start;
       }
       
-      .page-actions {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      .settings-grid {
+      .financials {
         grid-template-columns: 1fr;
       }
-    }
-
-    .start-container {
-      text-align: center;
-      padding: 3rem 1rem;
-    }
-
-    .start-logo {
-      font-size: 3.5rem;
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-    }
-
-    .start-title {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: var(--text-primary);
-    }
-
-    .start-subtitle {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      margin-bottom: 2rem;
-    }
-
-    .start-btn {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 1rem 3rem;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
-    }
-
-    .start-btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-    }
-
-    .customer-id-display {
-      background: var(--secondary-color); /* ใช้สีฟ้าอ่อน */
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      display: inline-block;
-    }
-
-    .comment-section {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #e0e0e0;
-    }
-
-    .comment-item {
-      background: #f8f9fa;
-      padding: 0.75rem;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-    }
-
-    .comment-meta {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.25rem;
-    }
-
-    .admin-tabs {
-      margin-top: 1rem;
-    }
-
-    .admin-tab-content {
-      margin-top: 1rem;
-    }
-
-    /* Custom checkbox styling */
-    .unknown-checkbox input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* Fullscreen modal styling */
-    .fullscreen-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 2000;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-
-    .fullscreen-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid #e0e0e0;
-      margin-bottom: 1rem;
-    }
-
-    .fullscreen-modal-content {
-      max-width: 100%;
-    }
-
-    /* RH Zone data structure */
-    .rh-zones {
-      display: none;
-    }
-
-    /* Gear spinner animation */
-    .gear-spinner {
-      animation: spin 1s linear infinite;
-      font-size: 3rem;
-      color: white;
-      margin-bottom: var(--spacing-lg);
-    }
-
-    /* เพิ่ม CSS สำหรับ badge และส่วนอื่นๆ */
-    .badge.bg-primary {
-      background-color: var(--secondary-color) !important; /* ใช้สีฟ้าอ่อนแทน */
-    }
-
-    .card-header.bg-primary {
-      background-color: var(--secondary-color) !important; /* ใช้สีฟ้าอ่อน */
     }
   </style>
 </head>
@@ -881,9 +469,6 @@
           </button>
           <button class="nav-btn" id="tab-report" data-panel="report">
             <i class="fas fa-chart-bar"></i> รายงาน
-          </button>
-          <button class="nav-btn" id="tab-admin" data-panel="admin">
-            <i class="fas fa-cog"></i> Admin
           </button>
         </div>
         <div class="nav-actions">
@@ -977,18 +562,10 @@
                     <div class="form-group">
                       <label class="form-label required">ชื่อนามสมมุติ</label>
                       <input type="text" id="cust_name" class="form-control">
-                      <div class="unknown-checkbox">
-                        <input type="checkbox" id="cust_name_unknown">
-                        <label for="cust_name_unknown">ไม่ทราบ/ไม่มีข้อมูล</label>
-                      </div>
                     </div>
                     <div class="form-group">
                       <label class="form-label required">อายุ</label>
                       <input type="number" id="cust_age" class="form-control">
-                      <div class="unknown-checkbox">
-                        <input type="checkbox" id="cust_age_unknown">
-                        <label for="cust_age_unknown">ไม่ทราบ/ไม่มีข้อมูล</label>
-                      </div>
                     </div>
                   </div>
                   <div class="form-row">
@@ -1000,10 +577,6 @@
                         <option>หญิง</option>
                         <option>อื่นๆ</option>
                       </select>
-                      <div class="unknown-checkbox">
-                        <input type="checkbox" id="cust_gender_unknown">
-                        <label for="cust_gender_unknown">ไม่ทราบ/ไม่มีข้อมูล</label>
-                      </div>
                     </div>
                     <div class="form-group">
                       <label class="form-label required">อาชีพ</label>
@@ -1018,20 +591,12 @@
                         <option>นักกฎหมาย</option>
                         <option>อื่นๆ</option>
                       </select>
-                      <div class="unknown-checkbox">
-                        <input type="checkbox" id="cust_occupation_unknown">
-                        <label for="cust_occupation_unknown">ไม่ทราบ/ไม่มีข้อมูล</label>
-                      </div>
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="form-group">
                       <label class="form-label required">รายได้ต่อเดือน (บาท)</label>
                       <input type="number" id="cust_monthly_income" class="form-control">
-                      <div class="unknown-checkbox">
-                        <input type="checkbox" id="cust_monthly_income_unknown">
-                        <label for="cust_monthly_income_unknown">ไม่ทราบ/ไม่มีข้อมูล</label>
-                      </div>
                     </div>
                     <div class="form-group">
                       <label class="form-label">รายได้ต่อปี (บาท)</label>
@@ -1111,127 +676,29 @@
                       </div>
                       <div class="form-group">
                         <label class="form-label">อายุบุตร</label>
-                        <input type="text" id="cust_children_ages" class="form-control">
+                        <input type="text" id="cust_children_ages" class="form-control" placeholder="เช่น 8,5,2">
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="form-label">อาชีพบุตร</label>
-                      <select id="cust_children_occupation" class="form-select">
-                        <option value="">เลือกอาชีพ</option>
-                        <option>นักเรียน</option>
-                        <option>นักศึกษา</option>
-                        <option>พนักงานบริษัท</option>
-                        <option>อื่นๆ</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">มีบุคคลอื่นที่ต้องดูแลหรือไม่</label>
-                    <select id="cust_has_dependents" class="form-select">
-                      <option value="">เลือก</option>
-                      <option>ไม่มี</option>
-                      <option>มี</option>
-                    </select>
-                  </div>
-                  <div id="dependents-section" style="display: none;">
-                    <div class="form-group">
-                      <label class="form-label">รายละเอียดบุคคลที่ต้องดูแล</label>
-                      <textarea id="cust_dependents_details" class="form-control"></textarea>
-                    </div>
                   </div>
                 </div>
 
-                <!-- Business Information (only for business owners) -->
-                <div class="form-subsection" id="business-section" style="display: none;">
-                  <div class="subsection-title">
-                    <i class="fas fa-briefcase"></i> ข้อมูลธุรกิจ
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">ประเภทธุรกิจ/กิจการ</label>
-                      <input type="text" id="cust_business_type" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">ทุนจดทะเบียน (บาท)</label>
-                      <input type="number" id="cust_business_capital" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">รายได้ต่อปี (บาท)</label>
-                      <input type="number" id="cust_business_income" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">กำไร (บาท)</label>
-                      <input type="number" id="cust_business_profit" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">ภาษีที่เสียปีล่าสุด (บาท)</label>
-                      <input type="number" id="cust_business_tax" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">สัดส่วนหุ้นที่ถือครอง (%)</label>
-                      <input type="number" id="cust_business_share" class="form-control" min="0" max="100">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Financial Products -->
+                <!-- AI Analysis Section -->
                 <div class="form-subsection">
                   <div class="subsection-title">
-                    <i class="fas fa-piggy-bank"></i> ผลิตภัณฑ์ทางการเงินที่ถือครอง
+                    <i class="fas fa-robot"></i> AI Insurance Advisor
+                    <span class="badge bg-success ms-2">Integrated v2.0</span>
                   </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">เงินฝากออมทรัพย์ (บาท)</label>
-                      <input type="number" id="prod_savings" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">เงินฝากประจำ (บาท)</label>
-                      <input type="number" id="prod_fixed" class="form-control">
-                    </div>
+                  
+                  <div class="text-center mb-3">
+                    <button type="button" id="btnIntegratedAnalyze" class="btn btn-primary">
+                      <i class="fas fa-brain"></i> วิเคราะห์แนะนำประกันภัย (Integrated AI)
+                    </button>
+                    <small class="d-block text-muted mt-1">ระบบจะวิเคราะห์แบบหลายมิติจากข้อมูลทั้งหมด</small>
                   </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">กองทุน (บาท)</label>
-                      <input type="number" id="prod_fund" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">บัตรเครดิต (บาท)</label>
-                      <input type="number" id="prod_credit_card" class="form-control">
-                    </div>
+                  
+                  <div id="integratedAnalysisResults" style="display: none;">
+                    <!-- ผลลัพธ์จะแสดงที่นี่ -->
                   </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">เงินกู้บ้าน (บาท)</label>
-                      <input type="number" id="prod_home_loan" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">เงินกู้รถ (บาท)</label>
-                      <input type="number" id="prod_car_loan" class="form-control">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label class="form-label">เงินกู้ส่วนบุคคล (บาท)</label>
-                      <input type="number" id="prod_personal_loan" class="form-control">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Insurance Policies -->
-                <div class="form-subsection">
-                  <div class="subsection-title">
-                    <i class="fas fa-shield-alt"></i> กรมธรรม์ประกันที่ถือครอง
-                  </div>
-                  <div id="insurance-policies">
-                    <!-- Dynamic insurance policies will be added here -->
-                  </div>
-                  <button type="button" class="btn btn-outline-primary btn-sm" id="btnAddInsurance">
-                    <i class="fas fa-plus"></i> เพิ่มกรมธรรม์
-                  </button>
                 </div>
 
                 <!-- Employee Comments -->
@@ -1242,19 +709,6 @@
                   <div class="form-group">
                     <label class="form-label">ความเห็นเพิ่มเติม</label>
                     <textarea id="emp_additional_comments" class="form-control" rows="3"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">เคยนำเสนอผลิตภัณฑ์แล้วหรือไม่</label>
-                    <select id="emp_presented_before" class="form-select">
-                      <option value="">เลือก</option>
-                      <option>ยังไม่เคยนำเสนอ</option>
-                      <option>เคยนำเสนอแล้ว</option>
-                      <option>เคยนำเสนอมากกว่า 3 ครั้ง</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">ลูกค้าเคยโต้แย้งหรือมีความคิดเห็นอย่างไร</label>
-                    <textarea id="emp_customer_feedback" class="form-control"></textarea>
                   </div>
                   <div class="form-group">
                     <label class="form-label">ผลิตภัณฑ์ที่จะนำเสนอ</label>
@@ -1287,11 +741,11 @@
           </div>
         </div>
 
-        <!-- LIST / SEARCH PANEL -->
+        <!-- LIST PANEL -->
         <div id="panel-list" class="content-panel">
           <div class="page-header">
             <div class="page-title">
-              <i class="fas fa-list"></i> รายการลูกค้า / ค้นหา
+              <i class="fas fa-list"></i> รายการลูกค้า
             </div>
             <div class="page-actions">
               <button class="btn btn-sm btn-secondary" id="btn-back-list">
@@ -1305,68 +759,10 @@
 
           <div class="card">
             <div class="card-body">
-              <div class="filter-section">
-                <div class="filter-group">
-                  <div class="filter-label">ค้นหาลูกค้า</div>
-                  <div class="input-group">
-                    <span class="input-group-text">R</span>
-                    <input type="text" id="search_customer" class="form-control" placeholder="เช่น 511171239">
-                  </div>
-                </div>
-                <div class="filter-group">
-                  <div class="filter-label">ค้นหาตามพนักงาน</div>
-                  <input type="text" id="search_by_creator" class="form-control">
-                </div>
-                <div class="filter-group">
-                  <div class="filter-label">Filter RH</div>
-                  <select id="filter_rh" class="form-select">
-                    <option value="">ทั้งหมด</option>
-                    <option>RH1</option>
-                    <option>RH2</option>
-                    <option>RH3</option>
-                    <option>RH4</option>
-                    <option>RH5</option>
-                  </select>
-                </div>
-                <div class="d-flex gap-2 align-items-end">
-                  <button class="btn btn-outline-primary btn-sm" id="btnSearch">
-                    <i class="fas fa-search"></i> ค้นหา
-                  </button>
-                  <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
-                    <i class="fas fa-sync-alt"></i> รีเฟรช
-                  </button>
-                </div>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="small-muted" id="searchResultsCount">กรุณาค้นหาเพื่อแสดงรายการ</div>
-                <div>
-                  <button class="btn btn-outline-success btn-sm" id="btnBulkExport">
-                    <i class="fas fa-file-pdf"></i> Export PDF
-                  </button>
-                </div>
-              </div>
-
-              <div class="table-responsive table-fixed">
-                <table class="table table-striped" id="customerTable">
-                  <thead class="table-light">
-                    <tr>
-                      <th><input type="checkbox" id="selectAll"></th>
-                      <th>Customer ID</th>
-                      <th>Name</th>
-                      <th>อายุ</th>
-                      <th>อาชีพ</th>
-                      <th>Branch</th>
-                      <th>RH</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="customerTbody">
-                    <tr>
-                      <td colspan="8" class="text-center text-muted py-3">กรุณาค้นหาเพื่อแสดงรายการ</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="text-center text-muted py-5">
+                <i class="fas fa-list fa-3x mb-3 text-muted"></i>
+                <p>ระบบรายการลูกค้า</p>
+                <small class="text-muted">กำลังพัฒนา...</small>
               </div>
             </div>
           </div>
@@ -1376,7 +772,7 @@
         <div id="panel-report" class="content-panel">
           <div class="page-header">
             <div class="page-title">
-              <i class="fas fa-chart-bar"></i> รายงาน / Dashboard
+              <i class="fas fa-chart-bar"></i> รายงาน
             </div>
             <div class="page-actions">
               <button class="btn btn-sm btn-secondary" id="btn-back-report">
@@ -1390,245 +786,10 @@
 
           <div class="card">
             <div class="card-body">
-              <div id="reportLocked" class="mb-4">
-                <p class="small-muted">กรุณาใส่ Passcode เพื่อเข้าใช้งานเมนูรายงาน</p>
-                <div class="d-flex gap-2 align-items-end">
-                  <div class="flex-grow-1">
-                    <label class="form-label">Passcode</label>
-                    <input type="password" id="reportPass" class="form-control" placeholder="Passcode">
-                  </div>
-                  <button id="btnUnlock" class="btn btn-primary">
-                    <i class="fas fa-lock-open"></i> Unlock
-                  </button>
-                </div>
-              </div>
-
-              <div id="reportPanel" style="display:none;">
-                <div class="filter-section">
-                  <div class="filter-group">
-                    <div class="filter-label">Region</div>
-                    <select id="filter_report_region" class="form-select">
-                      <option value="all">ทั้งหมด</option>
-                      <option>RH1</option>
-                      <option>RH2</option>
-                      <option>RH3</option>
-                      <option>RH4</option>
-                      <option>RH5</option>
-                    </select>
-                  </div>
-                  <div class="filter-group">
-                    <div class="filter-label">วันที่เริ่ม</div>
-                    <input type="date" id="filter_start_date" class="form-control">
-                  </div>
-                  <div class="filter-group">
-                    <div class="filter-label">วันที่สิ้นสุด</div>
-                    <input type="date" id="filter_end_date" class="form-control">
-                  </div>
-                  <button class="btn btn-secondary btn-sm" id="btnApplyFilters">
-                    <i class="fas fa-filter"></i> Apply
-                  </button>
-                </div>
-
-                <div class="stats-grid">
-                  <div class="stat-card">
-                    <div class="stat-number" id="kpi_total">0</div>
-                    <div class="stat-label">Total Cases MTD</div>
-                  </div>
-                  <div class="stat-card">
-                    <div class="stat-number" id="kpi_opp_count">0</div>
-                    <div class="stat-label">New Opportunities MTD</div>
-                  </div>
-                  <div class="stat-card">
-                    <div class="stat-number" id="kpi_opp_value">0</div>
-                    <div class="stat-label">Est. Opportunity Value (MTD)</div>
-                  </div>
-                  <div class="stat-card">
-                    <div class="stat-number" id="kpi_top_branch">-</div>
-                    <div class="stat-label">Top Branch (cases)</div>
-                  </div>
-                </div>
-
-                <div class="d-flex gap-2 mt-3">
-                  <button id="btnExportAll" class="btn btn-outline-primary btn-sm">
-                    <i class="fas fa-file-pdf"></i> Export All PDF
-                  </button>
-                  <button id="btnExportCSV" class="btn btn-outline-secondary btn-sm">
-                    <i class="fas fa-file-csv"></i> Export CSV
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ADMIN PANEL -->
-        <div id="panel-admin" class="content-panel">
-          <div class="page-header">
-            <div class="page-title">
-              <i class="fas fa-cog"></i> Admin / Audit
-            </div>
-            <div class="page-actions">
-              <button class="btn btn-sm btn-secondary" id="btn-back-admin">
-                <i class="fas fa-arrow-left"></i> ย้อนกลับ
-              </button>
-              <button class="btn btn-sm btn-primary" id="btn-home-admin">
-                <i class="fas fa-home"></i> หน้าแรก
-              </button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <div id="adminLocked" class="mb-4">
-                <p class="small-muted">กรุณาใส่ Passcode เพื่อเข้าใช้งานเมนู Admin</p>
-                <div class="d-flex gap-2 align-items-end">
-                  <div class="flex-grow-1">
-                    <label class="form-label">Passcode</label>
-                    <input type="password" id="adminPass" class="form-control" placeholder="Passcode">
-                  </div>
-                  <button id="btnUnlockAdmin" class="btn btn-primary">
-                    <i class="fas fa-lock-open"></i> Unlock
-                  </button>
-                </div>
-              </div>
-
-              <div id="adminPanel" style="display:none;">
-                <ul class="nav nav-tabs admin-tabs" id="adminTabs" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit-tab-pane" type="button" role="tab" aria-controls="audit-tab-pane" aria-selected="true">Audit Log</button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings-tab-pane" type="button" role="tab" aria-controls="settings-tab-pane" aria-selected="false">Settings</button>
-                  </li>
-                </ul>
-                <div class="tab-content admin-tab-content" id="adminTabContent">
-                  <div class="tab-pane fade show active" id="audit-tab-pane" role="tabpanel" aria-labelledby="audit-tab" tabindex="0">
-                    <p class="small-muted mb-3">Audit log (view only) — บันทึกการสร้าง แก้ไข และ export</p>
-                    
-                    <div class="d-flex gap-2 mb-3">
-                      <button class="btn btn-sm btn-outline-primary" id="btnRefreshAudit">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                      </button>
-                      <button class="btn btn-sm btn-outline-secondary" id="btnExportAudit">
-                        <i class="fas fa-download"></i> Export Log
-                      </button>
-                    </div>
-                    
-                    <div id="auditList" class="small-muted"></div>
-                  </div>
-                  <div class="tab-pane fade" id="settings-tab-pane" role="tabpanel" aria-labelledby="settings-tab" tabindex="0">
-                    <div class="settings-grid">
-                      <!-- Security Settings -->
-                      <div class="setting-card">
-                        <div class="setting-title">
-                          <i class="fas fa-shield-alt"></i> การรักษาความปลอดภัย
-                        </div>
-                        <div class="setting-description">
-                          ตั้งค่ารหัสผ่านสำหรับการเข้าถึงฟังก์ชันต่างๆ
-                        </div>
-                        
-                        <div class="form-group">
-                          <label class="form-label">รหัสผ่านรายงาน</label>
-                          <div class="input-with-button">
-                            <input type="password" id="reportPassInput" class="form-control" placeholder="รหัสผ่านรายงาน">
-                            <button class="btn btn-outline-primary btn-sm" id="btnChangeReportPass">เปลี่ยน</button>
-                          </div>
-                          <div class="small-muted mt-1">รหัสผ่านสำหรับเข้าถึงเมนูรายงาน</div>
-                        </div>
-
-                        <div class="form-group">
-                          <label class="form-label">รหัสผ่าน Admin</label>
-                          <div class="input-with-button">
-                            <input type="password" id="adminPassInput" class="form-control" placeholder="รหัสผ่าน Admin">
-                            <button class="btn btn-outline-primary btn-sm" id="btnChangeAdminPass">เปลี่ยน</button>
-                          </div>
-                          <div class="small-muted mt-1">รหัสผ่านสำหรับเข้าถึงเมนู Admin</div>
-                        </div>
-                      </div>
-
-                      <!-- Data Management -->
-                      <div class="setting-card">
-                        <div class="setting-title">
-                          <i class="fas fa-database"></i> การจัดการข้อมูล
-                        </div>
-                        <div class="setting-description">
-                          การสำรองข้อมูลและการจัดการข้อมูลในระบบ
-                        </div>
-                        
-                        <div class="form-group">
-                          <button class="btn btn-outline-primary w-100 mb-2" id="btnExportAllData">
-                            <i class="fas fa-download"></i> ส่งออกข้อมูลทั้งหมด
-                          </button>
-                          <div class="small-muted mb-3">ดาวน์โหลดข้อมูลทั้งหมดในรูปแบบ JSON</div>
-                          
-                          <button class="btn btn-outline-secondary w-100 mb-2" id="btnImportData">
-                            <i class="fas fa-upload"></i> นำเข้าข้อมูล
-                          </button>
-                          <div class="small-muted">นำเข้าข้อมูลจากไฟล์ JSON</div>
-                        </div>
-                      </div>
-
-                      <!-- System Configuration -->
-                      <div class="setting-card">
-                        <div class="setting-title">
-                          <i class="fas fa-cogs"></i> การตั้งค่าระบบ
-                        </div>
-                        <div class="setting-description">
-                          การกำหนดค่าพื้นฐานของระบบ
-                        </div>
-                        
-                        <div class="form-group">
-                          <label class="form-label">จำนวนแถวต่อหน้า</label>
-                          <select id="pageSizeSelect" class="form-select">
-                            <option value="10">10 แถว</option>
-                            <option value="25">25 แถว</option>
-                            <option value="50">50 แถว</option>
-                            <option value="100">100 แถว</option>
-                          </select>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label class="form-label">รูปแบบวันที่</label>
-                          <select id="dateFormatSelect" class="form-select">
-                            <option value="th-TH">ไทย (DD/MM/YYYY)</option>
-                            <option value="en-US">อเมริกัน (MM/DD/YYYY)</option>
-                            <option value="en-GB">ยุโรป (DD/MM/YYYY)</option>
-                          </select>
-                        </div>
-                        
-                        <div class="form-group">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="autoSaveCheck">
-                            <label class="form-check-label">บันทึกอัตโนมัติ</label>
-                          </div>
-                          <div class="small-muted">บันทึกข้อมูลอัตโนมัติทุก 5 นาที</div>
-                        </div>
-                      </div>
-
-                      <!-- Danger Zone -->
-                      <div class="setting-card danger-zone">
-                        <div class="setting-title text-danger">
-                          <i class="fas fa-exclamation-triangle"></i> โซนอันตราย
-                        </div>
-                        <div class="setting-description">
-                          การดำเนินการที่ไม่อาจย้อนกลับได้
-                        </div>
-                        
-                        <div class="form-group">
-                          <button class="btn btn-outline-danger w-100 mb-2" id="btnClearAllData">
-                            <i class="fas fa-eraser"></i> ล้างข้อมูลทั้งหมด
-                          </button>
-                          <div class="small-muted text-danger mb-3">ลบข้อมูลลูกค้าและประวัติทั้งหมด</div>
-                          
-                          <button class="btn btn-danger w-100" id="btnResetSystem">
-                            <i class="fas fa-trash-alt"></i> รีเซ็ตระบบทั้งหมด
-                          </button>
-                          <div class="small-muted text-danger">ล้างการตั้งค่าและข้อมูลทั้งหมด</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="text-center text-muted py-5">
+                <i class="fas fa-chart-bar fa-3x mb-3 text-muted"></i>
+                <p>ระบบรายงานและแดชบอร์ด</p>
+                <small class="text-muted">กำลังพัฒนา...</small>
               </div>
             </div>
           </div>
@@ -1639,294 +800,694 @@
     <div class="watermark">PLT-ttb Training</div>
   </div>
 
-  <!-- RH Zone Data Structure (hidden) -->
-  <div class="rh-zones" id="rhZonesData">
-    <div data-rh="RH1">
-      <option value="จตุจักร">Zone จตุจักร</option>
-      <option value="ธนบุรี">Zone ธนบุรี</option>
-      <option value="บางกะปิ">Zone บางกะปิ</option>
-      <option value="สาทร">Zone สาทร</option>
-      <option value="สุขุมวิท">Zone สุขุมวิท</option>
-    </div>
-    <div data-rh="RH2">
-      <option value="ชลบุรี">Zone ชลบุรี</option>
-      <option value="บางนา">Zone บางนา</option>
-      <option value="พัทยา">Zone พัทยา</option>
-      <option value="ระยอง">Zone ระยอง</option>
-    </div>
-    <div data-rh="RH3">
-      <option value="เชียงใหม่">Zone เชียงใหม่</option>
-      <option value="นครสวรรค์">Zone นครสวรรค์</option>
-      <option value="นนทบุรี">Zone นนทบุรี</option>
-      <option value="พิษณุโลก">Zone พิษณุโลก</option>
-      <option value="อยุธยา">Zone อยุธยา</option>
-    </div>
-    <div data-rh="RH4">
-      <option value="ดอนเมือง">Zone ดอนเมือง</option>
-      <option value="นครราชสีมา">Zone นครราชสีมา</option>
-      <option value="สระบุรี">Zone สระบุรี</option>
-      <option value="อุดรธานี">Zone อุดรธานี</option>
-      <option value="อุบลราชธานี">Zone อุบลราชธานี</option>
-    </div>
-    <div data-rh="RH5">
-      <option value="ภูเก็ต">Zone ภูเก็ต</option>
-      <option value="ราชบุรี">Zone ราชบุรี</option>
-      <option value="สมุทรสาคร">Zone สมุทรสาคร</option>
-      <option value="สุราษฎร์ธานี">Zone สุราษฎร์ธานี</option>
-      <option value="หาดใหญ่">Zone หาดใหญ่</option>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
-    /**************************************************************************
-     * Enhanced Account Planning System with Supabase Backend
-     * Features: Loading screen, Passcode protection for Reports and Admin
-     **************************************************************************/
+    // =============================================
+    // Integrated Insurance Advisor Classes
+    // =============================================
 
-    // ---------- Supabase Configuration ----------
-    const SUPABASE_URL = 'https://ycyrvyghiybfaimixkvo.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljeXJ2eWdoaXliZmFpbWl4a3ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwOTM5NTcsImV4cCI6MjA3ODY2OTk1N30.cX90v29O1uxtjlv3ykCasej9KIlh-bmPcCmsoGRyMVo';
-    
-    // สร้าง Supabase client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    class AdvancedInsuranceAdvisor {
+      constructor() {
+        this.products = this.initializeProducts();
+        this.riskFactors = this.initializeRiskFactors();
+        this.lifeStageProfiles = this.initializeLifeStageProfiles();
+      }
 
-    // ---------- Constants and Utilities ----------
-    const STORAGE_KEY = 'aps_customers';
-    const AUDIT_KEY = 'aps_audit';
-    const COUNTER_KEY = 'aps_counters';
-    const SETTINGS_KEY = 'aps_settings';
-    const DEFAULT_REPORT_PASS = '2568';
-    const DEFAULT_ADMIN_PASS = '2025';
+      initializeProducts() {
+        return {
+          'ประกันสุขภาพ IPD': { 
+            category: 'health', 
+            minAge: 0, 
+            maxAge: 70, 
+            priority: 1,
+            baseCapital: 500000,
+            premiumRate: 0.02
+          },
+          'ประกันสุขภาพ OPD': { 
+            category: 'health', 
+            minAge: 0, 
+            maxAge: 65, 
+            priority: 2,
+            baseCapital: 300000,
+            premiumRate: 0.015
+          },
+          'ประกันโรคร้ายแรง': { 
+            category: 'health', 
+            minAge: 25, 
+            maxAge: 60, 
+            priority: 3,
+            baseCapital: 1000000,
+            premiumRate: 0.025
+          },
+          'ประกันโรคมะเร็ง': { 
+            category: 'health', 
+            minAge: 20, 
+            maxAge: 65, 
+            priority: 4,
+            baseCapital: 800000,
+            premiumRate: 0.02
+          },
+          'ประกันชีวิตแบบสะสมทรัพย์': { 
+            category: 'life', 
+            minAge: 20, 
+            maxAge: 55, 
+            priority: 5,
+            baseCapital: 500000,
+            premiumRate: 0.015
+          },
+          'ประกันชีวิตแบบตลอดชีพ': { 
+            category: 'life', 
+            minAge: 25, 
+            maxAge: 50, 
+            priority: 6,
+            baseCapital: 1000000,
+            premiumRate: 0.02
+          },
+          'ประกันชีวิตแบบชั่วระยะเวลา': { 
+            category: 'life', 
+            minAge: 20, 
+            maxAge: 60, 
+            priority: 7,
+            baseCapital: 2000000,
+            premiumRate: 0.01
+          },
+          'ประกันอุบัติเหตุส่วนบุคคล': { 
+            category: 'accident', 
+            minAge: 18, 
+            maxAge: 65, 
+            priority: 8,
+            baseCapital: 1000000,
+            premiumRate: 0.005
+          },
+          'ประกันทุพพลภาพ': { 
+            category: 'accident', 
+            minAge: 20, 
+            maxAge: 55, 
+            priority: 9,
+            baseCapital: 600000,
+            premiumRate: 0.008
+          },
+          'ประกันบำนาญ': { 
+            category: 'retirement', 
+            minAge: 30, 
+            maxAge: 50, 
+            priority: 10,
+            baseCapital: 2000000,
+            premiumRate: 0.012
+          },
+          'ประกันการศึกษา': { 
+            category: 'savings', 
+            minAge: 25, 
+            maxAge: 45, 
+            priority: 11,
+            baseCapital: 500000,
+            premiumRate: 0.01
+          }
+        };
+      }
+
+      initializeRiskFactors() {
+        return {
+          occupation: {
+            'แพทย์': { health: 8, accident: 6, life: 5 },
+            'วิศวกร': { health: 5, accident: 7, life: 4 },
+            'ครู': { health: 4, accident: 3, life: 4 },
+            'นักกฎหมาย': { health: 6, accident: 4, life: 5 },
+            'เจ้าของกิจการ/ธุรกิจส่วนตัว': { health: 7, accident: 5, life: 8 },
+            'พนักงานบริษัท': { health: 4, accident: 3, life: 4 },
+            'ข้าราชการ': { health: 3, accident: 2, life: 3 },
+            'แม่บ้าน': { health: 3, accident: 2, life: 3 }
+          },
+          ageHealthRisk: {
+            '0-17': { critical_illness: 1, cancer: 1, disability: 2 },
+            '18-25': { critical_illness: 2, cancer: 1, disability: 3 },
+            '26-35': { critical_illness: 3, cancer: 2, disability: 4 },
+            '36-45': { critical_illness: 5, cancer: 4, disability: 5 },
+            '46-55': { critical_illness: 7, cancer: 6, disability: 6 },
+            '56-65': { critical_illness: 8, cancer: 8, disability: 7 }
+          }
+        };
+      }
+
+      initializeLifeStageProfiles() {
+        return {
+          'student': { ageRange: [15, 24], priorities: ['education', 'accident'] },
+          'early_career': { ageRange: [25, 34], priorities: ['health', 'savings', 'accident'] },
+          'family_builder': { ageRange: [35, 44], priorities: ['life', 'health', 'education'] },
+          'peak_earner': { ageRange: [45, 54], priorities: ['retirement', 'critical_illness', 'investment'] },
+          'pre_retirement': { ageRange: [55, 64], priorities: ['health', 'retirement', 'critical_illness'] }
+        };
+      }
+
+      createDetailedProfile(customer) {
+        return {
+          age: customer.age || 0,
+          gender: customer.gender || '',
+          occupation: customer.occupation || '',
+          income: {
+            monthly: customer.monthly_income || 0,
+            yearly: (customer.monthly_income || 0) * 12,
+            tier: this.getIncomeTier(customer.monthly_income || 0)
+          },
+          family: {
+            maritalStatus: customer.marital_status || '',
+            hasChildren: customer.has_children === 'มี',
+            childrenCount: customer.children_count || 0,
+            childrenAges: this.parseChildrenAges(customer.children_ages)
+          },
+          lifeStage: this.determineLifeStage(customer),
+          risk: {
+            occupationRisk: this.calculateOccupationRisk(customer.occupation),
+            level: this.calculateOverallRisk(customer)
+          }
+        };
+      }
+
+      performMultiDimensionalAnalysis(profile) {
+        return {
+          needs: {
+            health: this.analyzeHealthNeeds(profile),
+            life: this.analyzeLifeInsuranceNeeds(profile),
+            retirement: this.analyzeRetirementNeeds(profile),
+            education: profile.family.hasChildren ? this.analyzeEducationNeeds(profile) : []
+          },
+          gaps: {
+            health: this.identifyHealthGaps(profile),
+            life: this.identifyLifeInsuranceGaps(profile)
+          },
+          urgency: {
+            health: this.calculateHealthUrgency(profile),
+            life: this.calculateLifeInsuranceUrgency(profile)
+          }
+        };
+      }
+
+      analyzeHealthNeeds(profile) {
+        const needs = [];
+        const age = profile.age;
+
+        // Basic Health Coverage
+        needs.push({
+          type: 'basic_health',
+          priority: 'high',
+          reason: 'ความคุ้มครองพื้นฐานสำหรับค่ารักษาพยาบาล'
+        });
+
+        // Critical Illness based on age
+        if (age >= 30) {
+          needs.push({
+            type: 'critical_illness',
+            priority: age >= 40 ? 'high' : 'medium',
+            reason: `อายุ ${age} ปี เป็นกลุ่มเสี่ยงโรคเรื้อรัง`
+          });
+        }
+
+        // Cancer coverage
+        if (age >= 35) {
+          needs.push({
+            type: 'cancer',
+            priority: age >= 45 ? 'high' : 'medium',
+            reason: 'ความเสี่ยงโรคมะเร็งเพิ่มขึ้นตามอายุ'
+          });
+        }
+
+        return needs;
+      }
+
+      analyzeLifeInsuranceNeeds(profile) {
+        const needs = [];
+        const { family, income } = profile;
+
+        // Basic life coverage
+        if (income.monthly > 0) {
+          needs.push({
+            type: 'income_replacement',
+            priority: 'high',
+            reason: `แทนที่รายได้ ${income.monthly.toLocaleString()} บาท/เดือน`,
+            suggestedCoverage: income.yearly * 5
+          });
+        }
+
+        // Family protection
+        if (family.hasChildren || family.maritalStatus === 'สมรส') {
+          needs.push({
+            type: 'family_protection',
+            priority: 'high',
+            reason: `มี${family.hasChildren ? 'บุตร' : 'คู่สมรส'}ที่ต้องดูแล`,
+            suggestedCoverage: this.calculateFamilyProtectionNeeds(profile)
+          });
+        }
+
+        return needs;
+      }
+
+      analyzeRetirementNeeds(profile) {
+        const needs = [];
+        const { age, income } = profile;
+
+        if (age >= 30) {
+          const yearsToRetirement = 60 - age;
+          needs.push({
+            type: 'retirement_savings',
+            priority: yearsToRetirement <= 15 ? 'high' : 'medium',
+            reason: `เหลือเวลาอีก ${yearsToRetirement} ปีก่อนเกษียณ`,
+            suggestedSavings: this.calculateRetirementNeeds(profile)
+          });
+        }
+
+        return needs;
+      }
+
+      analyzeEducationNeeds(profile) {
+        const needs = [];
+        const childrenAges = profile.family.childrenAges;
+
+        childrenAges.forEach((age, index) => {
+          const yearsToUniversity = 18 - age;
+          if (yearsToUniversity > 0 && yearsToUniversity <= 15) {
+            needs.push({
+              type: 'education_fund',
+              priority: yearsToUniversity <= 5 ? 'high' : 'medium',
+              reason: `บุตรคนที่ ${index + 1} วัย ${age} ปี จะเข้าเรียนมหาวิทยาลัยในอีก ${yearsToUniversity} ปี`,
+              suggestedSavings: this.calculateEducationNeeds(age)
+            });
+          }
+        });
+
+        return needs;
+      }
+
+      generateRecommendations(analysis, profile) {
+        const recommendations = [];
+        
+        // Generate recommendations based on analysis
+        if (analysis.needs.health.length > 0) {
+          analysis.needs.health.forEach(need => {
+            const product = this.mapNeedToProduct(need.type);
+            if (product) {
+              recommendations.push(this.createProductRecommendation(product, need, profile));
+            }
+          });
+        }
+
+        if (analysis.needs.life.length > 0) {
+          analysis.needs.life.forEach(need => {
+            const product = this.mapNeedToProduct(need.type);
+            if (product) {
+              recommendations.push(this.createProductRecommendation(product, need, profile));
+            }
+          });
+        }
+
+        if (analysis.needs.retirement.length > 0) {
+          analysis.needs.retirement.forEach(need => {
+            const product = this.mapNeedToProduct(need.type);
+            if (product) {
+              recommendations.push(this.createProductRecommendation(product, need, profile));
+            }
+          });
+        }
+
+        if (analysis.needs.education && analysis.needs.education.length > 0) {
+          analysis.needs.education.forEach(need => {
+            const product = this.mapNeedToProduct(need.type);
+            if (product) {
+              recommendations.push(this.createProductRecommendation(product, need, profile));
+            }
+          });
+        }
+
+        // Sort by score and return top 5
+        return recommendations
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 5);
+      }
+
+      createProductRecommendation(productName, need, profile) {
+        const product = this.products[productName];
+        const score = this.calculateProductScore(productName, profile, need);
+        const capital = this.calculateCapital(productName, profile, need);
+        const premium = this.calculatePremium(productName, capital, product.premiumRate);
+        const reason = this.generateReason(productName, need, profile);
+
+        return {
+          product: productName,
+          score: score,
+          capital: capital,
+          premium: premium,
+          reason: reason,
+          source: 'rule_based',
+          category: product.category,
+          urgency: need.priority === 'high' ? 3 : need.priority === 'medium' ? 2 : 1
+        };
+      }
+
+      calculateProductScore(productName, profile, need) {
+        let score = 50; // Base score
+
+        // Age factor
+        const product = this.products[productName];
+        if (profile.age >= product.minAge && profile.age <= product.maxAge) {
+          score += 20;
+        }
+
+        // Income factor
+        if (profile.income.tier === 'high' || profile.income.tier === 'premium') {
+          score += 15;
+        }
+
+        // Need priority
+        if (need.priority === 'high') score += 15;
+        else if (need.priority === 'medium') score += 10;
+
+        // Life stage alignment
+        const lifeStageScore = this.getLifeStageAlignmentScore(productName, profile.lifeStage);
+        score += lifeStageScore;
+
+        return Math.min(score, 95);
+      }
+
+      calculateCapital(productName, profile, need) {
+        const product = this.products[productName];
+        let capital = product.baseCapital;
+
+        // Adjust based on income
+        if (profile.income.tier === 'medium') capital *= 1.5;
+        else if (profile.income.tier === 'high') capital *= 2;
+        else if (profile.income.tier === 'premium') capital *= 3;
+
+        // Use suggested coverage if available
+        if (need.suggestedCoverage) {
+          capital = Math.max(capital, need.suggestedCoverage);
+        }
+
+        // Cap at reasonable amount
+        return Math.min(capital, 5000000);
+      }
+
+      calculatePremium(productName, capital, premiumRate) {
+        return Math.round(capital * premiumRate);
+      }
+
+      generateReason(productName, need, profile) {
+        const reasons = {
+          'ประกันสุขภาพ IPD': `อายุ ${profile.age} ปี ควรมีความคุ้มครองค่ารักษาพยาบาล`,
+          'ประกันสุขภาพ OPD': `เหมาะสำหรับการรักษาพยาบาลทั่วไป`,
+          'ประกันโรคร้ายแรง': `กลุ่มอายุ ${profile.age} ปี มีความเสี่ยงโรคเรื้อรัง`,
+          'ประกันชีวิตแบบสะสมทรัพย์': `สร้างความมั่นคงทางการเงินพร้อมออมทรัพย์`,
+          'ประกันบำนาญ': `วางแผนการเงินหลังเกษียณ อีก ${60 - profile.age} ปี`
+        };
+
+        return reasons[productName] || need.reason;
+      }
+
+      // Helper methods
+      mapNeedToProduct(needType) {
+        const mapping = {
+          'basic_health': 'ประกันสุขภาพ IPD',
+          'critical_illness': 'ประกันโรคร้ายแรง',
+          'cancer': 'ประกันโรคมะเร็ง',
+          'income_replacement': 'ประกันชีวิตแบบสะสมทรัพย์',
+          'family_protection': 'ประกันชีวิตแบบตลอดชีพ',
+          'retirement_savings': 'ประกันบำนาญ',
+          'education_fund': 'ประกันการศึกษา'
+        };
+        return mapping[needType];
+      }
+
+      getIncomeTier(monthlyIncome) {
+        if (monthlyIncome <= 25000) return 'low';
+        if (monthlyIncome <= 50000) return 'medium';
+        if (monthlyIncome <= 100000) return 'high';
+        return 'premium';
+      }
+
+      determineLifeStage(customer) {
+        const age = customer.age || 0;
+        if (age <= 24) return 'student';
+        if (age <= 34) return 'early_career';
+        if (age <= 44) return 'family_builder';
+        if (age <= 54) return 'peak_earner';
+        return 'pre_retirement';
+      }
+
+      calculateOccupationRisk(occupation) {
+        return this.riskFactors.occupation[occupation] || { health: 4, accident: 3, life: 4 };
+      }
+
+      calculateOverallRisk(customer) {
+        let risk = 0;
+        if (customer.age >= 40) risk += 2;
+        if (customer.occupation === 'แพทย์' || customer.occupation === 'วิศวกร') risk += 2;
+        if (customer.has_children === 'มี') risk += 1;
+        return Math.min(risk, 5);
+      }
+
+      parseChildrenAges(agesString) {
+        if (!agesString) return [];
+        return agesString.split(',').map(age => parseInt(age.trim())).filter(age => !isNaN(age));
+      }
+
+      identifyHealthGaps(profile) {
+        return [{
+          type: 'basic_health_coverage',
+          severity: 'high',
+          description: 'แนะนำความคุ้มครองสุขภาพพื้นฐาน'
+        }];
+      }
+
+      identifyLifeInsuranceGaps(profile) {
+        return [{
+          type: 'income_replacement_gap',
+          severity: 'medium',
+          description: 'แนะนำความคุ้มครองชีวิตเพิ่มเติม'
+        }];
+      }
+
+      calculateHealthUrgency(profile) {
+        let urgency = 0;
+        if (profile.age >= 50) urgency += 3;
+        else if (profile.age >= 40) urgency += 2;
+        urgency += Math.floor(profile.risk.occupationRisk.health / 2);
+        return Math.min(urgency, 5);
+      }
+
+      calculateLifeInsuranceUrgency(profile) {
+        let urgency = 0;
+        if (profile.family.hasChildren) urgency += 3;
+        if (profile.family.maritalStatus === 'สมรส') urgency += 2;
+        return Math.min(urgency, 5);
+      }
+
+      calculateFamilyProtectionNeeds(profile) {
+        const base = profile.income.yearly * 3;
+        const childrenFactor = profile.family.childrenCount * 500000;
+        return base + childrenFactor;
+      }
+
+      calculateRetirementNeeds(profile) {
+        const currentAge = profile.age;
+        const retirementAge = 60;
+        const yearsInRetirement = 25;
+        const monthlyNeed = profile.income.monthly * 0.7;
+        return monthlyNeed * 12 * yearsInRetirement;
+      }
+
+      calculateEducationNeeds(childAge) {
+        const yearsToUni = 18 - childAge;
+        return 1000000; // 1 million THB
+      }
+
+      getLifeStageAlignmentScore(productName, lifeStage) {
+        const alignment = {
+          'student': { 'ประกันอุบัติเหตุส่วนบุคคล': 10 },
+          'early_career': { 'ประกันสุขภาพ IPD': 10, 'ประกันชีวิตแบบชั่วระยะเวลา': 8 },
+          'family_builder': { 'ประกันชีวิตแบบสะสมทรัพย์': 10, 'ประกันการศึกษา': 9 },
+          'peak_earner': { 'ประกันบำนาญ': 10, 'ประกันโรคร้ายแรง': 9 },
+          'pre_retirement': { 'ประกันสุขภาพ OPD': 10, 'ประกันโรคร้ายแรง': 8 }
+        };
+        return alignment[lifeStage]?.[productName] || 0;
+      }
+    }
+
+    class IntegratedInsuranceAdvisor {
+      constructor() {
+        this.ruleBasedAdvisor = new AdvancedInsuranceAdvisor();
+        this.analysisHistory = [];
+      }
+
+      async analyzeCustomer(customerData, options = {}) {
+        const analysisId = this.generateAnalysisId();
+        
+        // Step 1: Create Customer Profile
+        const customerProfile = this.ruleBasedAdvisor.createDetailedProfile(customerData);
+        
+        // Step 2: Perform Analysis
+        const ruleBasedResults = await this.performRuleBasedAnalysis(customerProfile);
+        
+        // Step 3: Create Integrated Results
+        const integratedResults = this.createIntegratedResult(ruleBasedResults, customerProfile);
+        
+        // Step 4: Apply Business Rules
+        const finalResults = this.applyBusinessRules(integratedResults, customerProfile);
+        
+        // Step 5: Log Analysis
+        this.logAnalysis({
+          id: analysisId,
+          customerProfile,
+          results: finalResults
+        });
+
+        return finalResults;
+      }
+
+      async performRuleBasedAnalysis(profile) {
+        const analysis = this.ruleBasedAdvisor.performMultiDimensionalAnalysis(profile);
+        const recommendations = this.ruleBasedAdvisor.generateRecommendations(analysis, profile);
+        
+        return {
+          source: 'rule_based',
+          timestamp: new Date().toISOString(),
+          confidence: 0.8,
+          recommendations: recommendations,
+          analysis: analysis
+        };
+      }
+
+      createIntegratedResult(ruleBased, profile) {
+        return {
+          analysisId: this.generateAnalysisId(),
+          timestamp: new Date().toISOString(),
+          sources: {
+            ruleBased: true,
+            ai: false,
+            primary: 'rule_based_primary'
+          },
+          recommendations: ruleBased.recommendations,
+          ruleBasedAnalysis: ruleBased.analysis,
+          confidence: {
+            overall: 0.8,
+            ruleBased: 0.8,
+            ai: 0
+          },
+          profileSummary: {
+            lifeStage: profile.lifeStage,
+            riskLevel: profile.risk.level,
+            incomeTier: profile.income.tier,
+            familyStatus: this.getFamilyStatus(profile.family)
+          }
+        };
+      }
+
+      applyBusinessRules(results, profile) {
+        // ปรับตามความสามารถในการจ่าย
+        results.recommendations = results.recommendations.map(rec => {
+          const maxAffordable = profile.income.monthly * 0.15;
+          if (rec.premium > maxAffordable) {
+            return {
+              ...rec,
+              premium: maxAffordable,
+              capital: Math.round(rec.capital * (maxAffordable / rec.premium)),
+              adjusted: true,
+              adjustmentNote: 'ปรับลดตามความสามารถในการจ่าย'
+            };
+          }
+          return rec;
+        });
+
+        // คำนวณโอกาสสำเร็จ
+        results.recommendations.forEach(rec => {
+          rec.successProbability = this.calculateSuccessProbability(rec, profile);
+        });
+
+        return results;
+      }
+
+      calculateSuccessProbability(recommendation, profile) {
+        let probability = recommendation.score / 100;
+        if (profile.income.tier === 'high' || profile.income.tier === 'premium') probability += 0.1;
+        if (profile.family.hasChildren) probability += 0.15;
+        if (profile.family.maritalStatus === 'สมรส') probability += 0.1;
+        return Math.min(probability, 0.95);
+      }
+
+      getFamilyStatus(family) {
+        if (family.hasChildren && family.maritalStatus === 'สมรส') return 'ครอบครัวสมบูรณ์';
+        if (family.hasChildren) return 'มีบุตร';
+        if (family.maritalStatus === 'สมรส') return 'สมรส';
+        return 'โสด';
+      }
+
+      generateAnalysisId() {
+        return `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      }
+
+      logAnalysis(analysisData) {
+        this.analysisHistory.unshift(analysisData);
+        if (this.analysisHistory.length > 100) {
+          this.analysisHistory.pop();
+        }
+      }
+    }
+
+    // =============================================
+    // Main Application Logic
+    // =============================================
+
+    let integratedAdvisor = new IntegratedInsuranceAdvisor();
 
     // DOM Helper
     const $ = (id) => document.getElementById(id);
 
     // System State
     let currentPanel = 'start';
-    let reportUnlocked = false;
-    let adminUnlocked = false;
-    let systemSettings = {};
-    let currentCustomerId = '';
-    let insurancePolicyCount = 0;
 
-    // Date and Time Utilities
-    function nowISO() {
-      return new Date().toISOString();
-    }
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
 
-    function formatDateISOToLocalShort(iso) {
-      if (!iso) return '';
-      const d = new Date(iso);
-      return d.toLocaleString('th-TH', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
+    function initializeApp() {
+      // Simulate loading
+      simulateLoading();
+      
+      // Enter button click
+      $('enterBtn').addEventListener('click', showMainApp);
+      
+      // Start button click
+      $('btn-start').addEventListener('click', function() {
+        showPanel('form');
       });
-    }
-
-    // ---------- Settings Management ----------
-    function loadSettings() {
-      try {
-        const raw = localStorage.getItem(SETTINGS_KEY);
-        if (raw) {
-          return JSON.parse(raw);
-        } else {
-          // Initialize default settings
-          return {
-            reportPassword: DEFAULT_REPORT_PASS,
-            adminPassword: DEFAULT_ADMIN_PASS,
-            pageSize: 10,
-            dateFormat: 'th-TH',
-            autoSave: true
-          };
-        }
-      } catch(e) { 
-        console.error('Error loading settings:', e);
-        return {};
-      }
-    }
-
-    function saveSettings(settings) {
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-      systemSettings = settings;
-      updateSettingsUI();
-    }
-
-    function updateSettingsUI() {
-      // Update settings form inputs
-      if ($('reportPassInput')) $('reportPassInput').value = systemSettings.reportPassword || '';
-      if ($('adminPassInput')) $('adminPassInput').value = systemSettings.adminPassword || '';
-      if ($('pageSizeSelect')) $('pageSizeSelect').value = systemSettings.pageSize || '10';
-      if ($('dateFormatSelect')) $('dateFormatSelect').value = systemSettings.dateFormat || 'th-TH';
-      if ($('autoSaveCheck')) $('autoSaveCheck').checked = systemSettings.autoSave !== false;
-    }
-
-    // ---------- Data Management with Supabase ----------
-    async function loadData() {
-      try {
-        const { data, error } = await supabase
-          .from('customers')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        if (error) {
-          console.error('Supabase error:', error);
-          // Fallback to localStorage if Supabase fails
-          const raw = localStorage.getItem(STORAGE_KEY);
-          return raw ? JSON.parse(raw) : [];
-        }
-        
-        return data || [];
-      } catch(e) { 
-        console.error('Error loading data:', e);
-        // Fallback to localStorage
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      }
-    }
-
-    async function saveData(arr) { 
-      try {
-        // Save to Supabase
-        const { error } = await supabase
-          .from('customers')
-          .upsert(arr, { onConflict: 'customer_id' });
-        
-        if (error) {
-          console.error('Supabase error:', error);
-          // Fallback to localStorage
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-        } else {
-          // Also save to localStorage as backup
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-        }
-      } catch(e) {
-        console.error('Error saving data:', e);
-        // Fallback to localStorage
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-      }
-    }
-
-    async function saveCustomerToSupabase(customer) {
-      try {
-        const { data, error } = await supabase
-          .from('customers')
-          .insert([customer])
-          .select();
-        
-        if (error) throw error;
-        return data;
-      } catch(e) {
-        console.error('Error saving customer to Supabase:', e);
-        throw e;
-      }
-    }
-
-    async function updateCustomerInSupabase(customerId, updates) {
-      try {
-        const { data, error } = await supabase
-          .from('customers')
-          .update(updates)
-          .eq('customer_id', customerId)
-          .select();
-        
-        if (error) throw error;
-        return data;
-      } catch(e) {
-        console.error('Error updating customer in Supabase:', e);
-        throw e;
-      }
-    }
-
-    async function deleteCustomerFromSupabase(customerId) {
-      try {
-        const { error } = await supabase
-          .from('customers')
-          .delete()
-          .eq('customer_id', customerId);
-        
-        if (error) throw error;
-        return true;
-      } catch(e) {
-        console.error('Error deleting customer from Supabase:', e);
-        throw e;
-      }
-    }
-
-    async function loadAudit() {
-      try { 
-        const { data, error } = await supabase
-          .from('audit_logs')
-          .select('*')
-          .order('time', { ascending: false });
-        
-        if (error) {
-          console.error('Supabase error:', error);
-          // Fallback to localStorage
-          return JSON.parse(localStorage.getItem(AUDIT_KEY) || '[]');
-        }
-        
-        return data || [];
-      } catch(e) { 
-        console.error('Error loading audit:', e);
-        return JSON.parse(localStorage.getItem(AUDIT_KEY) || '[]'); 
-      }
-    }
-
-    async function saveAudit(a) { 
-      try {
-        // Save to Supabase
-        const { error } = await supabase
-          .from('audit_logs')
-          .insert(a);
-        
-        if (error) {
-          console.error('Supabase error:', error);
-          // Fallback to localStorage
-          localStorage.setItem(AUDIT_KEY, JSON.stringify(a));
-        } else {
-          // Also save to localStorage as backup
-          localStorage.setItem(AUDIT_KEY, JSON.stringify(a));
-        }
-      } catch(e) {
-        console.error('Error saving audit:', e);
-        localStorage.setItem(AUDIT_KEY, JSON.stringify(a));
-      }
-    }
-
-    async function appendAudit(action, entityId, performedBy, data = null) {
-      const auditEntry = {
-        action, 
-        entity: entityId, 
-        performed_by: performedBy, 
-        time: nowISO(), 
-        data
-      };
       
-      const a = await loadAudit();
-      a.unshift(auditEntry);
-      await saveAudit(a);
-      renderAuditList();
-    }
-
-    // Customer Code Generation - New Format R(1-5)-MMYYHHmm
-    function genCustomerCode(rh) {
-      const now = new Date();
-      const rhNumber = rh.replace('RH', '');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = String(now.getFullYear()).slice(-2);
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
+      // Navigation
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const panel = this.getAttribute('data-panel');
+          showPanel(panel);
+        });
+      });
       
-      return `R${rhNumber}-${month}${year}${hours}${minutes}`;
+      // Back and Home buttons
+      document.querySelectorAll('[id^="btn-back-"]').forEach(btn => {
+        btn.addEventListener('click', () => showPanel('start'));
+      });
+      
+      document.querySelectorAll('[id^="btn-home-"]').forEach(btn => {
+        btn.addEventListener('click', () => showPanel('start'));
+      });
+
+      // Form event listeners
+      $('cust_monthly_income').addEventListener('input', calculateYearlyIncome);
+      $('cust_has_children').addEventListener('change', toggleChildrenSection);
+      $('btnClear').addEventListener('click', clearForm);
+      $('btnSave').addEventListener('click', saveCustomer);
+
+      // AI Analysis
+      $('btnIntegratedAnalyze').addEventListener('click', performIntegratedAnalysis);
+
+      // RH and Zone management
+      $('rh').addEventListener('change', updateZones);
     }
 
-    // ---------- Loading Screen Management ----------
     function simulateLoading() {
       let progress = 0;
       const progressBar = $('loadingProgress');
@@ -1948,20 +1509,10 @@
       setTimeout(() => {
         $('loadingScreen').style.display = 'none';
         $('appContainer').style.display = 'flex';
-        
-        // Initialize settings
-        systemSettings = loadSettings();
-        updateSettingsUI();
-        
-        // Initialize demo data if empty
-        initDemoData();
-        clearSearch();
-        renderAuditList();
         showPanel('start');
       }, 500);
     }
 
-    // ---------- Navigation Management ----------
     function showPanel(panelName) {
       // Hide all panels
       document.querySelectorAll('.content-panel').forEach(panel => {
@@ -1977,109 +1528,7 @@
       $(`panel-${panelName}`).classList.add('active');
       $(`tab-${panelName}`).classList.add('active');
       
-      // Update current panel
       currentPanel = panelName;
-      
-      // Special handling for reports panel
-      if (panelName === 'report' && !reportUnlocked) {
-        $('reportLocked').style.display = 'block';
-        $('reportPanel').style.display = 'none';
-      } else if (panelName === 'report' && reportUnlocked) {
-        $('reportLocked').style.display = 'none';
-        $('reportPanel').style.display = 'block';
-        renderReport();
-      }
-      
-      // Special handling for admin panel
-      if (panelName === 'admin' && !adminUnlocked) {
-        $('adminLocked').style.display = 'block';
-        $('adminPanel').style.display = 'none';
-      } else if (panelName === 'admin' && adminUnlocked) {
-        $('adminLocked').style.display = 'none';
-        $('adminPanel').style.display = 'block';
-        renderAuditList();
-      }
-      
-      // Refresh data if needed
-      if (panelName === 'list') {
-        clearSearch();
-      }
-      
-      // Special handling for form panel
-      if (panelName === 'form') {
-        if (!currentCustomerId) {
-          $('customerIdDisplay').style.display = 'none';
-        }
-      }
-    }
-
-    function goHome() {
-      showPanel('start');
-    }
-
-    function goBack() {
-      showPanel('start');
-    }
-
-    function logout() {
-      if (confirm('คุณต้องการออกจากระบบหรือไม่?')) {
-        reportUnlocked = false;
-        adminUnlocked = false;
-        $('appContainer').style.display = 'none';
-        $('loadingScreen').style.display = 'flex';
-        $('loadingScreen').style.opacity = '1';
-        $('enterBtn').style.display = 'none';
-        $('loadingProgress').style.width = '0%';
-        simulateLoading();
-      }
-    }
-
-    // ---------- Form Management ----------
-    function clearForm() {
-      document.getElementById('customerForm').reset();
-      currentCustomerId = '';
-      insurancePolicyCount = 0;
-      $('insurance-policies').innerHTML = '';
-      $('customerIdDisplay').style.display = 'none';
-      $('formStatus').textContent = '';
-      $('business-section').style.display = 'none';
-      $('children-section').style.display = 'none';
-      $('dependents-section').style.display = 'none';
-      $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
-      $('zone').disabled = true;
-      calculateYearlyIncome();
-    }
-
-    function validateForm() {
-      const required = [
-        ['employee_name', 'กรอกชื่อผู้กรอก'],
-        ['employee_id', 'กรอก Employee ID'],
-        ['rh', 'เลือก RH'],
-        ['zone', 'เลือก Zone'],
-        ['cust_name', 'กรอกชื่อนามสมมุติ'],
-        ['cust_age', 'กรอกอายุ'],
-        ['cust_gender', 'เลือกเพศ'],
-        ['cust_occupation', 'เลือกอาชีพ'],
-        ['cust_monthly_income', 'กรอกรายได้ต่อเดือน']
-      ];
-
-      for (let [id, msg] of required) {
-        const el = $(id);
-        if (!el) continue;
-        
-        // Check if "unknown" checkbox is checked
-        const unknownCheckbox = $(`${id}_unknown`);
-        if (unknownCheckbox && unknownCheckbox.checked) {
-          continue; // Skip validation if unknown is checked
-        }
-        
-        if (!el.value || el.value.trim() === '') {
-          alert(msg);
-          el.focus();
-          return false;
-        }
-      }
-      return true;
     }
 
     function calculateYearlyIncome() {
@@ -2088,7 +1537,11 @@
       $('cust_yearly_income').value = yearlyIncome.toLocaleString();
     }
 
-    // RH and Zone Management
+    function toggleChildrenSection() {
+      const hasChildren = $('cust_has_children').value === 'มี';
+      $('children-section').style.display = hasChildren ? 'block' : 'none';
+    }
+
     function updateZones() {
       const rh = $('rh').value;
       const zoneSelect = $('zone');
@@ -2096,1382 +1549,163 @@
       zoneSelect.innerHTML = '<option value="">เลือก Zone</option>';
       
       if (rh) {
-        const zoneData = $(`rhZonesData`).querySelector(`[data-rh="${rh}"]`);
-        if (zoneData) {
-          zoneSelect.innerHTML = zoneData.innerHTML;
-          zoneSelect.disabled = false;
-        }
+        // Simple zone mapping
+        const zones = {
+          'RH1': ['จตุจักร', 'ธนบุรี', 'บางกะปิ', 'สาทร', 'สุขุมวิท'],
+          'RH2': ['ชลบุรี', 'บางนา', 'พัทยา', 'ระยอง'],
+          'RH3': ['เชียงใหม่', 'นครสวรรค์', 'นนทบุรี', 'พิษณุโลก', 'อยุธยา'],
+          'RH4': ['ดอนเมือง', 'นครราชสีมา', 'สระบุรี', 'อุดรธานี', 'อุบลราชธานี'],
+          'RH5': ['ภูเก็ต', 'ราชบุรี', 'สมุทรสาคร', 'สุราษฎร์ธานี', 'หาดใหญ่']
+        };
+        
+        zones[rh].forEach(zone => {
+          zoneSelect.innerHTML += `<option value="${zone}">Zone ${zone}</option>`;
+        });
+        zoneSelect.disabled = false;
       } else {
         zoneSelect.disabled = true;
       }
     }
 
-    function addInsurancePolicy() {
-      insurancePolicyCount++;
-      const policyHtml = `
-        <div class="insurance-policy form-row border-bottom pb-2 mb-2" id="insurance-policy-${insurancePolicyCount}">
-          <div class="form-group">
-            <label class="form-label">ประเภทกรมธรรม์</label>
-            <select class="form-select insurance-type">
-              <option value="">เลือกประเภท</option>
-              <option>สะสมทรัพย์</option>
-              <option>สุขภาพ</option>
-              <option>ตลอดชีพ</option>
-              <option>บำนาญ</option>
-              <option>UL</option>
-              <option>อื่นๆ</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">ทุน (บาท)</label>
-            <input type="number" class="form-control insurance-capital" placeholder="ทุน">
-          </div>
-          <div class="form-group">
-            <label class="form-label">เบี้ย (บาท)</label>
-            <input type="number" class="form-control insurance-premium" placeholder="เบี้ย">
-          </div>
-          <div class="form-group">
-            <label class="form-label">สถานะการชำระเบี้ย</label>
-            <select class="form-select insurance-status">
-              <option value="">เลือกสถานะ</option>
-              <option>อยู่ระหว่างชำระเบี้ย</option>
-              <option>ชำระเบี้ยประกันครบ</option>
-              <option>ใกล้ครบกำหนดสัญญา</option>
-            </select>
-          </div>
-          <div class="form-group d-flex align-items-end">
-            <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeInsurancePolicy(${insurancePolicyCount})">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      `;
-      $('insurance-policies').insertAdjacentHTML('beforeend', policyHtml);
+    function clearForm() {
+      document.getElementById('customerForm').reset();
+      $('customerIdDisplay').style.display = 'none';
+      $('formStatus').textContent = '';
+      $('children-section').style.display = 'none';
+      $('integratedAnalysisResults').style.display = 'none';
+      $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
+      $('zone').disabled = true;
+      calculateYearlyIncome();
     }
 
-    function removeInsurancePolicy(id) {
-      const policyElement = $(`insurance-policy-${id}`);
-      if (policyElement) {
-        policyElement.remove();
-      }
+    function saveCustomer() {
+      alert('ระบบบันทึกข้อมูลกำลังพัฒนา...');
+      $('formStatus').textContent = 'บันทึกเรียบร้อย (Demo)';
     }
 
-    function getInsurancePolicies() {
-      const policies = [];
-      for (let i = 1; i <= insurancePolicyCount; i++) {
-        const policyElement = $(`insurance-policy-${i}`);
-        if (policyElement) {
-          const type = policyElement.querySelector('.insurance-type').value;
-          const capital = policyElement.querySelector('.insurance-capital').value;
-          const premium = policyElement.querySelector('.insurance-premium').value;
-          const status = policyElement.querySelector('.insurance-status').value;
-          
-          if (type || capital || premium || status) {
-            policies.push({
-              type,
-              capital: parseFloat(capital) || 0,
-              premium: parseFloat(premium) || 0,
-              status
-            });
-          }
-        }
-      }
-      return policies;
-    }
-
-    async function saveCustomer() {
-      if (!validateForm()) return;
-
-      const createdBy = $('employee_id').value.trim();
-      const empName = $('employee_name').value.trim();
-      const rh = $('rh').value.trim();
-      const zone = $('zone').value.trim();
-
-      // Generate customer ID after validation
-      currentCustomerId = genCustomerCode(rh);
+    // AI Analysis Functions
+    async function performIntegratedAnalysis() {
+      const customerData = collectCustomerData();
       
-      const customer = {
-        customer_id: currentCustomerId,
-        name: $('cust_name').value.trim(),
+      // Basic validation
+      if (!customerData.age || !customerData.monthly_income || !customerData.occupation) {
+        alert('กรุณากรอกข้อมูลพื้นฐานให้ครบถ้วน (อายุ, รายได้, อาชีพ)');
+        return;
+      }
+      
+      showAnalysisLoading();
+      
+      try {
+        const results = await integratedAdvisor.analyzeCustomer(customerData);
+        displayIntegratedResults(results);
+        autoFillRecommendations(results.recommendations);
+      } catch (error) {
+        showAnalysisError(error);
+      }
+    }
+
+    function collectCustomerData() {
+      return {
         age: parseInt($('cust_age').value) || 0,
         gender: $('cust_gender').value,
-        occupation: $('cust_occupation').value,
         monthly_income: parseFloat($('cust_monthly_income').value) || 0,
-        yearly_income: parseFloat($('cust_monthly_income').value) * 12 || 0,
-        welfare: $('cust_welfare').value,
-        insurance_capital: parseFloat($('cust_insurance_capital').value) || 0,
+        occupation: $('cust_occupation').value,
         marital_status: $('cust_marital_status').value,
-        spouse_age: parseInt($('cust_spouse_age').value) || 0,
-        spouse_occupation: $('cust_spouse_occupation').value,
         has_children: $('cust_has_children').value,
         children_count: parseInt($('cust_children_count').value) || 0,
-        children_ages: $('cust_children_ages').value,
-        children_occupation: $('cust_children_occupation').value,
-        has_dependents: $('cust_has_dependents').value,
-        dependents_details: $('cust_dependents_details').value,
-        business_type: $('cust_business_type').value,
-        business_capital: parseFloat($('cust_business_capital').value) || 0,
-        business_income: parseFloat($('cust_business_income').value) || 0,
-        business_profit: parseFloat($('cust_business_profit').value) || 0,
-        business_tax: parseFloat($('cust_business_tax').value) || 0,
-        business_share: parseFloat($('cust_business_share').value) || 0,
-        financial_products: {
-          savings: parseFloat($('prod_savings').value) || 0,
-          fixed: parseFloat($('prod_fixed').value) || 0,
-          fund: parseFloat($('prod_fund').value) || 0,
-          credit_card: parseFloat($('prod_credit_card').value) || 0,
-          home_loan: parseFloat($('prod_home_loan').value) || 0,
-          car_loan: parseFloat($('prod_car_loan').value) || 0,
-          personal_loan: parseFloat($('prod_personal_loan').value) || 0
-        },
-        insurance_policies: getInsurancePolicies(),
-        employee_comments: {
-          additional_comments: $('emp_additional_comments').value,
-          presented_before: $('emp_presented_before').value,
-          customer_feedback: $('emp_customer_feedback').value,
-          proposed_product: $('emp_proposed_product').value,
-          proposed_premium: parseFloat($('emp_proposed_premium').value) || 0,
-          proposed_capital: parseFloat($('emp_proposed_capital').value) || 0
-        },
-        additional_comments: [],
-        branch: zone, // Using zone as branch
-        zone: zone,
-        rh: rh,
-        created_by: createdBy,
-        created_by_name: empName,
-        created_at: nowISO(),
-        updated_at: nowISO()
+        children_ages: $('cust_children_ages').value
       };
-
-      try {
-        // Try to save to Supabase first
-        await saveCustomerToSupabase(customer);
-        
-        // Also save to localStorage as backup
-        const all = await loadData();
-        all.unshift(customer);
-        await saveData(all);
-        
-        await appendAudit('create', customer.customer_id, createdBy, { 
-          name: customer.name, 
-          branch: zone 
-        });
-        
-        // Show customer ID after successful save
-        $('customerIdDisplay').textContent = `Customer ID: ${customer.customer_id}`;
-        $('customerIdDisplay').style.display = 'inline-block';
-        
-        $('formStatus').textContent = `บันทึกเรียบร้อย: ${customer.customer_id}`;
-        alert(`บันทึกข้อมูลลูกค้า ${customer.customer_id} เรียบร้อยแล้ว`);
-        
-        await clearSearch();
-        if (reportUnlocked) await renderReport();
-        
-      } catch(error) {
-        console.error('Error saving customer:', error);
-        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message);
-      }
     }
 
-    // ---------- List and Search Functionality ----------
-    function clearSearch() {
-      $('search_customer').value = '';
-      $('search_by_creator').value = '';
-      $('filter_rh').value = '';
-      $('customerTbody').innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">กรุณาค้นหาเพื่อแสดงรายการ</td></tr>';
-      $('searchResultsCount').textContent = 'กรุณาค้นหาเพื่อแสดงรายการ';
-    }
-
-    async function renderTableRows(list) {
-      const tbody = $('customerTbody');
-      const countElement = $('searchResultsCount');
-      
-      countElement.textContent = `พบทั้งหมด ${list.length} รายการ`;
-      
-      tbody.innerHTML = list.map(c => `
-        <tr>
-          <td><input type="checkbox" class="rowSelect" data-id="${c.customer_id}"></td>
-          <td><strong>${c.customer_id}</strong></td>
-          <td>${c.name}</td>
-          <td>${c.age || '-'}</td>
-          <td>${c.occupation || '-'}</td>
-          <td>${c.branch || '-'}</td>
-          <td><span class="badge bg-primary">${c.rh || '-'}</span></td>
-          <td>
-            <div class="btn-group btn-group-sm">
-              <button class="btn btn-outline-primary" onclick="viewDetail('${c.customer_id}')" title="View">
-                <i class="fas fa-eye"></i>
-              </button>
-              <button class="btn btn-outline-secondary" onclick="exportSinglePDF('${c.customer_id}')" title="PDF">
-                <i class="fas fa-file-pdf"></i>
-              </button>
-              <button class="btn btn-outline-danger" onclick="deleteRecord('${c.customer_id}')" title="Delete">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('') || '<tr><td colspan="8" class="text-center text-muted py-3">ไม่มีข้อมูลลูกค้า</td></tr>';
-    }
-
-    async function refreshList() {
-      const all = await loadData();
-      renderTableRows(all);
-    }
-
-    async function searchCustomers() {
-      let searchTerm = $('search_customer').value.trim();
-      const by = $('search_by_creator').value.trim().toLowerCase();
-      const rh = $('filter_rh').value.trim();
-      
-      // ถ้าไม่มีเงื่อนไขการค้นหา
-      if (!searchTerm && !by && !rh) {
-        $('customerTbody').innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">กรุณาค้นหาเพื่อแสดงรายการ</td></tr>';
-        $('searchResultsCount').textContent = 'กรุณาค้นหาเพื่อแสดงรายการ';
-        return;
-      }
-      
-      // Add "R" prefix if not present for customer ID search
-      if (searchTerm && !searchTerm.startsWith('R')) {
-        searchTerm = 'R' + searchTerm;
-      }
-      
-      let all = await loadData();
-      
-      if (searchTerm) {
-        all = all.filter(c => 
-          c.customer_id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          (c.name || '').toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-      
-      if (by) {
-        all = all.filter(c => 
-          (c.created_by || '').toLowerCase().includes(by) || 
-          (c.created_by_name || '').toLowerCase().includes(by)
-        );
-      }
-      
-      if (rh) {
-        all = all.filter(c => (c.rh || '') === rh);
-      }
-      
-      renderTableRows(all);
-    }
-
-    // ---------- PDF Export Functions ----------
-    async function exportSinglePDF(customerId) {
-      const all = await loadData();
-      const c = all.find(x => x.customer_id === customerId);
-      if (!c) {
-        alert('ไม่พบข้อมูลลูกค้า');
-        return;
-      }
-      
-      // Verify employee access
-      const employeeId = prompt('กรุณากรอกรหัสพนักงานเพื่อยืนยันตัวตน:');
-      if (!employeeId || employeeId.trim() !== c.created_by) {
-        alert('รหัสพนักงานไม่ถูกต้อง');
-        return;
-      }
-      
-      await exportMultiplePDF([c]);
-      await appendAudit('export_pdf', customerId, 'local-user', null);
-      alert(`Export PDF สำหรับ ${customerId} เรียบร้อยแล้ว`);
-    }
-
-    async function exportMultiplePDF(items) {
-      if (!items || items.length === 0) {
-        alert('ไม่มีข้อมูลสำหรับ export');
-        return;
-      }
-      
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'px', format: 'a4' });
-      
-      for (let i = 0; i < items.length; i++) {
-        const c = items[i];
-        const wrapper = document.createElement('div');
-        wrapper.style.width = '794px';
-        wrapper.style.padding = '20px';
-        wrapper.style.background = '#fff';
-        wrapper.style.fontFamily = 'Arial, Helvetica, sans-serif';
-        
-        // Calculate financial product totals for chart
-        const financialProducts = c.financial_products || {};
-        const productLabels = ['เงินฝากออมทรัพย์', 'เงินฝากประจำ', 'กองทุน', 'บัตรเครดิต', 'เงินกู้บ้าน', 'เงินกู้รถ', 'เงินกู้ส่วนบุคคล'];
-        const productValues = [
-          financialProducts.savings || 0,
-          financialProducts.fixed || 0,
-          financialProducts.fund || 0,
-          financialProducts.credit_card || 0,
-          financialProducts.home_loan || 0,
-          financialProducts.car_loan || 0,
-          financialProducts.personal_loan || 0
-        ];
-        
-        // Create chart canvas
-        const chartCanvas = document.createElement('canvas');
-        chartCanvas.width = 300;
-        chartCanvas.height = 300;
-        chartCanvas.style.margin = '10px auto';
-        chartCanvas.style.display = 'block';
-        
-        // Create chart
-        const ctx = chartCanvas.getContext('2d');
-        const total = productValues.reduce((sum, val) => sum + val, 0);
-        
-        if (total > 0) {
-          // Create donut chart manually
-          let startAngle = 0;
-          const colors = ['#007AFF', '#5856D6', '#34C759', '#FF9500', '#FF3B30', '#AF52DE', '#FFCC00'];
-          
-          productValues.forEach((value, index) => {
-            if (value > 0) {
-              const sliceAngle = (value / total) * 2 * Math.PI;
-              
-              ctx.beginPath();
-              ctx.arc(150, 150, 120, startAngle, startAngle + sliceAngle);
-              ctx.arc(150, 150, 80, startAngle + sliceAngle, startAngle, true);
-              ctx.closePath();
-              ctx.fillStyle = colors[index];
-              ctx.fill();
-              
-              startAngle += sliceAngle;
-            }
-          });
-          
-          // Draw center circle for donut effect
-          ctx.beginPath();
-          ctx.arc(150, 150, 60, 0, 2 * Math.PI);
-          ctx.fillStyle = 'white';
-          ctx.fill();
-        } else {
-          // No data message
-          ctx.font = '14px Arial';
-          ctx.fillStyle = '#666';
-          ctx.textAlign = 'center';
-          ctx.fillText('ไม่มีข้อมูลผลิตภัณฑ์ทางการเงิน', 150, 150);
-        }
-        
-        // Insurance status colors
-        const statusColors = {
-          'อยู่ระหว่างชำระเบี้ย': '#FF9500', // Yellow
-          'ชำระเบี้ยประกันครบ': '#007AFF',   // Blue
-          'ใกล้ครบกำหนดสัญญา': '#34C759',    // Green
-          '': '#86868B'                      // Gray for unknown
-        };
-        
-        wrapper.innerHTML = `
-          <div style="color:#111;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid #007AFF; padding-bottom:10px;">
-              <div>
-                <div style="font-size:12px; color:#666;">Customer ID : ${c.customer_id}</div>
-                <div style="font-size:12px; color:#666;">Generated : ${formatDateISOToLocalShort(nowISO())}</div>
-              </div>
-              <div style="font-size:18px; font-weight:bold; color:#007AFF;">Account Planning System</div>
-            </div>
-            
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
-              <div style="background:#A3C6FA; padding:15px; border-radius:8px;">
-                <h3 style="margin:0 0 10px 0; color:#4C5B78; font-size:16px;">Seller Info.</h3>
-                <table style="width:100%;">
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Name</strong></td>
-                    <td style="padding:4px 0;">${c.created_by_name || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>ID</strong></td>
-                    <td style="padding:4px 0;">${c.created_by || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Branch</strong></td>
-                    <td style="padding:4px 0;">${c.branch || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Zone</strong></td>
-                    <td style="padding:4px 0;">${c.zone || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>RH</strong></td>
-                    <td style="padding:4px 0;">${c.rh || '-'}</td>
-                  </tr>
-                </table>
-              </div>
-              
-              <div style="background:#A3C6FA; padding:15px; border-radius:8px;">
-                <h3 style="margin:0 0 10px 0; color:#4C5B78; font-size:16px;">Customer Info.</h3>
-                <table style="width:100%;">
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Name</strong></td>
-                    <td style="padding:4px 0;">${c.name || '-'}</td>
-                    <td style="padding:4px 0;"><strong>Age</strong></td>
-                    <td style="padding:4px 0;">${c.age || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Gender</strong></td>
-                    <td style="padding:4px 0;">${c.gender || '-'}</td>
-                    <td style="padding:4px 0;"><strong>Occupation</strong></td>
-                    <td style="padding:4px 0;">${c.occupation || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Income / Year</strong></td>
-                    <td style="padding:4px 0;" colspan="3">${c.yearly_income ? c.yearly_income.toLocaleString() + ' บาท' : '-'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:4px 0;"><strong>Marital status</strong></td>
-                    <td style="padding:4px 0;">${c.marital_status || '-'}</td>
-                    <td style="padding:4px 0;"><strong>Children</strong></td>
-                    <td style="padding:4px 0;">${c.has_children === 'มี' ? (c.children_count || '') + ' คน' : 'ไม่มี'}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            
-            <div style="margin-bottom:20px;">
-              <h3 style="margin:0 0 10px 0; color:#4C5B78; font-size:16px; border-bottom:1px solid #007AFF; padding-bottom:5px;">Insurance Product</h3>
-              <div style="background:#E7F0F6; padding:15px; border-radius:8px;">
-                <table style="width:100%; border-collapse:collapse;">
-                  <thead>
-                    <tr style="background:#e9ecef;">
-                      <th style="text-align:left;padding:8px; border:1px solid #ddd;">ตัวเลข</th>
-                      <th style="text-align:left;padding:8px; border:1px solid #ddd;">สะสมทรัพย์</th>
-                      <th style="text-align:left;padding:8px; border:1px solid #ddd;">สุขภาพ</th>
-                      <th style="text-align:left;padding:8px; border:1px solid #ddd;">ILP</th>
-                      <th style="text-align:left;padding:8px; border:1px solid #ddd;">อื่นๆ</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style="padding:8px; border:1px solid #ddd; text-align:center;">
-                        ${c.insurance_policies && c.insurance_policies.length > 0 ? 
-                          `<span style="color:${statusColors[c.insurance_policies[0].status || ''] || '#86868B'}">✓</span>` : ''}
-                      </td>
-                      <td style="padding:8px; border:1px solid #ddd; text-align:center;">
-                        ${c.insurance_policies && c.insurance_policies.some(p => p.type === 'สะสมทรัพย์') ? 
-                          `<span style="color:${statusColors[c.insurance_policies.find(p => p.type === 'สะสมทรัพย์')?.status || ''] || '#86868B'}">✓</span>` : ''}
-                      </td>
-                      <td style="padding:8px; border:1px solid #ddd; text-align:center;">
-                        ${c.insurance_policies && c.insurance_policies.some(p => p.type === 'สุขภาพ') ? 
-                          `<span style="color:${statusColors[c.insurance_policies.find(p => p.type === 'สุขภาพ')?.status || ''] || '#86868B'}">✓</span>` : ''}
-                      </td>
-                      <td style="padding:8px; border:1px solid #ddd; text-align:center;">
-                        ${c.insurance_policies && c.insurance_policies.some(p => p.type === 'ILP') ? 
-                          `<span style="color:${statusColors[c.insurance_policies.find(p => p.type === 'ILP')?.status || ''] || '#86868B'}">✓</span>` : ''}
-                      </td>
-                      <td style="padding:8px; border:1px solid #ddd; text-align:center;">
-                        ${c.insurance_policies && c.insurance_policies.some(p => p.type === 'อื่นๆ') ? 
-                          `<span style="color:${statusColors[c.insurance_policies.find(p => p.type === 'อื่นๆ')?.status || ''] || '#86868B'}">✓</span>` : ''}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            
-            <div style="margin-bottom:20px;">
-              <h3 style="margin:0 0 10px 0; color:#4C5B78; font-size:16px; border-bottom:1px solid #007AFF; padding-bottom:5px;">Financial Products</h3>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-                <div style="background:#E7F0F6; padding:15px; border-radius:8px;">
-                  <h4 style="margin:0 0 10px 0; color:#4C5B78; font-size:14px;">รายการผลิตภัณฑ์</h4>
-                  <table style="width:100%;">
-                    <tr>
-                      <td style="padding:4px 0;">saving</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.savings ? financialProducts.savings.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:4px 0;">Fixed Deposit</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.fixed ? financialProducts.fixed.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:4px 0;">Fund</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.fund ? financialProducts.fund.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:4px 0;">Car Loan</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.car_loan ? financialProducts.car_loan.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:4px 0;">Home Loan</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.home_loan ? financialProducts.home_loan.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:4px 0;">Personal Loan</td>
-                      <td style="padding:4px 0; text-align:right;">${financialProducts.personal_loan ? financialProducts.personal_loan.toLocaleString() + ' บาท' : '-'}</td>
-                    </tr>
-                  </table>
-                </div>
-                
-                <div style="background:#E7F0F6; padding:15px; border-radius:8px; text-align:center;">
-                  <h4 style="margin:0 0 10px 0; color:#4C5B78; font-size:14px;">สัดส่วนผลิตภัณฑ์ทางการเงิน</h4>
-                </div>
-              </div>
-            </div>
-            
-            <div style="font-size:11px;color:#999;text-align:center;margin-top:30px; border-top:1px solid #eee; padding-top:10px;">
-              PLT-ttb Training — Confidential — For internal use only.
-            </div>
+    function showAnalysisLoading() {
+      $('integratedAnalysisResults').innerHTML = `
+        <div class="loading-analysis">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">กำลังวิเคราะห์...</span>
           </div>
-        `;
-        
-        // Add chart to the wrapper
-        const chartContainer = wrapper.querySelector('div:last-child > div:last-child > div:last-child');
-        if (chartContainer) {
-          chartContainer.appendChild(chartCanvas);
-          
-          // Add legend
-          const legend = document.createElement('div');
-          legend.style.marginTop = '10px';
-          legend.style.fontSize = '10px';
-          
-          const legendItems = productLabels.map((label, index) => {
-            if (productValues[index] > 0) {
-              const colors = ['#007AFF', '#5856D6', '#34C759', '#FF9500', '#FF3B30', '#AF52DE', '#FFCC00'];
-              return `
-                <div style="display:inline-block; margin:0 5px;">
-                  <span style="display:inline-block; width:10px; height:10px; background:${colors[index]}; margin-right:3px;"></span>
-                  ${label}
-                </div>
-              `;
-            }
-            return '';
-          }).filter(item => item !== '').join('');
-          
-          legend.innerHTML = legendItems;
-          chartContainer.appendChild(legend);
-        }
-        
-        document.body.appendChild(wrapper);
-        
-        try {
-          const canvas = await html2canvas(wrapper, { 
-            scale: 2, 
-            useCORS: true, 
-            backgroundColor: '#ffffff',
-            logging: false
-          });
-          
-          const imgData = canvas.toDataURL('image/png');
-          const imgProps = doc.getImageProperties(imgData);
-          const pdfWidth = doc.internal.pageSize.getWidth();
-          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          
-          doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          if (i < items.length - 1) doc.addPage();
-        } catch (error) {
-          console.error('Error generating PDF:', error);
-          alert('เกิดข้อผิดพลาดในการสร้าง PDF');
-        } finally {
-          document.body.removeChild(wrapper);
-        }
-      }
-      
-      doc.save(`APS_Export_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'_')}.pdf`);
-    }
-
-    // ---------- Report and Dashboard Functions ----------
-    function unlockReports() {
-      const v = $('reportPass').value.trim();
-      if (v === systemSettings.reportPassword) {
-        reportUnlocked = true;
-        $('reportLocked').style.display = 'none';
-        $('reportPanel').style.display = 'block';
-        appendAudit('report_unlock', 'report_panel', 'local-user', null);
-        renderReport();
-        alert('เข้าสู่ระบบรายงานเรียบร้อยแล้ว');
-      } else {
-        alert('Passcode ไม่ถูกต้อง');
-      }
-    }
-
-    function unlockAdmin() {
-      const v = $('adminPass').value.trim();
-      if (v === systemSettings.adminPassword) {
-        adminUnlocked = true;
-        $('adminLocked').style.display = 'none';
-        $('adminPanel').style.display = 'block';
-        appendAudit('admin_unlock', 'admin_panel', 'local-user', null);
-        renderAuditList();
-        alert('เข้าสู่ระบบ Admin เรียบร้อยแล้ว');
-      } else {
-        alert('Passcode ไม่ถูกต้อง');
-      }
-    }
-
-    function isMTD(isoDate) {
-      if (!isoDate) return false;
-      const d = new Date(isoDate);
-      const now = new Date();
-      return d.getFullYear() === now.getFullYear() && 
-             d.getMonth() === now.getMonth() && 
-             d.getDate() <= now.getDate();
-    }
-
-    async function renderReport() {
-      if (!reportUnlocked) return;
-      
-      const region = $('filter_report_region').value;
-      const startDate = $('filter_start_date').value;
-      const endDate = $('filter_end_date').value;
-      
-      let all = await loadData();
-      
-      // Apply filters
-      if (region && region !== 'all') {
-        all = all.filter(c => c.rh === region);
-      }
-      
-      if (startDate && endDate) {
-        all = all.filter(c => {
-          const custDate = new Date(c.created_at);
-          return custDate >= new Date(startDate) && custDate <= new Date(endDate);
-        });
-      }
-      
-      // Filter MTD for KPI
-      const listMTD = all.filter(c => isMTD(c.created_at));
-      
-      // Update KPIs
-      $('kpi_total').textContent = listMTD.length;
-      
-      // Top branch
-      const branchCounts = {};
-      listMTD.forEach(c => { 
-        branchCounts[c.branch] = (branchCounts[c.branch] || 0) + 1; 
-      });
-      
-      const topBranch = Object.entries(branchCounts).sort((a, b) => b[1] - a[1])[0];
-      $('kpi_top_branch').textContent = topBranch ? `${topBranch[0]} (${topBranch[1]})` : '-';
-    }
-
-    // ---------- Admin and Audit Functions ----------
-    async function renderAuditList() {
-      const a = await loadAudit();
-      const container = $('auditList');
-      
-      container.innerHTML = a.map(x => `
-        <div class="border-bottom pb-2 mb-2">
-          <div class="d-flex justify-content-between">
-            <strong>${x.action}</strong>
-            <small class="text-muted">${formatDateISOToLocalShort(x.time)}</small>
-          </div>
-          <div>Entity: ${x.entity} | โดย: ${x.performed_by}</div>
-          ${x.data ? `<small class="text-muted">ข้อมูล: ${JSON.stringify(x.data)}</small>` : ''}
+          <p class="mt-2">กำลังวิเคราะห์ข้อมูลแบบหลายมิติ...</p>
+          <small class="text-muted">ระบบกำลังวิเคราะห์: ข้อมูลส่วนตัว, ครอบครัว, การเงิน, ความเสี่ยง</small>
         </div>
-      `).join('') || '<div class="text-muted text-center py-3">ยังไม่มีบันทึกการใช้งาน</div>';
+      `;
+      $('integratedAnalysisResults').style.display = 'block';
     }
 
-    // ---------- Settings Functions ----------
-    function changeReportPassword() {
-      const newPass = $('reportPassInput').value.trim();
-      if (!newPass) {
-        alert('กรุณากรอกรหัสผ่านใหม่');
-        return;
-      }
-      
-      systemSettings.reportPassword = newPass;
-      saveSettings(systemSettings);
-      alert('เปลี่ยนรหัสผ่านรายงานเรียบร้อยแล้ว');
-    }
-
-    function changeAdminPassword() {
-      const newPass = $('adminPassInput').value.trim();
-      if (!newPass) {
-        alert('กรุณากรอกรหัสผ่านใหม่');
-        return;
-      }
-      
-      systemSettings.adminPassword = newPass;
-      saveSettings(systemSettings);
-      alert('เปลี่ยนรหัสผ่าน Admin เรียบร้อยแล้ว');
-    }
-
-    async function exportAllData() {
-      const data = {
-        customers: await loadData(),
-        audit: await loadAudit(),
-        settings: systemSettings,
-        exportDate: nowISO()
-      };
-      
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `aps_backup_${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      
-      await appendAudit('export_all_data', 'system', 'admin', null);
-      alert('ส่งออกข้อมูลทั้งหมดเรียบร้อยแล้ว');
-    }
-
-    async function importData() {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json';
-      
-      input.onchange = async e => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = async event => {
-          try {
-            const data = JSON.parse(event.target.result);
-            
-            if (data.customers) {
-              await saveData(data.customers);
-            }
-            if (data.audit) {
-              await saveAudit(data.audit);
-            }
-            if (data.settings) {
-              saveSettings(data.settings);
-            }
-            
-            await clearSearch();
-            await renderAuditList();
-            alert('นำเข้าข้อมูลเรียบร้อยแล้ว');
-            await appendAudit('import_data', 'system', 'admin', null);
-          } catch (error) {
-            alert('ไฟล์ไม่ถูกต้องหรือเสียหาย');
-          }
-        };
-        
-        reader.readAsText(file);
-      };
-      
-      input.click();
-    }
-
-    async function clearAllData() {
-      if (!confirm('คุณแน่ใจหรือไม่ที่จะล้างข้อมูลทั้งหมด? การกระทำนี้ไม่สามารถย้อนกลับได้!')) {
-        return;
-      }
-      
-      try {
-        // Delete from Supabase
-        const { error } = await supabase
-          .from('customers')
-          .delete()
-          .neq('customer_id', 'dummy'); // Delete all records
-        
-        if (error) throw error;
-      } catch (e) {
-        console.error('Error clearing data from Supabase:', e);
-      }
-      
-      // Clear localStorage
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(AUDIT_KEY);
-      localStorage.removeItem(COUNTER_KEY);
-      
-      await clearSearch();
-      await renderAuditList();
-      if (reportUnlocked) await renderReport();
-      
-      await appendAudit('clear_all_data', 'system', 'admin', null);
-      alert('ล้างข้อมูลทั้งหมดเรียบร้อยแล้ว');
-    }
-
-    function resetSystem() {
-      if (!confirm('คุณแน่ใจหรือไม่ที่จะรีเซ็ตระบบทั้งหมด? การกระทำนี้จะลบข้อมูลและการตั้งค่าทั้งหมด!')) {
-        return;
-      }
-      
-      localStorage.clear();
-      
-      // Reload page to reset everything
-      location.reload();
-    }
-
-    function updateSystemSettings() {
-      systemSettings.pageSize = $('pageSizeSelect').value;
-      systemSettings.dateFormat = $('dateFormatSelect').value;
-      systemSettings.autoSave = $('autoSaveCheck').checked;
-      
-      saveSettings(systemSettings);
-      alert('บันทึกการตั้งค่าระบบเรียบร้อยแล้ว');
-    }
-
-    // ---------- Demo Data Initialization ----------
-    async function initDemoData() {
-      const data = await loadData();
-      if (data.length === 0) {
-        const demo = [
-          { 
-            customer_id: 'R1-11171239',
-            name: 'สมชาย ใจดี', 
-            age: 35,
-            gender: 'ชาย',
-            occupation: 'พนักงานบริษัท',
-            monthly_income: 50000,
-            yearly_income: 600000,
-            welfare: 'มี - วงเงินสูง',
-            insurance_capital: 1000000,
-            marital_status: 'สมรส',
-            spouse_age: 32,
-            spouse_occupation: 'ครู',
-            has_children: 'มี',
-            children_count: 2,
-            children_ages: '8,5',
-            children_occupation: 'นักเรียน',
-            has_dependents: 'ไม่มี',
-            financial_products: {
-              savings: 50000,
-              fixed: 200000,
-              fund: 150000,
-              credit_card: 50000,
-              home_loan: 2000000,
-              car_loan: 500000,
-              personal_loan: 0
-            },
-            insurance_policies: [
-              {
-                type: 'สะสมทรัพย์',
-                capital: 1000000,
-                premium: 50000,
-                status: 'ชำระเบี้ยประกันครบ'
-              }
-            ],
-            employee_comments: {
-              additional_comments: 'ลูกค้ามีความสนใจในผลิตภัณฑ์ประกันสุขภาพ',
-              presented_before: 'ยังไม่เคยนำเสนอ',
-              customer_feedback: '',
-              proposed_product: 'ประกันสุขภาพ',
-              proposed_premium: 30000,
-              proposed_capital: 1000000
-            },
-            additional_comments: [],
-            branch: 'จตุจักร', 
-            zone: 'จตุจักร', 
-            rh: 'RH1',
-            created_by: 'BR1001', 
-            created_by_name: 'Somchai', 
-            created_at: nowISO(), 
-            updated_at: nowISO()
-          }
-        ];
-        await saveData(demo);
-      }
-    }
-
-    // ---------- Fullscreen Customer Detail View ----------
-    window.viewDetail = async function(customerId) {
-      const all = await loadData();
-      const c = all.find(x => x.customer_id === customerId);
-      if (!c) {
-        alert('ไม่พบข้อมูลลูกค้า');
-        return;
-      }
-      
-      // Verify employee access
-      const employeeId = prompt('กรุณากรอกรหัสพนักงานเพื่อยืนยันตัวตน:');
-      if (!employeeId || employeeId.trim() !== c.created_by) {
-        alert('รหัสพนักงานไม่ถูกต้อง');
-        return;
-      }
-      
-      // Create fullscreen modal
-      const modalHtml = `
-        <div class="fullscreen-modal" id="customerDetailFullscreen">
-          <div class="fullscreen-modal-header">
-            <h2 class="mb-0">รายละเอียดลูกค้า - ${c.customer_id}</h2>
-            <button class="btn btn-secondary" onclick="closeFullscreenModal()">
-              <i class="fas fa-times"></i> ปิด
-            </button>
-          </div>
-          <div class="fullscreen-modal-content">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="card mb-4">
-                  <div class="card-header bg-primary text-white">
-                    <i class="fas fa-info-circle"></i> ข้อมูลพื้นฐาน
-                  </div>
-                  <div class="card-body">
-                    <p><strong>ชื่อนามสมมุติ:</strong> ${c.name}</p>
-                    <p><strong>อายุ/เพศ:</strong> ${c.age || '-'} / ${c.gender || '-'}</p>
-                    <p><strong>อาชีพ:</strong> ${c.occupation || '-'}</p>
-                    <p><strong>รายได้ต่อเดือน/ปี:</strong> ${c.monthly_income || 0} / ${c.yearly_income || 0}</p>
-                    <p><strong>สวัสดิการ:</strong> ${c.welfare || '-'}</p>
-                    <p><strong>ทุนประกันต่อปี:</strong> ${c.insurance_capital || 0}</p>
-                    <p><strong>Branch/Zone/RH:</strong> ${c.branch || '-'} / ${c.zone || '-'} / ${c.rh || '-'}</p>
-                  </div>
-                </div>
-                
-                <div class="card mb-4">
-                  <div class="card-header bg-success text-white">
-                    <i class="fas fa-users"></i> ข้อมูลครอบครัว
-                  </div>
-                  <div class="card-body">
-                    <p><strong>สถานภาพ:</strong> ${c.marital_status || '-'}</p>
-                    <p><strong>อายุคู่สมรส:</strong> ${c.spouse_age || '-'}</p>
-                    <p><strong>อาชีพคู่สมรส:</strong> ${c.spouse_occupation || '-'}</p>
-                    <p><strong>มีบุตร:</strong> ${c.has_children || '-'}</p>
-                    ${c.has_children === 'มี' ? `
-                      <p><strong>จำนวนบุตร:</strong> ${c.children_count || '-'}</p>
-                      <p><strong>อายุบุตร:</strong> ${c.children_ages || '-'}</p>
-                      <p><strong>อาชีพบุตร:</strong> ${c.children_occupation || '-'}</p>
-                    ` : ''}
-                    <p><strong>มีบุคคลอื่นที่ต้องดูแล:</strong> ${c.has_dependents || '-'}</p>
-                    ${c.has_dependents === 'มี' ? `
-                      <p><strong>รายละเอียด:</strong> ${c.dependents_details || '-'}</p>
-                    ` : ''}
-                  </div>
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <div class="card mb-4">
-                  <div class="card-header bg-info text-white">
-                    <i class="fas fa-piggy-bank"></i> ผลิตภัณฑ์ทางการเงิน
-                  </div>
-                  <div class="card-body">
-                    <p><strong>เงินฝากออมทรัพย์:</strong> ${c.financial_products?.savings || 0}</p>
-                    <p><strong>เงินฝากประจำ:</strong> ${c.financial_products?.fixed || 0}</p>
-                    <p><strong>กองทุน:</strong> ${c.financial_products?.fund || 0}</p>
-                    <p><strong>บัตรเครดิต:</strong> ${c.financial_products?.credit_card || 0}</p>
-                    <p><strong>เงินกู้บ้าน:</strong> ${c.financial_products?.home_loan || 0}</p>
-                    <p><strong>เงินกู้รถ:</strong> ${c.financial_products?.car_loan || 0}</p>
-                    <p><strong>เงินกู้ส่วนบุคคล:</strong> ${c.financial_products?.personal_loan || 0}</p>
-                  </div>
-                </div>
-                
-                <div class="card mb-4">
-                  <div class="card-header bg-warning text-dark">
-                    <i class="fas fa-shield-alt"></i> กรมธรรม์ประกัน
-                  </div>
-                  <div class="card-body">
-                    ${c.insurance_policies && c.insurance_policies.length > 0 ? 
-                      c.insurance_policies.map(policy => `
-                        <div class="border-bottom pb-2 mb-2">
-                          <p><strong>ประเภท:</strong> ${policy.type || '-'}</p>
-                          <p><strong>ทุน:</strong> ${policy.capital || 0}</p>
-                          <p><strong>เบี้ย:</strong> ${policy.premium || 0}</p>
-                          <p><strong>สถานะ:</strong> ${policy.status || '-'}</p>
-                        </div>
-                      `).join('') : 
-                      '<p class="text-muted">ไม่มีข้อมูลกรมธรรม์</p>'
-                    }
-                  </div>
-                </div>
-              </div>
+    function displayIntegratedResults(results) {
+      const resultsHTML = `
+        <div class="analysis-results">
+          <div class="results-header">
+            <h5><i class="fas fa-chart-network"></i> ผลการวิเคราะห์แบบบูรณาการ</h5>
+            <div class="sources-badge">
+              <span class="badge bg-primary">Multi-Dimensional</span>
+              <span class="badge bg-secondary">${results.profileSummary.lifeStage}</span>
             </div>
-            
-            <div class="card mb-4">
-              <div class="card-header bg-secondary text-white">
-                <i class="fas fa-comments"></i> ความเห็นพนักงาน
+          </div>
+          
+          <div class="alert alert-info">
+            <i class="fas fa-user-circle"></i> 
+            โปรไฟล์: ${results.profileSummary.incomeTier} | 
+            ระยะชีวิต: ${results.profileSummary.lifeStage} | 
+            สถานภาพ: ${results.profileSummary.familyStatus} |
+            ระดับความเสี่ยง: ${results.profileSummary.riskLevel}/5
+          </div>
+          
+          ${results.recommendations.map(rec => `
+            <div class="recommendation-card">
+              <div class="card-header">
+                <h6 class="mb-0">${rec.product}</h6>
+                <div class="scores">
+                  <span class="score-badge">${rec.score}%</span>
+                  ${rec.adjusted ? '<span class="badge bg-warning">ปรับแล้ว</span>' : ''}
+                  ${rec.urgency >= 3 ? '<span class="badge bg-danger">เร่งด่วน</span>' : ''}
+                </div>
               </div>
               <div class="card-body">
-                <p><strong>ความเห็นเพิ่มเติม:</strong> ${c.employee_comments?.additional_comments || '-'}</p>
-                <p><strong>เคยนำเสนอแล้วหรือไม่:</strong> ${c.employee_comments?.presented_before || '-'}</p>
-                <p><strong>ความคิดเห็นลูกค้า:</strong> ${c.employee_comments?.customer_feedback || '-'}</p>
-                <p><strong>ผลิตภัณฑ์ที่คาดหวัง:</strong> ${c.employee_comments?.proposed_product || '-'}</p>
-                <p><strong>เบี้ย/ทุนที่คาดหวัง:</strong> ${c.employee_comments?.proposed_premium || 0} / ${c.employee_comments?.proposed_capital || 0}</p>
+                <div class="financials">
+                  <div><strong>ทุน:</strong> ${rec.capital.toLocaleString()} บาท</div>
+                  <div><strong>เบี้ยปี:</strong> ${rec.premium.toLocaleString()} บาท</div>
+                </div>
+                <div class="reasoning">
+                  <p>${rec.reason}</p>
+                  ${rec.adjusted ? `<p><small class="text-warning">${rec.adjustmentNote}</small></p>` : ''}
+                </div>
+                <div class="metadata">
+                  <small class="text-muted">
+                    โอกาสสำเร็จ: ${Math.round(rec.successProbability * 100)}% | 
+                    ความมั่นใจ: ${Math.round(results.confidence.overall * 100)}% |
+                    หมวดหมู่: ${rec.category}
+                  </small>
+                </div>
               </div>
             </div>
-            
-            <div class="comment-section">
-              <h6>ความคิดเห็นเพิ่มเติม</h6>
-              <div id="customerComments">
-                ${c.additional_comments && c.additional_comments.length > 0 ? 
-                  c.additional_comments.map(comment => `
-                    <div class="comment-item">
-                      <div class="comment-meta">${comment.date} โดย ${comment.by}</div>
-                      <div>${comment.text}</div>
-                    </div>
-                  `).join('') : 
-                  '<p class="text-muted">ยังไม่มีความคิดเห็น</p>'
-                }
-              </div>
-              <div class="mt-3">
-                <textarea class="form-control mb-2" id="newComment" placeholder="เพิ่มความคิดเห็นใหม่"></textarea>
-                <button class="btn btn-primary btn-sm" onclick="addComment('${c.customer_id}')">
-                  <i class="fas fa-plus"></i> เพิ่มความคิดเห็น
-                </button>
-              </div>
-            </div>
-            
-            <div class="mt-4 p-3 bg-light rounded">
-              <small class="text-muted">
-                สร้างโดย: ${c.created_by_name || c.created_by} | 
-                วันที่สร้าง: ${formatDateISOToLocalShort(c.created_at)} | 
-                อัปเดตล่าสุด: ${formatDateISOToLocalShort(c.updated_at)}
-              </small>
-            </div>
-          </div>
+          `).join('')}
         </div>
       `;
       
-      // Remove existing modal if any
-      const existingModal = document.getElementById('customerDetailFullscreen');
-      if (existingModal) {
-        existingModal.remove();
-      }
-      
-      // Add modal to document
-      document.body.insertAdjacentHTML('beforeend', modalHtml);
-    };
-    
-    window.closeFullscreenModal = function() {
-      const modal = document.getElementById('customerDetailFullscreen');
-      if (modal) {
-        modal.remove();
-      }
-    };
-    
-    window.addComment = async function(customerId) {
-      const all = await loadData();
-      const c = all.find(x => x.customer_id === customerId);
-      if (!c) {
-        alert('ไม่พบข้อมูลลูกค้า');
-        return;
-      }
-      
-      const newComment = document.getElementById('newComment').value.trim();
-      if (!newComment) {
-        alert('กรุณากรอกความคิดเห็น');
-        return;
-      }
-      
-      // Initialize comments array if it doesn't exist
-      if (!c.additional_comments) {
-        c.additional_comments = [];
-      }
-      
-      // Add new comment
-      c.additional_comments.push({
-        text: newComment,
-        by: systemSettings.currentUser || 'Unknown',
-        date: formatDateISOToLocalShort(nowISO())
-      });
-      
-      // Update customer data
-      const index = all.findIndex(x => x.customer_id === customerId);
-      if (index !== -1) {
-        all[index] = c;
-        await saveData(all);
-        
-        // Try to update in Supabase
-        try {
-          await updateCustomerInSupabase(customerId, {
-            additional_comments: c.additional_comments,
-            updated_at: nowISO()
-          });
-        } catch (e) {
-          console.error('Error updating customer in Supabase:', e);
-        }
-        
-        // Clear input
-        document.getElementById('newComment').value = '';
-        
-        // Refresh comments display
-        const commentsHtml = c.additional_comments.map(comment => `
-          <div class="comment-item">
-            <div class="comment-meta">${comment.date} โดย ${comment.by}</div>
-            <div>${comment.text}</div>
-          </div>
-        `).join('');
-        
-        document.getElementById('customerComments').innerHTML = commentsHtml;
-        
-        alert('เพิ่มความคิดเห็นเรียบร้อยแล้ว');
-      }
-    };
-    
-    window.exportSinglePDF = exportSinglePDF;
-    
-    window.deleteRecord = async function(customerId) {
-      if (!confirm('ลบรายการนี้จริงหรือไม่?')) return;
-      
-      const all = await loadData();
-      const customer = all.find(c => c.customer_id === customerId);
-      if (!customer) {
-        alert('ไม่พบข้อมูลลูกค้า');
-        return;
-      }
-      
-      // Verify employee access
-      const employeeId = prompt('กรุณากรอกรหัสพนักงานเพื่อยืนยันตัวตน:');
-      if (!employeeId || employeeId.trim() !== customer.created_by) {
-        alert('รหัสพนักงานไม่ถูกต้อง');
-        return;
-      }
-      
-      try {
-        // Delete from Supabase
-        await deleteCustomerFromSupabase(customerId);
-      } catch (e) {
-        console.error('Error deleting from Supabase:', e);
-      }
-      
-      // Delete from localStorage
-      let updatedAll = await loadData();
-      updatedAll = updatedAll.filter(x => x.customer_id !== customerId);
-      await saveData(updatedAll);
-      
-      await appendAudit('delete', customerId, 'local-user', {
-        customer_name: customer ? customer.name : 'Unknown'
-      });
-      
-      await clearSearch();
-      if (reportUnlocked) await renderReport();
-      
-      alert('ลบข้อมูลลูกค้าเรียบร้อยแล้ว');
-    };
+      $('integratedAnalysisResults').innerHTML = resultsHTML;
+    }
 
-    // ---------- Event Listeners and Initialization ----------
-    document.addEventListener('DOMContentLoaded', function() {
-      // Start loading simulation
-      simulateLoading();
-      
-      // Enter button click
-      $('enterBtn').addEventListener('click', showMainApp);
-      
-      // Start button click
-      $('btn-start').addEventListener('click', function() {
-        showPanel('form');
-      });
-      
-      // Navigation event listeners
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const panel = this.getAttribute('data-panel');
-          showPanel(panel);
-        });
-      });
-      
-      // Back and Home buttons for each panel
-      document.querySelectorAll('[id^="btn-back-"]').forEach(btn => {
-        btn.addEventListener('click', goBack);
-      });
-      
-      document.querySelectorAll('[id^="btn-home-"]').forEach(btn => {
-        btn.addEventListener('click', goHome);
-      });
-      
-      // Logout button
-      $('btn-logout').addEventListener('click', logout);
-      
-      // Form event listeners
-      $('btnAddInsurance').addEventListener('click', addInsurancePolicy);
-      
-      // Calculate yearly income when monthly income changes
-      $('cust_monthly_income').addEventListener('input', calculateYearlyIncome);
-      
-      // RH change listener
-      $('rh').addEventListener('change', updateZones);
-      
-      // Show/hide business section based on occupation
-      $('cust_occupation').addEventListener('change', function() {
-        if (this.value === 'เจ้าของกิจการ/ธุรกิจส่วนตัว') {
-          $('business-section').style.display = 'block';
-        } else {
-          $('business-section').style.display = 'none';
-        }
-      });
-      
-      // Show/hide children section
-      $('cust_has_children').addEventListener('change', function() {
-        if (this.value === 'มี') {
-          $('children-section').style.display = 'block';
-        } else {
-          $('children-section').style.display = 'none';
-        }
-      });
-      
-      // Show/hide dependents section
-      $('cust_has_dependents').addEventListener('change', function() {
-        if (this.value === 'มี') {
-          $('dependents-section').style.display = 'block';
-        } else {
-          $('dependents-section').style.display = 'none';
-        }
-      });
-      
-      $('btnClear').addEventListener('click', clearForm);
-      $('btnSave').addEventListener('click', saveCustomer);
-      
-      // List and search event listeners
-      $('btnSearch').addEventListener('click', searchCustomers);
-      $('btnRefresh').addEventListener('click', clearSearch);
-      $('btnBulkExport').addEventListener('click', async () => {
-        const checks = Array.from(document.querySelectorAll('.rowSelect:checked'));
-        if (!checks.length) {
-          alert('เลือกอย่างน้อย 1 รายการเพื่อ export');
-          return;
-        }
-        
-        const ids = checks.map(ch => ch.dataset.id);
-        const all = await loadData();
-        const items = all.filter(c => ids.includes(c.customer_id));
-        
-        // Verify employee access for bulk export
-        const uniqueCreators = [...new Set(items.map(item => item.created_by))];
-        if (uniqueCreators.length > 1) {
-          alert('ไม่สามารถ export พร้อมกันได้ เนื่องจากรายการที่เลือกถูกสร้างโดยพนักงานหลายคน');
-          return;
-        }
-        
-        const employeeId = prompt('กรุณากรอกรหัสพนักงานเพื่อยืนยันตัวตน:');
-        if (!employeeId || employeeId.trim() !== uniqueCreators[0]) {
-          alert('รหัสพนักงานไม่ถูกต้อง');
-          return;
-        }
-        
-        await exportMultiplePDF(items);
-        await appendAudit('export_bulk_pdf', `bulk:${ids.join(',')}`, 'local-user', { 
-          count: items.length 
-        });
-        
-        alert(`Export PDF จำนวน ${items.length} รายการเรียบร้อยแล้ว`);
-      });
-      
-      $('selectAll').addEventListener('change', (e) => {
-        document.querySelectorAll('.rowSelect').forEach(cb => {
-          cb.checked = e.target.checked;
-        });
-      });
-      
-      // Report event listeners
-      $('btnUnlock').addEventListener('click', unlockReports);
-      $('btnExportAll').addEventListener('click', async () => {
-        const all = await loadData();
-        if (!all.length) {
-          alert('ไม่มีข้อมูลสำหรับ export');
-          return;
-        }
-        
-        await exportMultiplePDF(all);
-        await appendAudit('export_all_pdf', 'all', 'local-user', { 
-          count: all.length 
-        });
-        
-        alert(`Export PDF ทั้งหมด ${all.length} รายการเรียบร้อยแล้ว`);
-      });
-      
-      $('btnExportCSV').addEventListener('click', async () => {
-        const all = await loadData();
-        const rows = all.map(c => ({
-          customer_id: c.customer_id,
-          name: c.name,
-          age: c.age,
-          gender: c.gender,
-          occupation: c.occupation,
-          monthly_income: c.monthly_income,
-          yearly_income: c.yearly_income,
-          welfare: c.welfare,
-          insurance_capital: c.insurance_capital,
-          marital_status: c.marital_status,
-          spouse_age: c.spouse_age,
-          spouse_occupation: c.spouse_occupation,
-          has_children: c.has_children,
-          children_count: c.children_count,
-          children_ages: c.children_ages,
-          children_occupation: c.children_occupation,
-          has_dependents: c.has_dependents,
-          dependents_details: c.dependents_details,
-          business_type: c.business_type,
-          business_capital: c.business_capital,
-          business_income: c.business_income,
-          business_profit: c.business_profit,
-          business_tax: c.business_tax,
-          business_share: c.business_share,
-          savings: c.financial_products?.savings || 0,
-          fixed_deposit: c.financial_products?.fixed || 0,
-          fund: c.financial_products?.fund || 0,
-          credit_card: c.financial_products?.credit_card || 0,
-          home_loan: c.financial_products?.home_loan || 0,
-          car_loan: c.financial_products?.car_loan || 0,
-          personal_loan: c.financial_products?.personal_loan || 0,
-          insurance_policies_count: c.insurance_policies?.length || 0,
-          employee_comments: c.employee_comments?.additional_comments || '',
-          presented_before: c.employee_comments?.presented_before || '',
-          customer_feedback: c.employee_comments?.customer_feedback || '',
-          proposed_product: c.employee_comments?.proposed_product || '',
-          proposed_premium: c.employee_comments?.proposed_premium || 0,
-          proposed_capital: c.employee_comments?.proposed_capital || 0,
-          branch: c.branch,
-          zone: c.zone,
-          rh: c.rh,
-          created_by: c.created_by,
-          created_by_name: c.created_by_name,
-          created_at: c.created_at,
-          updated_at: c.updated_at
-        }));
-        
-        const csv = [Object.keys(rows[0] || {}).join(',')]
-          .concat(rows.map(r => 
-            Object.values(r).map(v => 
-              `"${String(v || '').replace(/"/g, '""')}"`
-            ).join(','))
-          ).join('\n');
-        
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `aps_export_${new Date().toISOString().slice(0,10)}.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        
-        await appendAudit('export_csv', 'all', 'local-user', { 
-          count: rows.length 
-        });
-        
-        alert('Export CSV เรียบร้อยแล้ว');
-      });
-      
-      $('btnApplyFilters').addEventListener('click', renderReport);
-      
-      // Admin event listeners
-      $('btnUnlockAdmin').addEventListener('click', unlockAdmin);
-      $('btnRefreshAudit').addEventListener('click', renderAuditList);
-      $('btnExportAudit').addEventListener('click', async () => {
-        const audit = await loadAudit();
-        const csv = [['Action', 'Entity', 'Performed By', 'Time', 'Data'].join(',')]
-          .concat(audit.map(a => 
-            [a.action, a.entity, a.performed_by, a.time, JSON.stringify(a.data || '')]
-              .map(v => `"${String(v || '').replace(/"/g, '""')}"`)
-              .join(',')
-          )).join('\n');
-        
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `audit_log_${new Date().toISOString().slice(0,10)}.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        
-        alert('Export Audit Log เรียบร้อยแล้ว');
-      });
-      
-      // Settings event listeners
-      $('btnChangeReportPass').addEventListener('click', changeReportPassword);
-      $('btnChangeAdminPass').addEventListener('click', changeAdminPassword);
-      $('btnExportAllData').addEventListener('click', exportAllData);
-      $('btnImportData').addEventListener('click', importData);
-      $('btnClearAllData').addEventListener('click', clearAllData);
-      $('btnResetSystem').addEventListener('click', resetSystem);
-      
-      // Settings change listeners
-      $('pageSizeSelect').addEventListener('change', updateSystemSettings);
-      $('dateFormatSelect').addEventListener('change', updateSystemSettings);
-      $('autoSaveCheck').addEventListener('change', updateSystemSettings);
-      
-      // Check for select all functionality
-      document.addEventListener('click', (e) => {
-        if (e.target && e.target.matches('.rowSelect')) {
-          const all = document.querySelectorAll('.rowSelect');
-          const checked = Array.from(all).filter(cb => cb.checked).length;
-          $('selectAll').checked = checked === all.length;
-        }
-      });
-    });
+    function showAnalysisError(error) {
+      $('integratedAnalysisResults').innerHTML = `
+        <div class="analysis-error">
+          <i class="fas fa-exclamation-triangle"></i>
+          <strong>เกิดข้อผิดพลาด:</strong> ${error.message}
+          <br><small>กรุณากรอกข้อมูลให้ครบถ้วนและลองอีกครั้ง</small>
+        </div>
+      `;
+    }
 
-    // ---------- Global Functions for HTML onclick ----------
-    window.removeInsurancePolicy = removeInsurancePolicy;
+    function autoFillRecommendations(recommendations) {
+      if (recommendations.length > 0) {
+        const topProduct = recommendations[0];
+        $('emp_proposed_product').value = recommendations.map(r => r.product).join(', ');
+        $('emp_proposed_premium').value = topProduct.premium;
+        $('emp_proposed_capital').value = topProduct.capital;
+        
+        // Auto-fill comments
+        const comment = `ระบบแนะนำ: ${recommendations.map(r => r.product).join(', ')} - ${topProduct.reason}`;
+        $('emp_additional_comments').value = comment;
+      }
+    }
   </script>
 </body>
 </html>
