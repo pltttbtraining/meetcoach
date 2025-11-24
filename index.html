@@ -14,9 +14,9 @@
 
   <style>
     :root {
-      --primary: #007AFF;
-      --primary-dark: #0056CC;
-      --secondary: #5856D6;
+      --primary: #7FD2CC;
+      --primary-dark: #5BB5AE;
+      --secondary: #8FD8B7;
       --green: #34C759;
       --orange: #FF9500;
       --red: #FF3B30;
@@ -28,20 +28,24 @@
       --gray-6: #F2F2F7;
       --background: #FFFFFF;
       --card-background: #FFFFFF;
-      --text-primary: #000000;
-      --text-secondary: #8E8E93;
+      --text-primary: #1A1A1A;
+      --text-secondary: #5A5A5A;
       --system-blur: rgba(255, 255, 255, 0.8);
       --system-border: rgba(0, 0, 0, 0.1);
+      --light-mint: rgba(127, 210, 204, 0.15);
+      --header-bg: rgba(127, 210, 204, 0.25);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --background: #000000;
-        --card-background: #1C1C1E;
+        --background: #121212;
+        --card-background: #1E1E1E;
         --text-primary: #FFFFFF;
-        --text-secondary: #8E8E93;
+        --text-secondary: #B0B0B0;
         --system-blur: rgba(30, 30, 32, 0.8);
         --system-border: rgba(255, 255, 255, 0.1);
+        --light-mint: rgba(127, 210, 204, 0.1);
+        --header-bg: rgba(127, 210, 204, 0.2);
       }
     }
 
@@ -137,7 +141,7 @@
 
     /* iOS Style Navigation Bar */
     .ios-navbar {
-      background: var(--system-blur);
+      background: var(--header-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--system-border);
@@ -161,6 +165,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-primary);
     }
 
     .nav-brand-icon {
@@ -250,6 +255,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--text-primary);
     }
 
     .ios-card-subtitle {
@@ -309,7 +315,7 @@
     .ios-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+      box-shadow: 0 0 0 2px rgba(127, 210, 204, 0.2);
     }
 
     .ios-select {
@@ -396,6 +402,7 @@
       font-size: 17px;
       font-weight: 600;
       margin-bottom: 4px;
+      color: var(--text-primary);
     }
 
     .recommendation-badge {
@@ -475,13 +482,73 @@
       display: none;
     }
 
-    /* Content Panels */
-    .content-panel {
+    /* Error Message */
+    .error-message {
+      padding: 12px 16px;
+      background: var(--red);
+      color: white;
+      border-radius: 10px;
+      margin-top: 16px;
+      font-size: 14px;
       display: none;
     }
 
-    .content-panel.active {
-      display: block;
+    /* Benefit Calculation Section */
+    .benefit-calculation {
+      background: var(--light-mint);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 16px;
+      border: 1px solid var(--primary);
+    }
+
+    .benefit-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .benefit-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .benefit-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .benefit-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .benefit-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Credit Section */
+    .credit-section {
+      text-align: center;
+      padding: 16px;
+      margin-top: 24px;
+      color: var(--background);
+      background: var(--background);
+      font-size: 12px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .credit-section:hover {
+      opacity: 1;
     }
 
     /* Animations */
@@ -510,7 +577,8 @@
         gap: 12px;
       }
       
-      .recommendation-details {
+      .recommendation-details,
+      .benefit-details {
         grid-template-columns: 1fr;
       }
 
@@ -843,8 +911,8 @@
                 <label class="ios-label">มีบุคคลอื่นที่ต้องดูแลหรือไม่</label>
                 <select class="ios-select" id="cust_has_dependents">
                   <option value="">เลือก</option>
-                    <option>ไม่มี</option>
-                    <option>มี</option>
+                  <option>ไม่มี</option>
+                  <option>มี</option>
                 </select>
               </div>
               <div id="dependents-section" style="display: none;">
@@ -932,6 +1000,62 @@
               <div class="ios-input-group">
                 <label class="ios-label">เงินกู้ส่วนบุคคล (บาท)</label>
                 <input type="number" class="ios-input" id="prod_personal_loan" placeholder="กรอกจำนวนเงิน">
+              </div>
+              
+              <!-- Deposit Multiplier Section -->
+              <div class="form-section">
+                <h3 class="section-header">
+                  <i class="fas fa-calculator"></i>
+                  การคำนวณจำนวนเท่าของเงินฝาก
+                </h3>
+                <div class="form-grid">
+                  <div class="ios-input-group">
+                    <label class="ios-label">จำนวนเท่าของเงินฝากที่ต้องการ</label>
+                    <input type="number" class="ios-input" id="deposit_multiplier" placeholder="ระบุจำนวนเท่า" min="1" max="10">
+                  </div>
+                  <div class="ios-input-group">
+                    <label class="ios-label">สิทธิสูงสุดตามรายได้ (เท่า)</label>
+                    <input type="text" class="ios-input" id="max_multiplier" readonly placeholder="คำนวณอัตโนมัติ">
+                  </div>
+                </div>
+                <div class="ios-input-group">
+                  <button class="ios-btn ios-btn-secondary" id="btnCalculateDeposit" style="margin-top: 8px;">
+                    <i class="fas fa-calculator"></i>
+                    คำนวณจำนวนเงินฝากสูงสุด
+                  </button>
+                </div>
+                
+                <!-- Benefit Calculation -->
+                <div class="benefit-calculation" id="benefitCalculation" style="display: none;">
+                  <div class="benefit-title">
+                    <i class="fas fa-chart-pie"></i>
+                    การคำนวณผลประโยชน์
+                  </div>
+                  <div class="benefit-details">
+                    <div class="benefit-item">
+                      <div class="benefit-label">เงินต้นทั้งหมด</div>
+                      <div class="benefit-value" id="totalPrincipal">0 บาท</div>
+                    </div>
+                    <div class="benefit-item">
+                      <div class="benefit-label">ดอกเบี้ย/ผลตอบแทน</div>
+                      <div class="benefit-value" id="totalInterest">0 บาท</div>
+                    </div>
+                    <div class="benefit-item">
+                      <div class="benefit-label">รวมทั้งหมด</div>
+                      <div class="benefit-value" id="totalAmount">0 บาท</div>
+                    </div>
+                    <div class="benefit-item">
+                      <div class="benefit-label">สัดส่วนดอกเบี้ย</div>
+                      <div class="benefit-value" id="interestPercentage">0%</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Error Message for Deposit Multiplier -->
+                <div class="error-message" id="depositError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span id="depositErrorText">จำนวนเท่าของเงินฝากเกินสิทธิที่ได้รับ</span>
+                </div>
               </div>
             </div>
 
@@ -1022,6 +1146,11 @@
               <!-- Recommendations will be inserted here -->
             </div>
           </div>
+        </div>
+        
+        <!-- Credit Section -->
+        <div class="credit-section">
+          พัฒนาโดย PLT-ttb Training Team
         </div>
       </div>
 
@@ -1478,10 +1607,59 @@
     }
 
     // =============================================
+    // Deposit Multiplier and Benefit Calculation
+    // =============================================
+
+    class DepositCalculator {
+      constructor() {
+        this.interestRates = {
+          savings: 0.015,    // 1.5% for savings account
+          fixed: 0.025,      // 2.5% for fixed deposit
+          fund: 0.07         // 7% for mutual funds (estimate)
+        };
+      }
+
+      calculateMaxMultiplier(monthlyIncome) {
+        if (monthlyIncome <= 25000) return 3;
+        if (monthlyIncome <= 50000) return 5;
+        if (monthlyIncome <= 100000) return 8;
+        return 10;
+      }
+
+      calculateMaxDeposit(monthlyIncome, multiplier) {
+        return monthlyIncome * multiplier;
+      }
+
+      calculateBenefits(depositAmounts, interestRates) {
+        let totalPrincipal = 0;
+        let totalInterest = 0;
+        
+        // Calculate principal and interest for each deposit type
+        for (const [type, amount] of Object.entries(depositAmounts)) {
+          if (amount > 0) {
+            totalPrincipal += amount;
+            totalInterest += amount * (interestRates[type] || 0);
+          }
+        }
+        
+        const totalAmount = totalPrincipal + totalInterest;
+        const interestPercentage = totalPrincipal > 0 ? (totalInterest / totalPrincipal) * 100 : 0;
+        
+        return {
+          totalPrincipal,
+          totalInterest,
+          totalAmount,
+          interestPercentage: interestPercentage.toFixed(2)
+        };
+      }
+    }
+
+    // =============================================
     // Main Application Logic
     // =============================================
 
     let integratedAdvisor = new IntegratedInsuranceAdvisor();
+    let depositCalculator = new DepositCalculator();
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
@@ -1505,12 +1683,17 @@
 
       // Form event listeners
       $('cust_monthly_income').addEventListener('input', calculateYearlyIncome);
+      $('cust_monthly_income').addEventListener('input', updateMaxMultiplier);
       $('cust_has_children').addEventListener('change', toggleChildrenSection);
       $('cust_has_dependents').addEventListener('change', toggleDependentsSection);
       $('cust_occupation').addEventListener('change', toggleBusinessSection);
       $('btnClear').addEventListener('click', clearForm);
       $('btnSave').addEventListener('click', saveCustomer);
       $('btnAnalyze').addEventListener('click', performAnalysis);
+      
+      // Deposit multiplier event listeners
+      $('deposit_multiplier').addEventListener('input', validateDepositMultiplier);
+      $('btnCalculateDeposit').addEventListener('click', calculateBenefits);
 
       // RH and Zone management
       $('rh').addEventListener('change', updateZones);
@@ -1547,12 +1730,10 @@
       });
       document.querySelector(`.ios-tab[data-panel="${panelName}"]`).classList.add('active');
 
-      // Update panels - hide all first
+      // Update panels
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
       });
-      
-      // Show the selected panel
       $(`panel-${panelName}`).classList.add('active');
       
       currentPanel = panelName;
@@ -1562,6 +1743,76 @@
       const monthlyIncome = parseFloat($('cust_monthly_income').value) || 0;
       const yearlyIncome = monthlyIncome * 12;
       $('cust_yearly_income').value = yearlyIncome.toLocaleString();
+    }
+
+    function updateMaxMultiplier() {
+      const monthlyIncome = parseFloat($('cust_monthly_income').value) || 0;
+      const maxMultiplier = depositCalculator.calculateMaxMultiplier(monthlyIncome);
+      $('max_multiplier').value = maxMultiplier;
+      
+      // Validate current multiplier if set
+      validateDepositMultiplier();
+    }
+
+    function validateDepositMultiplier() {
+      const multiplierInput = $('deposit_multiplier');
+      const multiplier = parseInt(multiplierInput.value) || 0;
+      const maxMultiplier = parseInt($('max_multiplier').value) || 0;
+      const errorElement = $('depositError');
+      
+      if (multiplier > maxMultiplier) {
+        errorElement.style.display = 'block';
+        errorElement.querySelector('#depositErrorText').textContent = 
+          `จำนวนเท่าของเงินฝากเกินสิทธิที่ได้รับ (สูงสุด ${maxMultiplier} เท่า)`;
+        multiplierInput.style.borderColor = 'var(--red)';
+      } else {
+        errorElement.style.display = 'none';
+        multiplierInput.style.borderColor = '';
+      }
+    }
+
+    function calculateBenefits() {
+      const monthlyIncome = parseFloat($('cust_monthly_income').value) || 0;
+      const multiplier = parseInt($('deposit_multiplier').value) || 0;
+      const maxMultiplier = parseInt($('max_multiplier').value) || 0;
+      
+      // Validate multiplier first
+      if (multiplier > maxMultiplier) {
+        validateDepositMultiplier();
+        return;
+      }
+      
+      const maxDeposit = depositCalculator.calculateMaxDeposit(monthlyIncome, multiplier);
+      
+      // Get current deposit amounts
+      const depositAmounts = {
+        savings: parseFloat($('prod_savings').value) || 0,
+        fixed: parseFloat($('prod_fixed').value) || 0,
+        fund: parseFloat($('prod_fund').value) || 0
+      };
+      
+      // Calculate total current deposits
+      const totalCurrentDeposits = Object.values(depositAmounts).reduce((sum, amount) => sum + amount, 0);
+      
+      // If current deposits exceed max allowed, show warning
+      if (totalCurrentDeposits > maxDeposit) {
+        $('depositError').style.display = 'block';
+        $('depositError').querySelector('#depositErrorText').textContent = 
+          `เงินฝากทั้งหมดเกินสิทธิที่ได้รับ (สูงสุด ${maxDeposit.toLocaleString()} บาท)`;
+        return;
+      }
+      
+      // Calculate benefits
+      const benefits = depositCalculator.calculateBenefits(depositAmounts, depositCalculator.interestRates);
+      
+      // Display benefits
+      $('totalPrincipal').textContent = benefits.totalPrincipal.toLocaleString() + ' บาท';
+      $('totalInterest').textContent = benefits.totalInterest.toLocaleString() + ' บาท';
+      $('totalAmount').textContent = benefits.totalAmount.toLocaleString() + ' บาท';
+      $('interestPercentage').textContent = benefits.interestPercentage + '%';
+      
+      // Show benefit section
+      $('benefitCalculation').style.display = 'block';
     }
 
     function toggleChildrenSection() {
@@ -1638,12 +1889,15 @@
       $('analysisResults').style.display = 'none';
       $('customerIdDisplay').style.display = 'none';
       $('formStatus').style.display = 'none';
+      $('benefitCalculation').style.display = 'none';
+      $('depositError').style.display = 'none';
       
       // Reset zones
       $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
       $('zone').disabled = true;
       
       calculateYearlyIncome();
+      updateMaxMultiplier();
       currentCustomerId = '';
     }
 
@@ -1688,6 +1942,16 @@
           return false;
         }
       }
+      
+      // Validate deposit multiplier
+      const multiplier = parseInt($('deposit_multiplier').value) || 0;
+      const maxMultiplier = parseInt($('max_multiplier').value) || 0;
+      if (multiplier > maxMultiplier) {
+        alert('จำนวนเท่าของเงินฝากเกินสิทธิที่ได้รับ');
+        $('deposit_multiplier').focus();
+        return false;
+      }
+      
       return true;
     }
 
@@ -1734,6 +1998,8 @@
           car_loan: parseFloat($('prod_car_loan').value) || 0,
           personal_loan: parseFloat($('prod_personal_loan').value) || 0
         },
+        deposit_multiplier: parseInt($('deposit_multiplier').value) || 0,
+        max_multiplier: parseInt($('max_multiplier').value) || 0,
         employee_comments: {
           additional_comments: $('emp_additional_comments').value,
           presented_before: $('emp_presented_before').value,
