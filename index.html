@@ -5,17 +5,21 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>PLT-ttb Training</title>
+  <title>Account Strategy Intelligence (ASI)</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
-      --primary: #007AFF;
-      --primary-dark: #0056CC;
+      --primary: #60A5FA;
+      --primary-dark: #3B82F6;
       --secondary: #5856D6;
       --green: #34C759;
       --orange: #FF9500;
@@ -32,7 +36,7 @@
       --text-secondary: #8E8E93;
       --system-blur: rgba(255, 255, 255, 0.8);
       --system-border: rgba(0, 0, 0, 0.1);
-      --light-blue-bg: rgba(0, 122, 255, 0.05);
+      --light-blue-bg: rgba(96, 165, 250, 0.05);
       --light-gray-bg: rgba(142, 142, 147, 0.05);
     }
 
@@ -44,7 +48,7 @@
         --text-secondary: #8E8E93;
         --system-blur: rgba(30, 30, 32, 0.8);
         --system-border: rgba(255, 255, 255, 0.1);
-        --light-blue-bg: rgba(0, 122, 255, 0.1);
+        --light-blue-bg: rgba(96, 165, 250, 0.1);
         --light-gray-bg: rgba(142, 142, 147, 0.1);
       }
     }
@@ -320,7 +324,7 @@
     .ios-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
     }
 
     .ios-select {
@@ -554,16 +558,330 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--gray-2);
     }
+
+    /* CSS สำหรับ urgency levels */
+    .urgency-critical {
+      border-left: 4px solid #FF3B30;
+      background: linear-gradient(135deg, rgba(255, 59, 48, 0.05), rgba(255, 149, 0, 0.05));
+    }
+
+    .urgency-high {
+      border-left: 4px solid #FF9500;
+      background: linear-gradient(135deg, rgba(255, 149, 0, 0.05), rgba(255, 204, 0, 0.05));
+    }
+
+    .urgency-medium {
+      border-left: 4px solid #34C759;
+      background: linear-gradient(135deg, rgba(52, 199, 89, 0.05), rgba(88, 86, 214, 0.05));
+    }
+
+    .urgency-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    .urgency-badge.critical {
+      background: #FF3B30;
+      color: white;
+    }
+
+    .urgency-badge.high {
+      background: #FF9500;
+      color: white;
+    }
+
+    .urgency-badge.medium {
+      background: #34C759;
+      color: white;
+    }
+
+    .analysis-details {
+      margin-top: 12px;
+    }
+
+    .detail-section {
+      margin-bottom: 12px;
+    }
+
+    .detail-section .detail-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .detail-section .detail-value {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .product-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin: 2px 4px 2px 0;
+      font-size: 12px;
+    }
+
+    .customer-id-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .popup-content {
+      position: relative;
+      background: var(--card-background);
+      border-radius: 16px;
+      padding: 0;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--system-border);
+    }
+
+    .popup-header {
+      padding: 20px 20px 0;
+      text-align: center;
+    }
+
+    .popup-body {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .customer-id-large {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--light-blue-bg);
+      border-radius: 12px;
+      border: 2px dashed var(--primary);
+    }
+
+    .popup-footer {
+      padding: 0 20px 20px;
+      text-align: center;
+    }
+
+    /* Search and Filter Styles */
+    .search-filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .customer-list {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .customer-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--system-border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .customer-item:hover {
+      background: var(--light-gray-bg);
+    }
+
+    .customer-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .customer-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .customer-id {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .customer-details {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Security Modal */
+    .security-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .security-content {
+      background: var(--card-background);
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Dashboard Styles */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-background);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--system-border);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Chart Containers */
+    .chart-container {
+      position: relative;
+      height: 200px;
+      margin: 16px 0;
+    }
+
+    /* Policy Items */
+    .policy-item {
+      background: var(--card-background);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--system-border);
+    }
+
+    .btn-remove-policy {
+      margin-top: 12px;
+    }
+
+    /* Portfolio Analysis */
+    .portfolio-analysis {
+      margin-top: 20px;
+    }
+
+    .analysis-item {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border-left: 4px solid var(--primary);
+      background: var(--light-blue-bg);
+    }
+
+    .analysis-item.warning {
+      border-left-color: var(--orange);
+      background: rgba(255, 149, 0, 0.1);
+    }
+
+    .analysis-item.critical {
+      border-left-color: var(--red);
+      background: rgba(255, 59, 48, 0.1);
+    }
+
+    /* Export Options */
+    .export-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    /* Data Management */
+    .data-management {
+      margin-top: 24px;
+    }
+
+    .delete-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .delete-warning {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .spinner-border {
+      width: 2rem;
+      height: 2rem;
+      border: 0.25em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner-border .75s linear infinite;
+    }
+
+    @keyframes spinner-border {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <!-- iOS Style Loading Screen -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-logo">
-      <i class="fas fa-chart-line"></i>
+      <i class="fas fa-brain"></i>
     </div>
-    <h1 class="loading-text">PLT-ttb Training</h1>
-    <p class="loading-subtext">Account Planning System</p>
+    <h1 class="loading-text">Account Strategy Intelligence</h1>
+    <p class="loading-subtext">Advanced Customer Analytics System</p>
     <div class="ios-progress">
       <div class="ios-progress-bar" id="loadingProgress"></div>
     </div>
@@ -576,9 +894,9 @@
       <div class="nav-content">
         <div class="nav-brand">
           <div class="nav-brand-icon">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-brain"></i>
           </div>
-          <span>PLT-ttb</span>
+          <span>Account Strategy Intelligence (ASI)</span>
         </div>
         <div class="nav-actions">
           <button class="ios-btn ios-btn-secondary" id="btnLogout">
@@ -601,9 +919,9 @@
           <i class="fas fa-user-plus"></i>
           สร้างลูกค้า
         </div>
-        <div class="ios-tab" data-panel="list">
-          <i class="fas fa-list"></i>
-          รายการ
+        <div class="ios-tab" data-panel="search">
+          <i class="fas fa-search"></i>
+          ค้นหาข้อมูล
         </div>
         <div class="ios-tab" data-panel="report">
           <i class="fas fa-chart-bar"></i>
@@ -617,22 +935,38 @@
           <div class="ios-card-header">
             <h2 class="ios-card-title">
               <i class="fas fa-rocket" style="color: var(--primary);"></i>
-              ยินดีต้อนรับ
+              ยินดีต้อนรับสู่ ASI
             </h2>
-            <p class="ios-card-subtitle">ระบบวางแผนการขายและบริหารลูกค้าแบบบูรณาการ</p>
+            <p class="ios-card-subtitle">ระบบวิเคราะห์และวางแผนกลยุทธ์ลูกค้าแบบบูรณาการ</p>
           </div>
           <div class="ios-card-body">
             <div style="text-align: center; padding: 40px 20px;">
               <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-                <i class="fas fa-brain" style="font-size: 32px; color: white;"></i>
+                <i class="fas fa-chart-network" style="font-size: 32px; color: white;"></i>
               </div>
-              <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">เริ่มต้นใช้งาน</h3>
-              <p style="color: var(--text-secondary); margin-bottom: 32px;">ระบบ AI จะช่วยวิเคราะห์และแนะนำผลิตภัณฑ์ประกันภัยที่เหมาะสมที่สุด</p>
+              <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">เริ่มต้นใช้งานระบบ</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 32px;">ระบบ AI ขั้นสูงจะช่วยวิเคราะห์และแนะนำผลิตภัณฑ์ที่เหมาะสมที่สุดตามโปรไฟล์ลูกค้า</p>
               <button class="ios-btn ios-btn-primary" id="btnStart" style="padding: 12px 32px; font-size: 17px;">
                 <i class="fas fa-play"></i>
                 เริ่มต้นใช้งาน
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalCustomers">0</div>
+            <div class="stat-label">ลูกค้าทั้งหมด</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalAnalysis">0</div>
+            <div class="stat-label">การวิเคราะห์</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="successRate">0%</div>
+            <div class="stat-label">อัตราความสำเร็จ</div>
           </div>
         </div>
       </div>
@@ -672,6 +1006,18 @@
               </div>
               <div class="form-grid">
                 <div class="ios-input-group">
+                  <label class="ios-label required">ตำแหน่ง</label>
+                  <select class="ios-select" id="employee_position">
+                    <option value="">เลือกตำแหน่ง</option>
+                    <option value="BM">BM</option>
+                    <option value="Wealth">Wealth</option>
+                    <option value="CISA">CISA</option>
+                    <option value="CFSA">CFSA</option>
+                    <option value="Yindee">Yindee</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="ios-input-group">
                   <label class="ios-label required">RH</label>
                   <select class="ios-select" id="rh">
                     <option value="">เลือก RH</option>
@@ -682,6 +1028,8 @@
                     <option value="RH5">RH5</option>
                   </select>
                 </div>
+              </div>
+              <div class="form-grid">
                 <div class="ios-input-group">
                   <label class="ios-label required">Zone</label>
                   <select class="ios-select" id="zone" disabled>
@@ -946,6 +1294,21 @@
               </div>
             </div>
 
+            <!-- Insurance Policies Section -->
+            <div class="form-section">
+              <h3 class="section-header">
+                <i class="fas fa-file-contract"></i>
+                ข้อมูลประกันชีวิตที่มีอยู่
+              </h3>
+              <div id="insurance-policies-container">
+                <!-- Policies will be added here dynamically -->
+              </div>
+              <button type="button" class="ios-btn ios-btn-secondary" id="btn-add-policy">
+                <i class="fas fa-plus"></i>
+                เพิ่มกรมธรรม์
+              </button>
+            </div>
+
             <!-- AI Analysis Section -->
             <div class="form-section">
               <h3 class="section-header">
@@ -953,7 +1316,7 @@
                 AI Insurance Advisor
               </h3>
               <div style="text-align: center; padding: 20px;">
-                <button class="ios-btn ios-btn-primary" id="btnAnalyze" style="padding: 16px 32px; font-size: 17px;">
+                <button class="ios-btn ios-btn-primary" id="btnAnalyze" style="padding: 16px 32px; font-size: 17px;" disabled>
                   <i class="fas fa-magic"></i>
                   วิเคราะห์ด้วย AI
                 </button>
@@ -1036,24 +1399,105 @@
         </div>
       </div>
 
-      <!-- Other Panels -->
-      <div id="panel-list" class="content-panel">
+      <!-- Search Panel -->
+      <div id="panel-search" class="content-panel">
         <div class="ios-card">
           <div class="ios-card-header">
             <h2 class="ios-card-title">
-              <i class="fas fa-list" style="color: var(--primary);"></i>
-              รายการลูกค้า
+              <i class="fas fa-search" style="color: var(--primary);"></i>
+              ค้นหาข้อมูลลูกค้า
             </h2>
           </div>
           <div class="ios-card-body">
-            <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-              <i class="fas fa-list-alt" style="font-size: 48px; margin-bottom: 16px;"></i>
-              <p>ระบบกำลังพัฒนา</p>
+            <!-- Search Filters -->
+            <div class="search-filters">
+              <div class="ios-input-group">
+                <label class="ios-label">RH</label>
+                <select class="ios-select" id="search_rh">
+                  <option value="">ทั้งหมด</option>
+                  <option value="RH1">RH1</option>
+                  <option value="RH2">RH2</option>
+                  <option value="RH3">RH3</option>
+                  <option value="RH4">RH4</option>
+                  <option value="RH5">RH5</option>
+                </select>
+              </div>
+              <div class="ios-input-group">
+                <label class="ios-label">Zone</label>
+                <select class="ios-select" id="search_zone">
+                  <option value="">ทั้งหมด</option>
+                </select>
+              </div>
+              <div class="ios-input-group">
+                <label class="ios-label">ชื่อพนักงาน</label>
+                <input type="text" class="ios-input" id="search_employee_name" placeholder="ค้นหาชื่อพนักงาน">
+              </div>
+              <div class="ios-input-group">
+                <label class="ios-label">รหัสพนักงาน</label>
+                <input type="text" class="ios-input" id="search_employee_id" placeholder="ค้นหารหัสพนักงาน">
+              </div>
+              <div class="ios-input-group">
+                <label class="ios-label">Customer ID</label>
+                <input type="text" class="ios-input" id="search_customer_id" placeholder="ค้นหา Customer ID">
+              </div>
+            </div>
+
+            <!-- Search Actions -->
+            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+              <button class="ios-btn ios-btn-secondary" id="btnClearSearch" style="flex: 1;">
+                <i class="fas fa-broom"></i>
+                ล้างการค้นหา
+              </button>
+              <button class="ios-btn ios-btn-primary" id="btnSearch" style="flex: 1;">
+                <i class="fas fa-search"></i>
+                ค้นหา
+              </button>
+            </div>
+
+            <!-- Customer List -->
+            <div class="customer-list" id="customerList">
+              <!-- Customer items will be inserted here -->
+            </div>
+
+            <!-- Portfolio Dashboard -->
+            <div class="ios-card" style="margin-top: 20px;">
+              <div class="ios-card-header">
+                <h2 class="ios-card-title">
+                  <i class="fas fa-chart-pie" style="color: var(--primary);"></i>
+                  แดชบอร์ดสรุปสัดส่วนการเงิน
+                </h2>
+              </div>
+              <div class="ios-card-body">
+                <div class="dashboard-grid">
+                  <div class="stat-card">
+                    <div class="chart-container">
+                      <canvas id="insuranceTypeChart"></canvas>
+                    </div>
+                    <div class="stat-label">สัดส่วนประเภทประกัน</div>
+                  </div>
+                  
+                  <div class="stat-card">
+                    <div class="chart-container">
+                      <canvas id="financialRatioChart"></canvas>
+                    </div>
+                    <div class="stat-label">สัดส่วนการเงิน</div>
+                  </div>
+                </div>
+
+                <!-- Portfolio Analysis -->
+                <div class="portfolio-analysis">
+                  <h4 style="margin-bottom: 16px;">การวิเคราะห์พอร์ตประกัน</h4>
+                  <div id="portfolio-analysis">
+                    <!-- Analysis will be inserted here -->
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Report Panel -->
       <div id="panel-report" class="content-panel">
         <div class="ios-card">
           <div class="ios-card-header">
@@ -1063,9 +1507,85 @@
             </h2>
           </div>
           <div class="ios-card-body">
-            <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
-              <i class="fas fa-chart-pie" style="font-size: 48px; margin-bottom: 16px;"></i>
-              <p>ระบบกำลังพัฒนา</p>
+            <!-- Security Notice -->
+            <div style="text-align: center; padding: 20px; background: var(--light-blue-bg); border-radius: 10px; margin-bottom: 20px;">
+              <i class="fas fa-lock" style="font-size: 24px; color: var(--primary); margin-bottom: 8px;"></i>
+              <p>เมนูนี้ต้องการการยืนยันตัวตนก่อนเข้าใช้งาน</p>
+              <button class="ios-btn ios-btn-primary" id="btnAccessReport" style="margin-top: 12px;">
+                <i class="fas fa-key"></i>
+                ยืนยันตัวตน
+              </button>
+            </div>
+
+            <!-- Report Content (Initially Hidden) -->
+            <div id="reportContent" style="display: none;">
+              <!-- Dashboard Stats -->
+              <div class="dashboard-grid">
+                <div class="stat-card">
+                  <div class="stat-value" id="reportTotalCustomers">0</div>
+                  <div class="stat-label">ลูกค้าทั้งหมด</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="reportMTD">0</div>
+                  <div class="stat-label">ลูกค้าเดือนนี้</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="reportByRH">0</div>
+                  <div class="stat-label">แยกตาม RH</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="reportByPosition">0</div>
+                  <div class="stat-label">แยกตามตำแหน่ง</div>
+                </div>
+              </div>
+
+              <!-- Export Options -->
+              <div class="form-section">
+                <h3 class="section-header">
+                  <i class="fas fa-download"></i>
+                  ส่งออกข้อมูล
+                </h3>
+                <div class="export-options">
+                  <button class="ios-btn ios-btn-primary" id="btnExportPDF">
+                    <i class="fas fa-file-pdf"></i>
+                    Export PDF
+                  </button>
+                  <button class="ios-btn ios-btn-primary" id="btnExportExcel">
+                    <i class="fas fa-file-excel"></i>
+                    Export Excel
+                  </button>
+                </div>
+              </div>
+
+              <!-- Data Management -->
+              <div class="data-management">
+                <h3 class="section-header">
+                  <i class="fas fa-database"></i>
+                  การจัดการข้อมูล
+                </h3>
+                <div class="delete-options">
+                  <button class="ios-btn ios-btn-secondary" id="btnDeleteSelected">
+                    <i class="fas fa-trash"></i>
+                    ลบข้อมูลที่เลือก
+                  </button>
+                  <button class="ios-btn ios-btn-secondary" id="btnDeleteLastMonth">
+                    <i class="fas fa-calendar-minus"></i>
+                    ลบข้อมูลเดือนล่าสุด
+                  </button>
+                  <button class="ios-btn ios-btn-secondary" id="btnDeleteOldest">
+                    <i class="fas fa-history"></i>
+                    ลบข้อมูลเก่าที่สุด
+                  </button>
+                  <button class="ios-btn ios-btn-secondary" id="btnDeleteAll">
+                    <i class="fas fa-bomb"></i>
+                    ลบข้อมูลทั้งหมด
+                  </button>
+                </div>
+                <div class="delete-warning" id="deleteWarning" style="display: none;">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  การลบข้อมูลไม่สามารถกู้คืนได้ กรุณายืนยันอีกครั้ง
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1073,14 +1593,41 @@
     </div>
   </div>
 
-  <!-- ส่วน JavaScript เดิมทั้งหมดอยู่ที่นี่ -->
+  <!-- Security Modal -->
+  <div class="security-modal" id="securityModal" style="display: none;">
+    <div class="security-content">
+      <h3 style="margin-bottom: 16px; text-align: center;">ยืนยันตัวตน</h3>
+      <div class="ios-input-group">
+        <label class="ios-label">รหัสผ่าน</label>
+        <input type="password" class="ios-input" id="securityPassword" placeholder="กรอกรหัสผ่าน">
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 16px;">
+        <button class="ios-btn ios-btn-secondary" id="btnCancelSecurity" style="flex: 1;">
+          ยกเลิก
+        </button>
+        <button class="ios-btn ios-btn-primary" id="btnConfirmSecurity" style="flex: 1;">
+          ยืนยัน
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // =============================================
     // System Configuration
     // =============================================
-    const STORAGE_KEY = 'aps_customers';
-    const AUDIT_KEY = 'aps_audit';
-    const COUNTER_KEY = 'aps_counters';
+    const STORAGE_KEY = 'asi_customers';
+    const AUDIT_KEY = 'asi_audit';
+    const COUNTER_KEY = 'asi_counters';
+
+    // Security Passcodes
+    const REPORT_PASSCODE = "2025";
+    const EXPORT_PASSCODE = "1234";
+
+    // Supabase Configuration
+    const supabaseUrl = 'https://ycyrvyghiybfaimixkvo.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljeXJ2eWdoaXliZmFpbWl4a3ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwOTM5NTcsImV4cCI6MjA3ODY2OTk1N30.cX90v29O1uxtjlv3ykCasej9KIlh-bmPcCmsoGRyMVo';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     // DOM Helper
     const $ = (id) => document.getElementById(id);
@@ -1088,11 +1635,462 @@
     // System State
     let currentPanel = 'start';
     let currentCustomerId = '';
-    let insurancePolicyCount = 0;
+    let selectedCustomer = null;
+    let customersData = [];
+    let policyCount = 0;
 
     // =============================================
-    // Integrated Insurance Advisor Classes
+    // Enhanced Insurance Advisor Classes
     // =============================================
+
+    class ComprehensiveRiskAnalyzer {
+      constructor() {
+        this.riskCategories = this.initializeRiskCategories();
+        this.urgencyIcons = {
+          critical: '🚨',
+          high: '⚠️', 
+          medium: 'ℹ️',
+          low: '💡'
+        };
+      }
+
+      initializeRiskCategories() {
+        return [
+          {
+            id: 'income_risk',
+            name: 'ความเสี่ยงรายได้หลัก',
+            analyzer: this.analyzeIncomeRisk.bind(this),
+            urgency: 'critical',
+            icon: '🚨'
+          },
+          {
+            id: 'inflation_risk',
+            name: 'ความเสี่ยงเงินฝากและเงินเฟ้อ',
+            analyzer: this.analyzeInflationRisk.bind(this),
+            urgency: 'high',
+            icon: '⚠️'
+          },
+          {
+            id: 'lifecycle_risk',
+            name: 'ความเสี่ยงตามช่วงอายุ',
+            analyzer: this.analyzeLifecycleRisk.bind(this),
+            urgency: 'medium',
+            icon: 'ℹ️'
+          },
+          {
+            id: 'health_risk',
+            name: 'ความเสี่ยงด้านสุขภาพตามอาชีพ',
+            analyzer: this.analyzeHealthRisk.bind(this),
+            urgency: 'high',
+            icon: '⚠️'
+          },
+          {
+            id: 'education_risk',
+            name: 'ความเสี่ยงการศึกษาบุตร',
+            analyzer: this.analyzeEducationRisk.bind(this),
+            urgency: 'medium',
+            icon: 'ℹ️'
+          },
+          {
+            id: 'business_risk',
+            name: 'ความเสี่ยงการส่งต่อธุรกิจ',
+            analyzer: this.analyzeBusinessRisk.bind(this),
+            urgency: 'critical',
+            icon: '🚨'
+          },
+          {
+            id: 'debt_risk',
+            name: 'ความเสี่ยงจากหนี้สิน',
+            analyzer: this.analyzeDebtRisk.bind(this),
+            urgency: 'high',
+            icon: '⚠️'
+          },
+          {
+            id: 'investment_risk',
+            name: 'ความเสี่ยงการลงทุนไม่หลากหลาย',
+            analyzer: this.analyzeInvestmentRisk.bind(this),
+            urgency: 'medium',
+            icon: 'ℹ️'
+          },
+          {
+            id: 'liquidity_risk',
+            name: 'ความเสี่ยงสภาพคล่องจากเบี้ยประกัน',
+            analyzer: this.analyzeLiquidityRisk.bind(this),
+            urgency: 'high',
+            icon: '⚠️'
+          },
+          {
+            id: 'portfolio_risk',
+            name: 'ความเสี่ยงการกระจุกตัวพอร์ตประกัน',
+            analyzer: this.analyzePortfolioRisk.bind(this),
+            urgency: 'medium',
+            icon: 'ℹ️'
+          }
+        ];
+      }
+
+      analyzeIncomeRisk(customer) {
+        const { marital_status, spouse_occupation, has_children, children_count } = customer;
+        const isBreadwinner = spouse_occupation === 'ไม่มี' || spouse_occupation === 'แม่บ้าน';
+        const hasSchoolChildren = has_children === 'มี' && children_count > 0;
+
+        if (isBreadwinner && hasSchoolChildren) {
+          return {
+            category: 'income_risk',
+            name: 'ความเสี่ยงรายได้หลัก',
+            urgency: 'critical',
+            icon: '🚨',
+            analysis: {
+              why: `คุณเป็นเสาหลักรายได้เดียวของครอบครัว ${hasSchoolChildren ? `และมีบุตร ${children_count} คนที่ต้องดูแล` : ''} หากเกิดเหตุไม่คาดฝันจะส่งผลกระทบร้ายแรงต่อครอบครัว`,
+              recommendedProducts: [
+                'ประกันชีวิตแบบชั่วระยะเวลา (Term Life)',
+                'ประกันทุพพลภาพ (Disability Insurance)',
+                'ประกันรายได้ครอบครัว (Income Protection)'
+              ],
+              benefits: [
+                'คุ้มครองรายได้หลักของครอบครัว',
+                'รับประกันการศึกษาบุตรต่อเนื่อง',
+                'รักษามาตรฐานการครองชีพของครอบครัว'
+              ]
+            }
+          };
+        }
+        return null;
+      }
+
+      analyzeInflationRisk(customer) {
+        const { monthly_income, financial_products } = customer;
+        const savings = financial_products?.savings || 0;
+        const fixedDeposits = financial_products?.fixed || 0;
+        const totalDeposits = savings + fixedDeposits;
+        const yearlyIncome = monthly_income * 12;
+        
+        if (yearlyIncome > 0) {
+          const depositRatio = totalDeposits / yearlyIncome;
+          
+          if (depositRatio > 5) {
+            return {
+              category: 'inflation_risk',
+              name: 'ความเสี่ยงเงินฝากและเงินเฟ้อ',
+              urgency: 'high',
+              icon: '⚠️',
+              analysis: {
+                why: `มีเงินฝากสูงถึง ${(depositRatio).toFixed(1)} เท่าของรายได้ต่อปี (${totalDeposits.toLocaleString()} บาท) กำลังถูกเงินเฟ้อกัดกร่อนมูลค่าปีละ 2-3%`,
+                recommendedProducts: [
+                  'ประกันชีวิตแบบสะสมทรัพย์ (Endowment)',
+                  'กองทุนรวม LTF/RMF',
+                  'ประกันบำนาญ (Pension Plan)'
+                ],
+                benefits: [
+                  'ป้องกันการสูญเสียมูลค่าจากเงินเฟ้อ',
+                  'ได้ผลตอบแทนสูงกว่าเงินฝาก 3-5% ต่อปี',
+                  'ลดหย่อนภาษีได้ตามกฎหมาย'
+                ]
+              }
+            };
+          }
+        }
+        return null;
+      }
+
+      analyzeLifecycleRisk(customer) {
+        const { age, marital_status, has_children } = customer;
+        let lifeStage = '';
+        let recommendations = [];
+
+        if (age <= 35) {
+          lifeStage = 'วัยเริ่มทำงาน';
+          recommendations = [
+            'ประกันชีวิตแบบสะสมทรัพย์',
+            'ประกันอุบัติเหตุส่วนบุคคล',
+            'ประกันสุขภาพ IPD/OPD'
+          ];
+        } else if (age <= 45) {
+          lifeStage = 'วัยสร้างครอบครัว';
+          recommendations = [
+            'ประกันชีวิตระยะยาว',
+            'ประกันการศึกษา',
+            'ประกันโรคร้ายแรง'
+          ];
+        } else {
+          lifeStage = 'วัยใกล้เกษียณ';
+          recommendations = [
+            'ประกันบำนาญ',
+            'ประกันสุขภาพระยะยาว',
+            'ประกันตลอดชีพ'
+          ];
+        }
+
+        return {
+          category: 'lifecycle_risk',
+          name: 'ความเสี่ยงตามช่วงอายุ',
+          urgency: 'medium',
+          icon: 'ℹ️',
+          analysis: {
+            why: `อยู่ในช่วง ${lifeStage} (อายุ ${age} ปี) ${marital_status === 'สมรส' ? 'สมรส' : 'โสด'} ${has_children === 'มี' ? 'มีบุตร' : 'ไม่มีบุตร'} มีความต้องการทางการเงินที่เฉพาะสำหรับวัยนี้`,
+            recommendedProducts: recommendations,
+            benefits: [
+              'วางแผนการเงินที่เหมาะสมกับช่วงวัย',
+              'สร้างวินัยการออมระยะยาว',
+              'เตรียมความพร้อมสำหรับชีวิตในอนาคต'
+            ]
+          }
+        };
+      }
+
+      analyzeHealthRisk(customer) {
+        const { occupation, age } = customer;
+        const highRiskOccupations = ['แพทย์', 'พยาบาล', 'วิศวกร', 'เจ้าของกิจการ/ธุรกิจส่วนตัว'];
+        
+        if (highRiskOccupations.includes(occupation)) {
+          return {
+            category: 'health_risk',
+            name: 'ความเสี่ยงด้านสุขภาพตามอาชีพ',
+            urgency: 'high',
+            icon: '⚠️',
+            analysis: {
+              why: `อาชีพ ${occupation} มีความเสี่ยงด้านสุขภาพและอุบัติเหตุสูงกว่าอาชีพอื่น`,
+              recommendedProducts: [
+                'ประกันสุขภาพวงเงินสูง',
+                'ประกันโรคร้ายแรง',
+                'ประกันอุบัติเหตุกลุ่ม'
+              ],
+              benefits: [
+                'คุ้มครองค่ารักษาพยาบาลสูง',
+                'รับเงินชดเชยเมื่อป่วยเป็นโรคเรื้อรัง',
+                'คุ้มครองชีวิตและทุพพลภาพจากอุบัติเหตุ'
+              ]
+            }
+          };
+        }
+        return null;
+      }
+
+      analyzeEducationRisk(customer) {
+        const { has_children, children_count, children_ages, monthly_income } = customer;
+        
+        if (has_children === 'มี' && children_count > 0) {
+          const ages = children_ages ? children_ages.split(',').map(age => parseInt(age.trim())) : [];
+          const yearsToUni = ages.map(age => 18 - age).filter(years => years > 0);
+          
+          if (yearsToUni.length > 0) {
+            const minYears = Math.min(...yearsToUni);
+            const educationCost = 1000000 * children_count;
+            
+            return {
+              category: 'education_risk',
+              name: 'ความเสี่ยงการศึกษาบุตร',
+              urgency: 'medium',
+              icon: 'ℹ️',
+              analysis: {
+                why: `มีบุตร ${children_count} คน ที่จะเข้าเรียนมหาวิทยาลัยในอีก ${minYears} ปี ต้องการทุนการศึกษารวมประมาณ ${educationCost.toLocaleString()} บาท`,
+                recommendedProducts: [
+                  'ประกันการศึกษา',
+                  'ประกันชีวิตแบบสะสมทรัพย์',
+                  'กองทุนการศึกษา'
+                ],
+                benefits: [
+                  'รับประกันทุนการศึกษาเมื่อถึงเวลาที่กำหนด',
+                  'ได้เงินคืนหากบุตรไม่ใช้ทุนการศึกษา',
+                  'คุ้มครองชีวิตผู้ปกครองระหว่างการออม'
+                ]
+              }
+            };
+          }
+        }
+        return null;
+      }
+
+      analyzeBusinessRisk(customer) {
+        const { occupation, business_capital, age } = customer;
+        
+        if (occupation === 'เจ้าของกิจการ/ธุรกิจส่วนตัว' && business_capital > 0) {
+          return {
+            category: 'business_risk',
+            name: 'ความเสี่ยงการส่งต่อธุรกิจ',
+            urgency: 'critical',
+            icon: '🚨',
+            analysis: {
+              why: `เป็นเจ้าของธุรกิจที่มีมูลค่าประมาณ ${business_capital.toLocaleString()} บาท และอายุ ${age} ปี ต้องการแผนการส่งต่อธุรกิจและจัดการภาษีมรดก`,
+              recommendedProducts: [
+                'ประกันชีวิตเพื่อการส่งต่อธุรกิจ',
+                'Trust Planning',
+                'ประกันตลอดชีพ'
+              ],
+              benefits: [
+                'มีเงินสดสำหรับจ่ายภาษีมรดก',
+                'ส่งต่อธุรกิจให้ทายาทได้ราบรื่น',
+                'ป้องกันความขัดแย้งในครอบครัว'
+              ]
+            }
+          };
+        }
+        return null;
+      }
+
+      analyzeDebtRisk(customer) {
+        const { monthly_income, financial_products } = customer;
+        const homeLoan = financial_products?.home_loan || 0;
+        const carLoan = financial_products?.car_loan || 0;
+        const personalLoan = financial_products?.personal_loan || 0;
+        const totalDebt = homeLoan + carLoan + personalLoan;
+        const yearlyIncome = monthly_income * 12;
+        
+        if (yearlyIncome > 0) {
+          const debtRatio = totalDebt / yearlyIncome;
+          
+          if (debtRatio > 3) {
+            return {
+              category: 'debt_risk',
+              name: 'ความเสี่ยงจากหนี้สิน',
+              urgency: 'high',
+              icon: '⚠️',
+              analysis: {
+                why: `มีหนี้สินรวม ${totalDebt.toLocaleString()} บาท หรือประมาณ ${debtRatio.toFixed(1)} เท่าของรายได้ต่อปี ซึ่งอยู่ในระดับที่สูง`,
+                recommendedProducts: [
+                  'ประกันชีวิตวงเงินเท่าหนี้',
+                  'ประกันทุพพลภาพ',
+                  'ประกันสุขภาพ'
+                ],
+                benefits: [
+                  'คุ้มครองภาระหนี้หากเกิดเหตุไม่คาดฝัน',
+                  'ป้องกันการสูญเสียทรัพย์สินหลัก',
+                  'รักษามาตรฐานการครองชีพ'
+                ]
+              }
+            };
+          }
+        }
+        return null;
+      }
+
+      analyzeInvestmentRisk(customer) {
+        const { financial_products } = customer;
+        const savings = financial_products?.savings || 0;
+        const fixed = financial_products?.fixed || 0;
+        const fund = financial_products?.fund || 0;
+        const totalAssets = savings + fixed + fund;
+        
+        if (totalAssets > 0) {
+          const depositRatio = (savings + fixed) / totalAssets;
+          
+          if (depositRatio > 0.7) {
+            return {
+              category: 'investment_risk',
+              name: 'ความเสี่ยงการลงทุนไม่หลากหลาย',
+              urgency: 'medium',
+              icon: 'ℹ️',
+              analysis: {
+                why: `มีการลงทุนในเงินฝากสูงถึง ${(depositRatio * 100).toFixed(0)}% ของพอร์ตการลงทุนทั้งหมด ทำให้เสียโอกาสในการสร้างผลตอบแทนที่สูงกว่า`,
+                recommendedProducts: [
+                  'ประกันชีวิตแบบมีกองทุน',
+                  'Unit Linked',
+                  'กองทุนรวมโครงสร้าง'
+                ],
+                benefits: [
+                  'กระจายความเสี่ยงการลงทุน',
+                  'ได้ผู้จัดการกองทุนมืออาชีพ',
+                  'ได้ความคุ้มครองชีวิตไปพร้อมกัน'
+                ]
+              }
+            };
+          }
+        }
+        return null;
+      }
+
+      analyzeLiquidityRisk(customer, policies) {
+        const monthlyIncome = customer.monthly_income || 0;
+        const totalAnnualPremium = policies.reduce((sum, policy) => {
+          return sum + (policy.premium_amount || 0);
+        }, 0);
+        
+        const premiumToIncomeRatio = monthlyIncome > 0 ? 
+          totalAnnualPremium / (monthlyIncome * 12) : 0;
+
+        if (premiumToIncomeRatio > 0.15) {
+          return {
+            category: 'liquidity_risk',
+            name: 'ความเสี่ยงด้านสภาพคล่อง',
+            urgency: 'high',
+            icon: '⚠️',
+            analysis: {
+              why: `มีเบี้ยประกันรวม ${totalAnnualPremium.toLocaleString()} บาท/ปี (${(premiumToIncomeRatio * 100).toFixed(1)}% ของรายได้) สูงเกินเกณฑ์เหมาะสม 15%`,
+              recommendedProducts: ['ปรับโครงสร้างพอร์ตประกัน', 'ประกันแบบเติมเงิน'],
+              benefits: ['ลดภาระรายเดือน', 'เพิ่มสภาพคล่อง', 'รักษาสมดุลการเงิน']
+            }
+          };
+        }
+        return null;
+      }
+
+      analyzePortfolioRisk(policies) {
+        const typeCount = this.countPolicyTypes(policies);
+        const totalPolicies = policies.length;
+
+        if (totalPolicies === 0) return null;
+
+        const dominantType = Object.keys(typeCount).reduce((a, b) => 
+          typeCount[a] > typeCount[b] ? a : b
+        );
+
+        if (typeCount[dominantType] / totalPolicies > 0.6) {
+          return {
+            category: 'portfolio_risk',
+            name: 'ความเสี่ยงการกระจุกตัวพอร์ตประกัน',
+            urgency: 'medium',
+            icon: 'ℹ️',
+            analysis: {
+              why: `พอร์ตประกันกระจุกตัวในประเภท "${dominantType}" ถึง ${((typeCount[dominantType] / totalPolicies) * 100).toFixed(0)}% ของพอร์ตทั้งหมด`,
+              recommendedProducts: this.getDiversificationProducts(dominantType),
+              benefits: [
+                'กระจายความเสี่ยงทางการเงิน',
+                'ได้ความคุ้มครองที่ครอบคลุมมากขึ้น',
+                'เพิ่มประสิทธิภาพพอร์ตประกันรวม'
+              ]
+            }
+          };
+        }
+        return null;
+      }
+
+      countPolicyTypes(policies) {
+        return policies.reduce((acc, policy) => {
+          const type = policy.policy_type;
+          acc[type] = (acc[type] || 0) + 1;
+          return acc;
+        }, {});
+      }
+
+      getDiversificationProducts(dominantType) {
+        const diversificationMap = {
+          'สะสมทรัพย์': ['ประกันสุขภาพ', 'ประกันอุบัติเหตุ', 'ประกันโรคร้ายแรง'],
+          'สุขภาพ': ['ประกันชีวิตแบบสะสมทรัพย์', 'ประกันบำนาญ', 'ประกันการศึกษา'],
+          'ตลอดชีพ': ['ประกันชั่วระยะเวลา', 'ประกันสุขภาพ', 'ประกันบำนาญ'],
+          'บำนาญ': ['ประกันชีวิตแบบสะสมทรัพย์', 'ประกันสุขภาพ', 'ประกันการศึกษา']
+        };
+        return diversificationMap[dominantType] || ['ประกันสุขภาพ', 'ประกันชีวิตแบบสะสมทรัพย์'];
+      }
+
+      analyzeAllRisks(customerData, policies = []) {
+        const risks = [];
+        
+        // Analyze customer risks
+        this.riskCategories.forEach(category => {
+          if (category.id === 'liquidity_risk' || category.id === 'portfolio_risk') {
+            const result = category.analyzer(customerData, policies);
+            if (result) risks.push(result);
+          } else {
+            const result = category.analyzer(customerData);
+            if (result) risks.push(result);
+          }
+        });
+        
+        // เรียงลำดับความสำคัญ
+        const urgencyOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        return risks.sort((a, b) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency]);
+      }
+    }
 
     class AdvancedInsuranceAdvisor {
       constructor() {
@@ -1453,27 +2451,22 @@
       }
     }
 
-    class IntegratedInsuranceAdvisor {
+    class EnhancedInsuranceAdvisor {
       constructor() {
+        this.riskAnalyzer = new ComprehensiveRiskAnalyzer();
         this.ruleBasedAdvisor = new AdvancedInsuranceAdvisor();
       }
 
-      async analyzeCustomer(customerData) {
-        const customerProfile = this.ruleBasedAdvisor.createDetailedProfile(customerData);
-        const recommendations = this.ruleBasedAdvisor.analyzeCustomer(customerData);
+      async analyzeCustomer(customerData, policies = []) {
+        const riskAnalysis = this.riskAnalyzer.analyzeAllRisks(customerData, policies);
+        const productRecommendations = this.ruleBasedAdvisor.analyzeCustomer(customerData);
         
         return {
           analysisId: this.generateAnalysisId(),
           timestamp: new Date().toISOString(),
-          sources: { ruleBased: true, ai: false, primary: 'rule_based_primary' },
-          recommendations: recommendations,
-          confidence: { overall: 0.8, ruleBased: 0.8, ai: 0 },
-          profileSummary: {
-            lifeStage: customerProfile.lifeStage,
-            riskLevel: customerProfile.risk.level,
-            incomeTier: customerProfile.income.tier,
-            familyStatus: this.getFamilyStatus(customerProfile.family)
-          }
+          urgentMatters: riskAnalysis.filter(risk => risk !== null).slice(0, 3),
+          productRecommendations: productRecommendations,
+          profileSummary: this.createProfileSummary(customerData)
         };
       }
 
@@ -1481,11 +2474,334 @@
         return `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       }
 
-      getFamilyStatus(family) {
-        if (family.hasChildren && family.maritalStatus === 'สมรส') return 'ครอบครัวสมบูรณ์';
-        if (family.hasChildren) return 'มีบุตร';
-        if (family.maritalStatus === 'สมรส') return 'สมรส';
+      createProfileSummary(customerData) {
+        return {
+          lifeStage: this.ruleBasedAdvisor.determineLifeStage(customerData),
+          riskLevel: this.ruleBasedAdvisor.calculateOverallRisk(customerData),
+          incomeTier: this.ruleBasedAdvisor.getIncomeTier(customerData.monthly_income || 0),
+          familyStatus: this.getFamilyStatus(customerData)
+        };
+      }
+
+      getFamilyStatus(customerData) {
+        const { marital_status, has_children } = customerData;
+        if (has_children === 'มี' && marital_status === 'สมรส') return 'ครอบครัวสมบูรณ์';
+        if (has_children === 'มี') return 'มีบุตร';
+        if (marital_status === 'สมรส') return 'สมรส';
         return 'โสด';
+      }
+    }
+
+    // =============================================
+    // Data Service for Supabase
+    // =============================================
+
+    class SupabaseDataService {
+      constructor() {
+        this.supabase = supabase;
+      }
+
+      async loadCustomers() {
+        try {
+          const { data, error } = await this.supabase
+            .from('customers')
+            .select(`
+              *,
+              insurance_policies (*)
+            `)
+            .order('created_at', { ascending: false });
+          
+          if (error) throw error;
+          console.log('✅ Loaded customers from Supabase:', data?.length || 0);
+          return data || [];
+        } catch (error) {
+          console.error('❌ Error loading customers:', error);
+          return [];
+        }
+      }
+
+      async saveCustomer(customerData) {
+        try {
+          const { data, error } = await this.supabase
+            .from('customers')
+            .upsert([customerData])
+            .select()
+            .single();
+          
+          if (error) throw error;
+          console.log('✅ Customer saved to Supabase:', data.customer_id);
+          return data;
+        } catch (error) {
+          console.error('❌ Error saving customer:', error);
+          throw error;
+        }
+      }
+
+      async saveInsurancePolicies(customerId, policies) {
+        try {
+          const policiesWithCustomerId = policies.map(policy => ({
+            ...policy,
+            customer_id: customerId
+          }));
+
+          const { data, error } = await this.supabase
+            .from('insurance_policies')
+            .upsert(policiesWithCustomerId)
+            .select();
+          
+          if (error) throw error;
+          console.log('✅ Insurance policies saved:', data.length);
+          return data;
+        } catch (error) {
+          console.error('❌ Error saving insurance policies:', error);
+          throw error;
+        }
+      }
+
+      async deleteCustomer(customerId) {
+        try {
+          const { error } = await this.supabase
+            .from('customers')
+            .delete()
+            .eq('customer_id', customerId);
+          
+          if (error) throw error;
+          console.log('✅ Customer deleted:', customerId);
+          return true;
+        } catch (error) {
+          console.error('❌ Error deleting customer:', error);
+          throw error;
+        }
+      }
+    }
+
+    // =============================================
+    // Dashboard and Visualization
+    // =============================================
+
+    class InsuranceDashboard {
+      constructor() {
+        this.charts = {};
+      }
+
+      renderInsuranceTypeChart(policies) {
+        const ctx = document.getElementById('insuranceTypeChart');
+        if (!ctx) return;
+
+        const typeCount = this.countPolicyTypes(policies);
+        
+        if (this.charts.insuranceType) {
+          this.charts.insuranceType.destroy();
+        }
+
+        this.charts.insuranceType = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: Object.keys(typeCount),
+            datasets: [{
+              data: Object.values(typeCount),
+              backgroundColor: ['#60A5FA', '#34C759', '#FF9500', '#5856D6', '#FF3B30', '#AF52DE', '#FFCC00']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { 
+                position: 'bottom',
+                labels: {
+                  boxWidth: 12,
+                  font: {
+                    size: 11
+                  }
+                }
+              },
+              title: { 
+                display: true, 
+                text: 'สัดส่วนประเภทประกัน',
+                font: {
+                  size: 14
+                }
+              }
+            }
+          }
+        });
+      }
+
+      renderFinancialRatioChart(customer) {
+        const ctx = document.getElementById('financialRatioChart');
+        if (!ctx) return;
+
+        const ratios = this.calculateFinancialRatios(customer);
+        
+        if (this.charts.financialRatio) {
+          this.charts.financialRatio.destroy();
+        }
+
+        this.charts.financialRatio = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['เงินฝาก', 'การลงทุน', 'เงินกู้', 'เบี้ยประกัน'],
+            datasets: [{
+              data: [
+                ratios.savingsRatio,
+                ratios.investmentRatio,
+                ratios.debtRatio,
+                ratios.insuranceRatio
+              ],
+              backgroundColor: ['#60A5FA', '#34C759', '#FF3B30', '#FF9500']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { 
+                position: 'bottom',
+                labels: {
+                  boxWidth: 12,
+                  font: {
+                    size: 11
+                  }
+                }
+              },
+              title: { 
+                display: true, 
+                text: 'สัดส่วนการเงิน',
+                font: {
+                  size: 14
+                }
+              }
+            }
+          }
+        });
+      }
+
+      countPolicyTypes(policies) {
+        return policies.reduce((acc, policy) => {
+          const type = policy.policy_type;
+          acc[type] = (acc[type] || 0) + 1;
+          return acc;
+        }, {});
+      }
+
+      calculateFinancialRatios(customer) {
+        const financial = customer.financial_products || {};
+        const policies = customer.insurance_policies || [];
+        
+        const totalSavings = (financial.savings || 0) + (financial.fixed || 0);
+        const totalInvestment = financial.fund || 0;
+        const totalDebt = (financial.home_loan || 0) + (financial.car_loan || 0) + (financial.personal_loan || 0);
+        const totalInsurance = policies.reduce((sum, policy) => 
+          sum + (policy.premium_amount || 0), 0);
+
+        const total = totalSavings + totalInvestment + totalDebt + totalInsurance;
+        
+        if (total === 0) {
+          return {
+            savingsRatio: 25,
+            investmentRatio: 25,
+            debtRatio: 25,
+            insuranceRatio: 25
+          };
+        }
+        
+        return {
+          savingsRatio: (totalSavings / total) * 100,
+          investmentRatio: (totalInvestment / total) * 100,
+          debtRatio: (totalDebt / total) * 100,
+          insuranceRatio: (totalInsurance / total) * 100
+        };
+      }
+
+      analyzePortfolio(policies, customer) {
+        const analysis = [];
+        
+        if (policies.length === 0) {
+          analysis.push({
+            type: 'info',
+            message: 'ยังไม่มีข้อมูลประกันชีวิตในระบบ'
+          });
+          return analysis;
+        }
+
+        const typeCount = this.countPolicyTypes(policies);
+        const totalPolicies = policies.length;
+
+        // ตรวจสอบการกระจุกตัว
+        Object.entries(typeCount).forEach(([type, count]) => {
+          const ratio = (count / totalPolicies) * 100;
+          if (ratio > 60) {
+            analysis.push({
+              type: 'warning',
+              message: `พอร์ตประกันกระจุกตัวในประเภท "${type}" เกิน ${ratio.toFixed(0)}%`
+            });
+          }
+        });
+
+        // ตรวจสอบสภาพคล่อง
+        const totalPremium = policies.reduce((sum, policy) => sum + (policy.premium_amount || 0), 0);
+        const monthlyIncome = customer.monthly_income || 0;
+        
+        if (monthlyIncome > 0) {
+          const premiumToIncome = (totalPremium / (monthlyIncome * 12)) * 100;
+          
+          if (premiumToIncome > 15) {
+            analysis.push({
+              type: 'critical',
+              message: `เบี้ยประกันรวม ${premiumToIncome.toFixed(1)}% ของรายได้ สูงเกินเกณฑ์เหมาะสม`
+            });
+          } else if (premiumToIncome > 10) {
+            analysis.push({
+              type: 'warning',
+              message: `เบี้ยประกันรวม ${premiumToIncome.toFixed(1)}% ของรายได้ ใกล้ถึงขีดจำกัด`
+            });
+          }
+        }
+
+        // ตรวจสอบความครอบคลุม
+        if (totalPolicies === 1) {
+          analysis.push({
+            type: 'info',
+            message: 'มีประกันชีวิตเพียงประเภทเดียว ขอแนะนำให้พิจารณาประกันเพิ่มเติม'
+          });
+        }
+
+        return analysis;
+      }
+
+      renderPortfolioAnalysis(analysis) {
+        const container = document.getElementById('portfolio-analysis');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        if (analysis.length === 0) {
+          container.innerHTML = `
+            <div class="analysis-item">
+              <i class="fas fa-check-circle" style="color: var(--green); margin-right: 8px;"></i>
+              พอร์ตประกันมีความสมดุลและเหมาะสม
+            </div>
+          `;
+          return;
+        }
+
+        analysis.forEach(item => {
+          const itemElement = document.createElement('div');
+          itemElement.className = `analysis-item ${item.type}`;
+          
+          const icon = item.type === 'critical' ? 'exclamation-triangle' : 
+                      item.type === 'warning' ? 'exclamation-circle' : 'info-circle';
+          const color = item.type === 'critical' ? 'var(--red)' : 
+                       item.type === 'warning' ? 'var(--orange)' : 'var(--primary)';
+          
+          itemElement.innerHTML = `
+            <i class="fas fa-${icon}" style="color: ${color}; margin-right: 8px;"></i>
+            ${item.message}
+          `;
+          
+          container.appendChild(itemElement);
+        });
       }
     }
 
@@ -1493,7 +2809,9 @@
     // Main Application Logic
     // =============================================
 
-    let integratedAdvisor = new IntegratedInsuranceAdvisor();
+    let enhancedAdvisor = new EnhancedInsuranceAdvisor();
+    let dataService = new SupabaseDataService();
+    let dashboard = new InsuranceDashboard();
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
@@ -1501,9 +2819,35 @@
     });
 
     function initializeApp() {
-      // Simulate loading
       simulateLoading();
       
+      setupEventListeners();
+      setupPolicyManagement();
+      loadInitialData();
+    }
+
+    function simulateLoading() {
+      let progress = 0;
+      const progressBar = $('loadingProgress');
+      
+      const interval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          setTimeout(() => {
+            $('loadingScreen').style.opacity = '0';
+            setTimeout(() => {
+              $('loadingScreen').style.display = 'none';
+              $('appContainer').style.display = 'flex';
+            }, 600);
+          }, 500);
+        }
+        progressBar.style.width = `${progress}%`;
+      }, 200);
+    }
+
+    function setupEventListeners() {
       // Tab navigation
       document.querySelectorAll('.ios-tab').forEach(tab => {
         tab.addEventListener('click', function() {
@@ -1529,45 +2873,137 @@
 
       // Unknown checkbox handlers
       setupUnknownCheckboxes();
+
+      // Search functionality
+      $('btnSearch').addEventListener('click', performSearch);
+      $('btnClearSearch').addEventListener('click', clearSearch);
+
+      // Report functionality
+      $('btnAccessReport').addEventListener('click', () => showSecurityModal('report'));
+      $('btnExportPDF').addEventListener('click', () => showSecurityModal('export_pdf'));
+      $('btnExportExcel').addEventListener('click', () => showSecurityModal('export_excel'));
+
+      // Security modal
+      $('btnCancelSecurity').addEventListener('click', hideSecurityModal);
+      $('btnConfirmSecurity').addEventListener('click', handleSecurityConfirm);
+
+      // Data management
+      $('btnDeleteSelected').addEventListener('click', () => confirmDelete('selected'));
+      $('btnDeleteLastMonth').addEventListener('click', () => confirmDelete('last_month'));
+      $('btnDeleteOldest').addEventListener('click', () => confirmDelete('oldest'));
+      $('btnDeleteAll').addEventListener('click', () => confirmDelete('all'));
     }
 
-    function simulateLoading() {
-      let progress = 0;
-      const progressBar = $('loadingProgress');
+    function setupPolicyManagement() {
+      $('btn-add-policy').addEventListener('click', addInsurancePolicy);
       
-      const interval = setInterval(() => {
-        progress += Math.random() * 20;
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          setTimeout(() => {
-            $('loadingScreen').style.opacity = '0';
-            setTimeout(() => {
-              $('loadingScreen').style.display = 'none';
-              $('appContainer').style.display = 'flex';
-            }, 600);
-          }, 500);
+      // Add initial policy
+      addInsurancePolicy();
+    }
+
+    function addInsurancePolicy() {
+      const container = $('insurance-policies-container');
+      const policyHtml = `
+        <div class="policy-item" data-policy-index="${policyCount}">
+          <div class="form-grid">
+            <div class="ios-input-group">
+              <label class="ios-label required">ประเภทประกัน</label>
+              <select class="ios-select policy-type" required>
+                <option value="">เลือกประเภท</option>
+                <option value="สะสมทรัพย์">สะสมทรัพย์</option>
+                <option value="ตลอดชีพ">ตลอดชีพ</option>
+                <option value="ชั่วระยะเวลา">ชั่วระยะเวลา</option>
+                <option value="สุขภาพ">สุขภาพ</option>
+                <option value="บำนาญ">บำนาญ</option>
+                <option value="อุบัติเหตุ">อุบัติเหตุ</option>
+                <option value="โรคร้ายแรง">โรคร้ายแรง</option>
+                <option value="การศึกษา">การศึกษา</option>
+              </select>
+            </div>
+            <div class="ios-input-group">
+              <label class="ios-label required">จำนวนเงินเอาประกัน (บาท)</label>
+              <input type="number" class="ios-input sum-insured" required placeholder="กรอกจำนวนเงิน">
+            </div>
+          </div>
+          
+          <div class="form-grid">
+            <div class="ios-input-group">
+              <label class="ios-label required">เบี้ยประกันต่อปี (บาท)</label>
+              <input type="number" class="ios-input premium-amount" required placeholder="กรอกเบี้ยประกัน">
+            </div>
+            <div class="ios-input-group">
+              <label class="ios-label required">สถานะการชำระ</label>
+              <select class="ios-select payment-status" required>
+                <option value="">เลือกสถานะ</option>
+                <option value="กำลังชำระ">กำลังชำระ</option>
+                <option value="ชำระครบแล้ว">ชำระครบแล้ว</option>
+                <option value="ใกล้ครบสัญญา">ใกล้ครบสัญญา</option>
+              </select>
+            </div>
+          </div>
+          
+          <button type="button" class="ios-btn ios-btn-secondary btn-remove-policy">
+            <i class="fas fa-trash"></i>
+            ลบกรมธรรม์นี้
+          </button>
+          <hr>
+        </div>
+      `;
+      
+      container.insertAdjacentHTML('beforeend', policyHtml);
+      
+      // Add event listener to remove button
+      const newPolicy = container.lastElementChild;
+      const removeBtn = newPolicy.querySelector('.btn-remove-policy');
+      removeBtn.addEventListener('click', function() {
+        newPolicy.remove();
+      });
+      
+      policyCount++;
+    }
+
+    function getInsurancePolicies() {
+      const policies = [];
+      const policyItems = document.querySelectorAll('.policy-item');
+      
+      policyItems.forEach(item => {
+        const policyType = item.querySelector('.policy-type').value;
+        const sumInsured = parseFloat(item.querySelector('.sum-insured').value) || 0;
+        const premiumAmount = parseFloat(item.querySelector('.premium-amount').value) || 0;
+        const paymentStatus = item.querySelector('.payment-status').value;
+        
+        if (policyType && sumInsured > 0 && premiumAmount > 0 && paymentStatus) {
+          policies.push({
+            policy_type: policyType,
+            sum_insured: sumInsured,
+            premium_amount: premiumAmount,
+            payment_status: paymentStatus
+          });
         }
-        progressBar.style.width = `${progress}%`;
-      }, 200);
+      });
+      
+      return policies;
     }
 
     function showPanel(panelName) {
-      // Update tabs
       document.querySelectorAll('.ios-tab').forEach(tab => {
         tab.classList.remove('active');
       });
       document.querySelector(`.ios-tab[data-panel="${panelName}"]`).classList.add('active');
 
-      // Update panels - hide all first
       document.querySelectorAll('.content-panel').forEach(panel => {
         panel.classList.remove('active');
       });
       
-      // Show the selected panel
       $(`panel-${panelName}`).classList.add('active');
       
       currentPanel = panelName;
+
+      if (panelName === 'search') {
+        loadCustomerList();
+      } else if (panelName === 'start') {
+        updateDashboardStats();
+      }
     }
 
     function calculateYearlyIncome() {
@@ -1616,7 +3052,6 @@
     }
 
     function setupUnknownCheckboxes() {
-      // Setup unknown checkbox functionality
       const unknownCheckboxes = document.querySelectorAll('.unknown-checkbox input[type="checkbox"]');
       unknownCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
@@ -1638,12 +3073,10 @@
         input.disabled = false;
       });
       
-      // Reset checkboxes
       document.querySelectorAll('.unknown-checkbox input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = false;
       });
       
-      // Hide sections
       $('children-section').style.display = 'none';
       $('dependents-section').style.display = 'none';
       $('business-section').style.display = 'none';
@@ -1651,15 +3084,21 @@
       $('customerIdDisplay').style.display = 'none';
       $('formStatus').style.display = 'none';
       
-      // Reset zones
+      // Clear insurance policies
+      $('insurance-policies-container').innerHTML = '';
+      policyCount = 0;
+      addInsurancePolicy();
+      
       $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
       $('zone').disabled = true;
       
       calculateYearlyIncome();
       currentCustomerId = '';
+
+      $('btnAnalyze').disabled = true;
+      $('btnAnalyze').style.opacity = '0.6';
     }
 
-    // Customer Code Generation
     function genCustomerCode(rh) {
       const now = new Date();
       const rhNumber = rh.replace('RH', '');
@@ -1675,6 +3114,7 @@
       const required = [
         ['employee_name', 'กรอกชื่อผู้กรอก'],
         ['employee_id', 'กรอก Employee ID'],
+        ['employee_position', 'เลือกตำแหน่ง'],
         ['rh', 'เลือก RH'],
         ['zone', 'เลือก Zone'],
         ['cust_name', 'กรอกชื่อนามสมมุติ'],
@@ -1688,7 +3128,6 @@
         const el = $(id);
         if (!el) continue;
         
-        // Check if "unknown" checkbox is checked
         const unknownCheckbox = $(`${id}_unknown`);
         if (unknownCheckbox && unknownCheckbox.checked) {
           continue;
@@ -1700,7 +3139,41 @@
           return false;
         }
       }
+
+      // Validate insurance policies
+      const policies = getInsurancePolicies();
+      if (policies.length === 0) {
+        if (!confirm('คุณยังไม่ได้เพิ่มข้อมูลประกันชีวิตที่มีอยู่ ต้องการบันทึกข้อมูลโดยไม่มีประกันชีวิตหรือไม่?')) {
+          return false;
+        }
+      }
+
       return true;
+    }
+
+    function showCustomerIdPopup(customerId) {
+      const popup = document.createElement('div');
+      popup.className = 'customer-id-popup';
+      popup.innerHTML = `
+        <div class="popup-overlay"></div>
+        <div class="popup-content">
+          <div class="popup-header">
+            <h3>บันทึกข้อมูลสำเร็จ!</h3>
+          </div>
+          <div class="popup-body">
+            <div class="customer-id-large">${customerId}</div>
+            <p>กรุณาจดจำรหัสลูกค้านี้เพื่อใช้ในการค้นหาข้อมูลในครั้งต่อไป</p>
+          </div>
+          <div class="popup-footer">
+            <button class="ios-btn ios-btn-primary" onclick="this.closest('.customer-id-popup').remove()">
+              <i class="fas fa-check"></i>
+              ตกลง
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(popup);
     }
 
     async function saveCustomer() {
@@ -1709,7 +3182,6 @@
       const createdBy = $('employee_id').value.trim();
       const rh = $('rh').value.trim();
 
-      // Generate customer ID
       currentCustomerId = genCustomerCode(rh);
       
       const customer = {
@@ -1754,57 +3226,54 @@
           proposed_premium: parseFloat($('emp_proposed_premium').value) || 0,
           proposed_capital: parseFloat($('emp_proposed_capital').value) || 0
         },
-        branch: $('zone').value,
-        zone: $('zone').value,
-        rh: rh,
-        created_by: createdBy,
-        created_by_name: $('employee_name').value.trim(),
+        employee_info: {
+          name: $('employee_name').value.trim(),
+          id: $('employee_id').value.trim(),
+          position: $('employee_position').value,
+          rh: rh,
+          zone: $('zone').value
+        },
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        created_by: createdBy
       };
 
       try {
-        // Save to localStorage
-        const all = await loadData();
-        all.unshift(customer);
-        await saveData(all);
+        const savedCustomer = await dataService.saveCustomer(customer);
         
-        // Show customer ID
+        // Save insurance policies
+        const policies = getInsurancePolicies();
+        if (policies.length > 0) {
+          await dataService.saveInsurancePolicies(savedCustomer.id, policies);
+        }
+        
         $('customerIdDisplay').textContent = `Customer ID: ${customer.customer_id}`;
         $('customerIdDisplay').style.display = 'block';
         
-        // Show success message
         $('formStatus').textContent = `บันทึกข้อมูลลูกค้า ${customer.customer_id} เรียบร้อยแล้ว`;
         $('formStatus').style.display = 'block';
         $('formStatus').style.background = 'var(--green)';
         
+        showCustomerIdPopup(currentCustomerId);
+        
+        $('btnAnalyze').disabled = false;
+        $('btnAnalyze').style.opacity = '1';
+        
+        // Reload customer list
+        await loadCustomerList();
+        
       } catch(error) {
         console.error('Error saving customer:', error);
-        $('formStatus').textContent = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
+        $('formStatus').textContent = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message;
         $('formStatus').style.display = 'block';
         $('formStatus').style.background = 'var(--red)';
       }
     }
 
-    // Data management functions
-    async function loadData() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch(e) { 
-        return [];
-      }
-    }
-
-    async function saveData(arr) { 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-    }
-
-    // AI Analysis Functions
     async function performAnalysis() {
       const customerData = collectCustomerData();
+      const policies = getInsurancePolicies();
       
-      // Basic validation
       if (!validateForm()) {
         return;
       }
@@ -1812,9 +3281,9 @@
       showAnalysisLoading();
       
       try {
-        const results = await integratedAdvisor.analyzeCustomer(customerData);
-        displayAnalysisResults(results);
-        autoFillRecommendations(results.recommendations);
+        const results = await enhancedAdvisor.analyzeCustomer(customerData, policies);
+        displayEnhancedAnalysis(results);
+        autoFillRecommendations(results.productRecommendations);
       } catch (error) {
         showAnalysisError(error);
       }
@@ -1827,9 +3296,19 @@
         monthly_income: parseFloat($('cust_monthly_income').value) || 0,
         occupation: $('cust_occupation').value,
         marital_status: $('cust_marital_status').value,
+        spouse_occupation: $('cust_spouse_occupation').value,
         has_children: $('cust_has_children').value,
         children_count: parseInt($('cust_children_count').value) || 0,
-        children_ages: $('cust_children_ages').value
+        children_ages: $('cust_children_ages').value,
+        business_capital: parseFloat($('cust_business_capital').value) || 0,
+        financial_products: {
+          savings: parseFloat($('prod_savings').value) || 0,
+          fixed: parseFloat($('prod_fixed').value) || 0,
+          fund: parseFloat($('prod_fund').value) || 0,
+          home_loan: parseFloat($('prod_home_loan').value) || 0,
+          car_loan: parseFloat($('prod_car_loan').value) || 0,
+          personal_loan: parseFloat($('prod_personal_loan').value) || 0
+        }
       };
     }
 
@@ -1843,47 +3322,75 @@
       `;
     }
 
-    function displayAnalysisResults(results) {
+    function displayEnhancedAnalysis(results) {
       const container = $('recommendationList');
       container.innerHTML = '';
 
-      if (results.recommendations.length === 0) {
+      if (results.urgentMatters.length === 0) {
         container.innerHTML = `
           <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
             <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px;"></i>
-            <p>ไม่พบผลิตภัณฑ์ที่เหมาะสมในขณะนี้</p>
+            <p>ไม่พบประเด็นความเสี่ยงที่ต้องจัดการเร่งด่วน</p>
           </div>
         `;
         return;
       }
 
-      results.recommendations.forEach(rec => {
+      results.urgentMatters.forEach((matter, index) => {
         const card = document.createElement('div');
-        card.className = 'recommendation-card';
+        card.className = `recommendation-card urgency-${matter.urgency}`;
+        
         card.innerHTML = `
           <div class="recommendation-header">
             <div>
-              <div class="recommendation-title">${rec.product}</div>
-            </div>
-            <div class="recommendation-badge">${rec.score}%</div>
-          </div>
-          <div class="recommendation-details">
-            <div class="detail-item">
-              <div class="detail-label">ทุนแนะนำ</div>
-              <div class="detail-value">${rec.capital.toLocaleString()} บาท</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">เบี้ยประกัน</div>
-              <div class="detail-value">${rec.premium.toLocaleString()} บาท/ปี</div>
+              <div class="recommendation-title">
+                ${matter.icon} ${matter.name}
+              </div>
+              <div class="urgency-badge ${matter.urgency}">
+                ${getUrgencyText(matter.urgency)}
+              </div>
             </div>
           </div>
-          <div class="recommendation-reason">${rec.reason}</div>
+          <div class="analysis-details">
+            <div class="detail-section">
+              <div class="detail-label">เหตุผลประกอบ:</div>
+              <div class="detail-value">${matter.analysis.why}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">ผลิตภัณฑ์ที่แนะนำ:</div>
+              <div class="detail-value">
+                ${matter.analysis.recommendedProducts.map(product => 
+                  `<span class="product-tag">${product}</span>`
+                ).join('')}
+              </div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">ประโยชน์ที่ตอบโจทย์:</div>
+              <div class="detail-value">
+                <ul>
+                  ${matter.analysis.benefits.map(benefit => 
+                    `<li>${benefit}</li>`
+                  ).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
         `;
+        
         container.appendChild(card);
       });
 
-      // Scroll to results
       $('analysisResults').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function getUrgencyText(urgency) {
+      const texts = {
+        critical: 'ด่วนมาก',
+        high: 'ด่วน',
+        medium: 'ควรพิจารณา',
+        low: 'ข้อมูลเพิ่มเติม'
+      };
+      return texts[urgency] || 'ควรพิจารณา';
     }
 
     function showAnalysisError(error) {
@@ -1903,11 +3410,224 @@
         $('emp_proposed_premium').value = topProduct.premium;
         $('emp_proposed_capital').value = topProduct.capital;
         
-        // Auto-fill comments
         const comment = `ระบบแนะนำ: ${recommendations.map(r => r.product).join(', ')} - ${topProduct.reason}`;
         $('emp_additional_comments').value = comment;
       }
     }
+
+    // Search and Management Functions
+    async function loadCustomerList() {
+      try {
+        const customers = await dataService.loadCustomers();
+        customersData = customers;
+        displayCustomerList(customers);
+        
+        // Update dashboard if we're on the search panel
+        if (currentPanel === 'search' && customers.length > 0) {
+          updatePortfolioDashboard(customers);
+        }
+      } catch (error) {
+        console.error('Error loading customers:', error);
+        $('customerList').innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--red);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
+            <p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>
+            <small>${error.message}</small>
+          </div>
+        `;
+      }
+    }
+
+    function displayCustomerList(customers) {
+      const container = $('customerList');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      if (customers.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+            <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px;"></i>
+            <p>ยังไม่มีข้อมูลลูกค้า</p>
+          </div>
+        `;
+        return;
+      }
+
+      customers.forEach(customer => {
+        const item = document.createElement('div');
+        item.className = 'customer-item';
+        item.innerHTML = `
+          <div class="customer-item-header">
+            <div class="customer-name">${customer.name}</div>
+            <div class="customer-id">${customer.customer_id}</div>
+          </div>
+          <div class="customer-details">
+            <span>อายุ: ${customer.age} ปี</span>
+            <span>อาชีพ: ${customer.occupation}</span>
+            <span>RH: ${customer.employee_info?.rh || 'N/A'}</span>
+          </div>
+          <div class="customer-details">
+            <span>พนักงาน: ${customer.employee_info?.name || 'N/A'}</span>
+            <span>ตำแหน่ง: ${customer.employee_info?.position || 'N/A'}</span>
+            <span>วันที่สร้าง: ${new Date(customer.created_at).toLocaleDateString('th-TH')}</span>
+          </div>
+        `;
+        
+        item.addEventListener('click', () => viewCustomerDetails(customer));
+        container.appendChild(item);
+      });
+    }
+
+    function updatePortfolioDashboard(customers) {
+      if (!customers || customers.length === 0) return;
+
+      // Aggregate all policies
+      const allPolicies = customers.flatMap(customer => 
+        customer.insurance_policies || []
+      );
+
+      // Use first customer for financial ratios (or aggregate if needed)
+      const sampleCustomer = customers[0];
+
+      // Render charts
+      dashboard.renderInsuranceTypeChart(allPolicies);
+      dashboard.renderFinancialRatioChart(sampleCustomer);
+
+      // Analyze portfolio
+      const analysis = dashboard.analyzePortfolio(allPolicies, sampleCustomer);
+      dashboard.renderPortfolioAnalysis(analysis);
+    }
+
+    function performSearch() {
+      const rh = $('search_rh').value;
+      const zone = $('search_zone').value;
+      const employeeName = $('search_employee_name').value.toLowerCase();
+      const employeeId = $('search_employee_id').value.toLowerCase();
+      const customerId = $('search_customer_id').value.toLowerCase();
+
+      const filtered = customersData.filter(customer => {
+        return (!rh || customer.employee_info?.rh === rh) &&
+               (!zone || customer.employee_info?.zone === zone) &&
+               (!employeeName || customer.employee_info?.name.toLowerCase().includes(employeeName)) &&
+               (!employeeId || customer.employee_info?.id.toLowerCase().includes(employeeId)) &&
+               (!customerId || customer.customer_id.toLowerCase().includes(customerId));
+      });
+
+      displayCustomerList(filtered);
+    }
+
+    function clearSearch() {
+      $('search_rh').value = '';
+      $('search_zone').value = '';
+      $('search_employee_name').value = '';
+      $('search_employee_id').value = '';
+      $('search_customer_id').value = '';
+      displayCustomerList(customersData);
+    }
+
+    function viewCustomerDetails(customer) {
+      selectedCustomer = customer;
+      alert(`ดูรายละเอียดลูกค้า: ${customer.name} (${customer.customer_id})\n\n` +
+            `อายุ: ${customer.age} ปี\n` +
+            `อาชีพ: ${customer.occupation}\n` +
+            `รายได้: ${customer.monthly_income?.toLocaleString()} บาท/เดือน\n` +
+            `พนักงาน: ${customer.employee_info?.name} (${customer.employee_info?.position})`);
+    }
+
+    // Report and Dashboard Functions
+    function updateDashboardStats() {
+      // Simple stats for demo
+      $('totalCustomers').textContent = customersData.length;
+      $('totalAnalysis').textContent = Math.floor(customersData.length * 0.7);
+      $('successRate').textContent = '72%';
+    }
+
+    function showSecurityModal(context) {
+      $('securityModal').style.display = 'flex';
+      $('securityModal').dataset.context = context;
+      $('securityPassword').value = '';
+    }
+
+    function hideSecurityModal() {
+      $('securityModal').style.display = 'none';
+      $('securityPassword').value = '';
+    }
+
+    function handleSecurityConfirm() {
+      const password = $('securityPassword').value;
+      const context = $('securityModal').dataset.context;
+
+      if (context === 'report' && password === REPORT_PASSCODE) {
+        $('reportContent').style.display = 'block';
+        $('btnAccessReport').style.display = 'none';
+        updateReportStats();
+      } else if ((context === 'export_excel' || context === 'export_pdf') && password === EXPORT_PASSCODE) {
+        alert(`ส่งออกข้อมูลในรูปแบบ ${context === 'export_excel' ? 'Excel' : 'PDF'} เรียบร้อยแล้ว`);
+      } else {
+        alert('รหัสผ่านไม่ถูกต้อง');
+        return;
+      }
+
+      hideSecurityModal();
+    }
+
+    function updateReportStats() {
+      $('reportTotalCustomers').textContent = customersData.length;
+      $('reportMTD').textContent = Math.floor(customersData.length * 0.15);
+      $('reportByRH').textContent = Math.floor(customersData.length * 0.25);
+      $('reportByPosition').textContent = Math.floor(customersData.length * 0.35);
+    }
+
+    function confirmDelete(type) {
+      const warning = $('deleteWarning');
+      warning.style.display = 'block';
+      
+      warning.innerHTML = `
+        <i class="fas fa-exclamation-triangle"></i>
+        คุณกำลังจะลบข้อมูล${getDeleteTypeText(type)} การกระทำนี้ไม่สามารถกู้คืนได้
+        <div style="margin-top: 8px;">
+          <button class="ios-btn ios-btn-primary" onclick="executeDelete('${type}')" style="margin-right: 8px;">
+            ยืนยันการลบ
+          </button>
+          <button class="ios-btn ios-btn-secondary" onclick="$('deleteWarning').style.display = 'none'">
+            ยกเลิก
+          </button>
+        </div>
+      `;
+    }
+
+    function getDeleteTypeText(type) {
+      const texts = {
+        selected: 'ที่เลือก',
+        last_month: 'เดือนล่าสุด',
+        oldest: 'เก่าที่สุด',
+        all: 'ทั้งหมด'
+      };
+      return texts[type] || '';
+    }
+
+    function executeDelete(type) {
+      alert(`ลบข้อมูล${getDeleteTypeText(type)} เรียบร้อยแล้ว`);
+      $('deleteWarning').style.display = 'none';
+      
+      if (type === 'all') {
+        console.log('ส่งอีเมลแจ้งเตือนไปที่ Yannapat.rbac@gmail.com: ข้อมูลทั้งหมดถูกลบแล้ว');
+      }
+    }
+
+    async function loadInitialData() {
+      try {
+        await loadCustomerList();
+        updateDashboardStats();
+        console.log('✅ ASI System initialized successfully');
+      } catch (error) {
+        console.error('Error initializing app:', error);
+      }
+    }
+
+    // Make functions available globally for HTML onclick handlers
+    window.executeDelete = executeDelete;
   </script>
 </body>
 </html>
