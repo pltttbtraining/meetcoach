@@ -872,6 +872,26 @@
     @keyframes spinner-border {
       to { transform: rotate(360deg); }
     }
+
+    /* No Insurance Button */
+    .no-insurance-btn {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .search-placeholder {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .action-security {
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--light-gray-bg);
+      border-radius: 8px;
+      border: 1px solid var(--system-border);
+    }
   </style>
 </head>
 <body>
@@ -1303,10 +1323,16 @@
               <div id="insurance-policies-container">
                 <!-- Policies will be added here dynamically -->
               </div>
-              <button type="button" class="ios-btn ios-btn-secondary" id="btn-add-policy">
-                <i class="fas fa-plus"></i>
-                เพิ่มกรมธรรม์
-              </button>
+              <div style="display: flex; gap: 12px; margin-top: 12px;">
+                <button type="button" class="ios-btn ios-btn-secondary" id="btn-add-policy" style="flex: 1;">
+                  <i class="fas fa-plus"></i>
+                  เพิ่มกรมธรรม์
+                </button>
+                <button type="button" class="ios-btn ios-btn-secondary no-insurance-btn" id="btn-no-insurance" style="flex: 1;">
+                  <i class="fas fa-times"></i>
+                  ไม่มีประกันชีวิต
+                </button>
+              </div>
             </div>
 
             <!-- AI Analysis Section -->
@@ -1456,11 +1482,15 @@
 
             <!-- Customer List -->
             <div class="customer-list" id="customerList">
-              <!-- Customer items will be inserted here -->
+              <div class="search-placeholder">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; color: var(--gray-4);"></i>
+                <p>กรุณาใช้ฟิลเตอร์ด้านบนเพื่อค้นหาข้อมูลลูกค้า</p>
+                <small style="color: var(--text-secondary);">ระบบจะแสดงข้อมูลเฉพาะเมื่อค้นหาแล้วเท่านั้น</small>
+              </div>
             </div>
 
             <!-- Portfolio Dashboard -->
-            <div class="ios-card" style="margin-top: 20px;">
+            <div class="ios-card" style="margin-top: 20px; display: none;" id="portfolioDashboard">
               <div class="ios-card-header">
                 <h2 class="ios-card-title">
                   <i class="fas fa-chart-pie" style="color: var(--primary);"></i>
@@ -1623,6 +1653,7 @@
     // Security Passcodes
     const REPORT_PASSCODE = "2025";
     const EXPORT_PASSCODE = "1234";
+    const SPECIAL_PASSCODE = "0229"; // Special pass code สำหรับปลดล็อคทุกอย่าง
 
     // Supabase Configuration
     const supabaseUrl = 'https://ycyrvyghiybfaimixkvo.supabase.co';
@@ -1638,6 +1669,7 @@
     let selectedCustomer = null;
     let customersData = [];
     let policyCount = 0;
+    let hasInsurancePolicies = true; // Track if user has insurance policies
 
     // =============================================
     // Enhanced Insurance Advisor Classes
@@ -2000,6 +2032,11 @@
       }
 
       analyzeLiquidityRisk(customer, policies) {
+        // แก้ไข: ตรวจสอบว่า policies เป็น array ที่ถูกต้อง
+        if (!policies || !Array.isArray(policies)) {
+          return null;
+        }
+
         const monthlyIncome = customer.monthly_income || 0;
         const totalAnnualPremium = policies.reduce((sum, policy) => {
           return sum + (policy.premium_amount || 0);
@@ -2025,10 +2062,13 @@
       }
 
       analyzePortfolioRisk(policies) {
+        // แก้ไข: ตรวจสอบว่า policies เป็น array ที่ถูกต้อง
+        if (!policies || !Array.isArray(policies) || policies.length === 0) {
+          return null;
+        }
+
         const typeCount = this.countPolicyTypes(policies);
         const totalPolicies = policies.length;
-
-        if (totalPolicies === 0) return null;
 
         const dominantType = Object.keys(typeCount).reduce((a, b) => 
           typeCount[a] > typeCount[b] ? a : b
@@ -2055,6 +2095,11 @@
       }
 
       countPolicyTypes(policies) {
+        // แก้ไข: ตรวจสอบว่า policies เป็น array ที่ถูกต้องก่อนใช้ reduce
+        if (!policies || !Array.isArray(policies)) {
+          return {};
+        }
+        
         return policies.reduce((acc, policy) => {
           const type = policy.policy_type;
           acc[type] = (acc[type] || 0) + 1;
@@ -2678,6 +2723,11 @@
       }
 
       countPolicyTypes(policies) {
+        // แก้ไข: ตรวจสอบว่า policies เป็น array ที่ถูกต้อง
+        if (!policies || !Array.isArray(policies)) {
+          return {};
+        }
+        
         return policies.reduce((acc, policy) => {
           const type = policy.policy_type;
           acc[type] = (acc[type] || 0) + 1;
@@ -2717,7 +2767,7 @@
       analyzePortfolio(policies, customer) {
         const analysis = [];
         
-        if (policies.length === 0) {
+        if (!policies || policies.length === 0) {
           analysis.push({
             type: 'info',
             message: 'ยังไม่มีข้อมูลประกันชีวิตในระบบ'
@@ -2892,6 +2942,9 @@
       $('btnDeleteLastMonth').addEventListener('click', () => confirmDelete('last_month'));
       $('btnDeleteOldest').addEventListener('click', () => confirmDelete('oldest'));
       $('btnDeleteAll').addEventListener('click', () => confirmDelete('all'));
+
+      // No insurance button
+      $('btn-no-insurance').addEventListener('click', handleNoInsurance);
     }
 
     function setupPolicyManagement() {
@@ -2960,9 +3013,26 @@
       });
       
       policyCount++;
+      hasInsurancePolicies = true;
+    }
+
+    function handleNoInsurance() {
+      const container = $('insurance-policies-container');
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px; background: var(--light-gray-bg); border-radius: 8px; margin-bottom: 12px;">
+          <i class="fas fa-check-circle" style="color: var(--green); font-size: 24px; margin-bottom: 8px;"></i>
+          <p>บันทึกข้อมูล "ไม่มีประกันชีวิต" เรียบร้อยแล้ว</p>
+          <small style="color: var(--text-secondary);">คุณสามารถเพิ่มกรมธรรม์ได้ภายหลังโดยกดปุ่ม "เพิ่มกรมธรรม์"</small>
+        </div>
+      `;
+      hasInsurancePolicies = false;
     }
 
     function getInsurancePolicies() {
+      if (!hasInsurancePolicies) {
+        return [];
+      }
+
       const policies = [];
       const policyItems = document.querySelectorAll('.policy-item');
       
@@ -3000,7 +3070,15 @@
       currentPanel = panelName;
 
       if (panelName === 'search') {
-        loadCustomerList();
+        // ไม่โหลดข้อมูลลูกค้าทั้งหมดเมื่อเปิดหน้า search
+        $('customerList').innerHTML = `
+          <div class="search-placeholder">
+            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; color: var(--gray-4);"></i>
+            <p>กรุณาใช้ฟิลเตอร์ด้านบนเพื่อค้นหาข้อมูลลูกค้า</p>
+            <small style="color: var(--text-secondary);">ระบบจะแสดงข้อมูลเฉพาะเมื่อค้นหาแล้วเท่านั้น</small>
+          </div>
+        `;
+        $('portfolioDashboard').style.display = 'none';
       } else if (panelName === 'start') {
         updateDashboardStats();
       }
@@ -3088,6 +3166,7 @@
       $('insurance-policies-container').innerHTML = '';
       policyCount = 0;
       addInsurancePolicy();
+      hasInsurancePolicies = true;
       
       $('zone').innerHTML = '<option value="">เลือก RH ก่อน</option>';
       $('zone').disabled = true;
@@ -3136,14 +3215,6 @@
         if (!el.value || el.value.trim() === '') {
           alert(msg);
           el.focus();
-          return false;
-        }
-      }
-
-      // Validate insurance policies
-      const policies = getInsurancePolicies();
-      if (policies.length === 0) {
-        if (!confirm('คุณยังไม่ได้เพิ่มข้อมูลประกันชีวิตที่มีอยู่ ต้องการบันทึกข้อมูลโดยไม่มีประกันชีวิตหรือไม่?')) {
           return false;
         }
       }
@@ -3241,7 +3312,7 @@
       try {
         const savedCustomer = await dataService.saveCustomer(customer);
         
-        // Save insurance policies
+        // Save insurance policies only if user has policies
         const policies = getInsurancePolicies();
         if (policies.length > 0) {
           await dataService.saveInsurancePolicies(savedCustomer.id, policies);
@@ -3420,21 +3491,9 @@
       try {
         const customers = await dataService.loadCustomers();
         customersData = customers;
-        displayCustomerList(customers);
-        
-        // Update dashboard if we're on the search panel
-        if (currentPanel === 'search' && customers.length > 0) {
-          updatePortfolioDashboard(customers);
-        }
+        // ไม่แสดงข้อมูลทันที แต่จะแสดงเฉพาะเมื่อค้นหาแล้ว
       } catch (error) {
         console.error('Error loading customers:', error);
-        $('customerList').innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; color: var(--red);">
-            <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 16px;"></i>
-            <p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>
-            <small>${error.message}</small>
-          </div>
-        `;
       }
     }
 
@@ -3447,10 +3506,11 @@
       if (customers.length === 0) {
         container.innerHTML = `
           <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
-            <i class="fas fa-users" style="font-size: 48px; margin-bottom: 16px;"></i>
-            <p>ยังไม่มีข้อมูลลูกค้า</p>
+            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px;"></i>
+            <p>ไม่พบข้อมูลลูกค้าตามเงื่อนไขที่ค้นหา</p>
           </div>
         `;
+        $('portfolioDashboard').style.display = 'none';
         return;
       }
 
@@ -3472,11 +3532,55 @@
             <span>ตำแหน่ง: ${customer.employee_info?.position || 'N/A'}</span>
             <span>วันที่สร้าง: ${new Date(customer.created_at).toLocaleDateString('th-TH')}</span>
           </div>
+          <div class="action-security">
+            <div class="ios-input-group">
+              <label class="ios-label">รหัสพนักงานสำหรับดำเนินการ</label>
+              <input type="password" class="ios-input security-code-input" placeholder="กรอกรหัสพนักงาน" data-customer-id="${customer.customer_id}">
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <button class="ios-btn ios-btn-secondary btn-view-details" data-customer-id="${customer.customer_id}">
+                <i class="fas fa-eye"></i>
+                ดูรายละเอียด
+              </button>
+              <button class="ios-btn ios-btn-secondary btn-add-comment" data-customer-id="${customer.customer_id}">
+                <i class="fas fa-comment"></i>
+                เพิ่มความเห็น
+              </button>
+            </div>
+          </div>
         `;
         
-        item.addEventListener('click', () => viewCustomerDetails(customer));
+        // Add event listeners for action buttons
+        const viewBtn = item.querySelector('.btn-view-details');
+        const commentBtn = item.querySelector('.btn-add-comment');
+        const securityInput = item.querySelector('.security-code-input');
+        
+        viewBtn.addEventListener('click', function() {
+          const customerId = this.getAttribute('data-customer-id');
+          const securityCode = securityInput.value;
+          if (!securityCode) {
+            alert('กรุณากรอกรหัสพนักงานก่อนดำเนินการ');
+            return;
+          }
+          viewCustomerDetails(customerId, securityCode);
+        });
+        
+        commentBtn.addEventListener('click', function() {
+          const customerId = this.getAttribute('data-customer-id');
+          const securityCode = securityInput.value;
+          if (!securityCode) {
+            alert('กรุณากรอกรหัสพนักงานก่อนดำเนินการ');
+            return;
+          }
+          addCommentToCustomer(customerId, securityCode);
+        });
+        
         container.appendChild(item);
       });
+
+      // Show portfolio dashboard if we have results
+      $('portfolioDashboard').style.display = 'block';
+      updatePortfolioDashboard(customers);
     }
 
     function updatePortfolioDashboard(customers) {
@@ -3523,16 +3627,51 @@
       $('search_employee_name').value = '';
       $('search_employee_id').value = '';
       $('search_customer_id').value = '';
-      displayCustomerList(customersData);
+      $('customerList').innerHTML = `
+        <div class="search-placeholder">
+          <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; color: var(--gray-4);"></i>
+          <p>กรุณาใช้ฟิลเตอร์ด้านบนเพื่อค้นหาข้อมูลลูกค้า</p>
+          <small style="color: var(--text-secondary);">ระบบจะแสดงข้อมูลเฉพาะเมื่อค้นหาแล้วเท่านั้น</small>
+        </div>
+      `;
+      $('portfolioDashboard').style.display = 'none';
     }
 
-    function viewCustomerDetails(customer) {
-      selectedCustomer = customer;
-      alert(`ดูรายละเอียดลูกค้า: ${customer.name} (${customer.customer_id})\n\n` +
-            `อายุ: ${customer.age} ปี\n` +
-            `อาชีพ: ${customer.occupation}\n` +
-            `รายได้: ${customer.monthly_income?.toLocaleString()} บาท/เดือน\n` +
-            `พนักงาน: ${customer.employee_info?.name} (${customer.employee_info?.position})`);
+    function viewCustomerDetails(customerId, securityCode) {
+      // ตรวจสอบรหัสพนักงานหรือ special pass code
+      if (securityCode !== SPECIAL_PASSCODE) {
+        const customer = customersData.find(c => c.customer_id === customerId);
+        if (!customer || customer.employee_info?.id !== securityCode) {
+          alert('รหัสพนักงานไม่ถูกต้อง');
+          return;
+        }
+      }
+      
+      const customer = customersData.find(c => c.customer_id === customerId);
+      if (customer) {
+        alert(`ดูรายละเอียดลูกค้า: ${customer.name} (${customer.customer_id})\n\n` +
+              `อายุ: ${customer.age} ปี\n` +
+              `อาชีพ: ${customer.occupation}\n` +
+              `รายได้: ${customer.monthly_income?.toLocaleString()} บาท/เดือน\n` +
+              `พนักงาน: ${customer.employee_info?.name} (${customer.employee_info?.position})`);
+      }
+    }
+
+    function addCommentToCustomer(customerId, securityCode) {
+      // ตรวจสอบรหัสพนักงานหรือ special pass code
+      if (securityCode !== SPECIAL_PASSCODE) {
+        const customer = customersData.find(c => c.customer_id === customerId);
+        if (!customer || customer.employee_info?.id !== securityCode) {
+          alert('รหัสพนักงานไม่ถูกต้อง');
+          return;
+        }
+      }
+      
+      const comment = prompt('กรอกความเห็นเพิ่มเติม:');
+      if (comment) {
+        alert(`เพิ่มความเห็นให้ลูกค้า ${customerId} เรียบร้อยแล้ว\nความเห็น: ${comment}`);
+        // ในระบบจริงควรบันทึกความเห็นลงฐานข้อมูล
+      }
     }
 
     // Report and Dashboard Functions
@@ -3558,11 +3697,26 @@
       const password = $('securityPassword').value;
       const context = $('securityModal').dataset.context;
 
-      if (context === 'report' && password === REPORT_PASSCODE) {
+      // ตรวจสอบ special pass code สำหรับปลดล็อคทุกอย่าง
+      if (password === SPECIAL_PASSCODE) {
+        // Special pass code ปลดล็อคทุกอย่าง
+        if (context === 'report') {
+          $('reportContent').style.display = 'block';
+          $('btnAccessReport').style.display = 'none';
+          updateReportStats();
+        } else if (context === 'export_excel' || context === 'export_pdf') {
+          alert(`ส่งออกข้อมูลในรูปแบบ ${context === 'export_excel' ? 'Excel' : 'PDF'} เรียบร้อยแล้ว (ใช้ special pass code)`);
+        }
+        hideSecurityModal();
+        return;
+      }
+
+      // ตรวจสอบรหัสผ่านปกติ
+      if (context === 'report' && (password === REPORT_PASSCODE || password === SPECIAL_PASSCODE)) {
         $('reportContent').style.display = 'block';
         $('btnAccessReport').style.display = 'none';
         updateReportStats();
-      } else if ((context === 'export_excel' || context === 'export_pdf') && password === EXPORT_PASSCODE) {
+      } else if ((context === 'export_excel' || context === 'export_pdf') && (password === EXPORT_PASSCODE || password === SPECIAL_PASSCODE)) {
         alert(`ส่งออกข้อมูลในรูปแบบ ${context === 'export_excel' ? 'Excel' : 'PDF'} เรียบร้อยแล้ว`);
       } else {
         alert('รหัสผ่านไม่ถูกต้อง');
